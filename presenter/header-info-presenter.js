@@ -1,6 +1,6 @@
-import HeaderInfoView from '../view/header-info.js';
-
 import {render, RenderPosition} from '../src/render.js';
+
+import HeaderInfoView from '../view/header-info.js';
 
 export default class HeaderInfoPresenter {
   constructor ({headContainer}) {
