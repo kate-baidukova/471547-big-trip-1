@@ -41,7 +41,7 @@ function createTripEventElementTemplate () {
             </li>`;
 }
 
-export default class TripEvent {
+export default class TripEventElementView {
   getTemplate () {
     return createTripEventElementTemplate;
   }

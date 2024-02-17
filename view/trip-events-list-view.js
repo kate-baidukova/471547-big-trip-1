@@ -6,7 +6,7 @@ function createTripListTemplate () {
   `;
 }
 
-export default class TripEventsList {
+export default class TripEventsListView {
   getTemplate () {
     return createTripListTemplate;
   }

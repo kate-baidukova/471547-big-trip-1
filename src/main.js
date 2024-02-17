@@ -3,14 +3,13 @@ import HeaderFilterPresenter from '../presenter/header-filter-presenter.js';
 import TripPresenter from '../presenter/trip-presenter.js';
 
 const mainElement = document.querySelector('.page-body');
-const mainInfoElement = document.querySelector('.trip-main');
-const eventsElement = document.querySelector('.trip-events');
+const mainContentElement = document.querySelector('.trip-main');
+const eventsContainerElement = document.querySelector('.trip-events');
 const tripControlsElement = mainElement.querySelector('.trip-controls__filters');
 
-const headerInfoPresenter = new HeaderInfoPresenter ({headContainer: mainInfoElement});
-const tripPresenter = new TripPresenter ({mainTripEventsContainer: eventsElement});
+const headerInfoPresenter = new HeaderInfoPresenter ({headContainer: mainContentElement});
 const headerFilterPresenter = new HeaderFilterPresenter ({headContainer: tripControlsElement});
-
+const tripPresenter = new TripPresenter ({mainContentContainer: eventsContainerElement});
 
 headerInfoPresenter.init();
 headerFilterPresenter.init();

@@ -1,29 +1,29 @@
 import {render, RenderPosition} from '../src/render.js';
 
-import TripEventsList from '../view/trip-list-view.js';
-import TripEvent from '../view/trip-event-view.js';
-import FormPointAdd from '../view/point-form-new-view.js';
-import FormPointEdit from '../view/point-edit-form-view.js';
-import TripListSort from '../view/list-sorted-view.js';
+import TripEventsListView from '../view/trip-events-list-view.js';
+import TripEventElementView from '../view/trip-event-view.js';
+import NewPointFormView from '../view/new-point-form-view.js';
+import PointEditFormView from '../view/point-form-editing-view.js';
+import ListSortingView from '../view/sorting-list-view.js';
 
 const POINT_COUNT = 3;
 
 export default class TripPresenter {
-  tripListComponent = new TripEventsList();
+  tripListComponent = new TripEventsListView();
 
-  constructor ({mainTripEventsContainer}) {
-    this.mainTripEventsContainer = mainTripEventsContainer;
+  constructor ({mainContentContainer}) {
+    this.mainContentContainer = mainContentContainer;
   }
 
   init () {
-    render(new TripListSort, this.mainTripEventsContainer, RenderPosition.BEFOREEND);
-    render(new FormPointAdd, this.mainTripEventsContainer, RenderPosition.BEFOREEND);
-    render(this.tripListComponent, this.mainTripEventsContainer);
+    render(new ListSortingView, this.mainContentContainer, RenderPosition.BEFOREEND);
+    render(new NewPointFormView, this.mainContentContainer, RenderPosition.BEFOREEND);
+    render(this.tripListComponent, this.mainContentContainer);
 
     for (let i = 0; i < POINT_COUNT; i++) {
-      render(new TripEvent, this.tripListComponent.getElement());
+      render(new TripEventElementView, this.tripListComponent.getElement());
     }
 
-    render(new FormPointEdit, this.mainTripEventsContainer, RenderPosition.BEFOREEND);
+    render(new PointEditFormView, this.mainContentContainer, RenderPosition.BEFOREEND);
   }
 }

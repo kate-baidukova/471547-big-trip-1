@@ -1,6 +1,6 @@
 import {createElement} from '../src/render.js';
 
-function headerInfoTemplate () {
+function createHeaderInfoTemplate () {
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
     <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
@@ -16,7 +16,7 @@ function headerInfoTemplate () {
 
 export default class HeaderInfoView {
   getTemplate () {
-    return headerInfoTemplate ();
+    return createHeaderInfoTemplate ();
   }
 
   getElement () {
