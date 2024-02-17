@@ -1,16 +1,21 @@
-import {render, RenderPosition} from '../src/render.js';
+import {render} from '../src/render.js';
 import TripEventsList from '../view/trip-list-view.js';
-//import TripPointCard from '../view/trip-point-view.js';
+import TripEvent from '../view/trip-event-view.js';
 
-export default class TripEventsPresenter {
-  constructor ({tripEventsContainer}) {
-    this.tripEventsContainer = tripEventsContainer;
+const POINT_COUNT = 3;
+
+export default class TripPresenter {
+  tripListComponent = new TripEventsList();
+
+  constructor ({mainTripEventsContainer}) {
+    this.mainTripEventsContainer = mainTripEventsContainer;
   }
 
   init () {
-    for (let i = 0; i < 3; i++) {
-      render (new TripEventsList, this.boardContainer, RenderPosition.BEFOREEND);
+    render(this.tripListComponent, this.mainTripEventsContainer);
+
+    for (let i = 0; i < POINT_COUNT; i++) {
+      render(new TripEvent(), this.tripListComponent.getElement());
     }
   }
 }
-
