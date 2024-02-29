@@ -1,9 +1,9 @@
 import {getRandomArrayElement} from '../utils/util.js';
-import {ROUTE_TYPE, DESTINATIONS, STATUS} from './const.js';
+import {ROUTE_POINTS, DESTINATIONS, STATUS} from './const.js';
 
 const mockRoutePoint = [
   {
-    routeType: getRandomArrayElement(ROUTE_TYPE),
+    routeType: getRandomArrayElement(ROUTE_POINTS),
     destination: getRandomArrayElement(DESTINATIONS),
     data: '',
     time: '',

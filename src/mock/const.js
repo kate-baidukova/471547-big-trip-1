@@ -1,4 +1,4 @@
-const ROUTE_TYPE = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const ROUTE_POINTS = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 const DESTINATIONS = ['Krasnodar', 'St. Petersburg', 'Mariupol', 'Pyatigorsk', 'Sochi', 'Vyborg', 'Kaliningrad', 'Samara', 'Kazan'];
 
@@ -10,4 +10,4 @@ const TIME_FORMAT = 'HH:mm';
 
 const POINT_COUNT = 5;
 
-export {ROUTE_TYPE, DESTINATIONS, STATUS, DATE_FORMAT_IN_FORM, DATE_FORMAT, TIME_FORMAT, POINT_COUNT};
+export {ROUTE_POINTS, DESTINATIONS, STATUS, DATE_FORMAT_IN_FORM, DATE_FORMAT, TIME_FORMAT, POINT_COUNT};

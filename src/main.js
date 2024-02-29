@@ -1,6 +1,6 @@
-import HeaderInfoPresenter from '../presenter/header-info-presenter.js';
-import HeaderFilterPresenter from '../presenter/header-filter-presenter.js';
-import TripPresenter from '../presenter/trip-presenter.js';
+import HeaderInfoPresenter from './presenter/header-info-presenter.js';
+import HeaderFilterPresenter from './presenter/header-filter-presenter.js';
+import TripPresenter from './presenter/trip-presenter.js';
 import {trip} from '../src/mock/trip.js';
 
 const mainElement = document.querySelector('.page-body');
