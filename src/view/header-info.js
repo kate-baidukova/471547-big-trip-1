@@ -1,4 +1,4 @@
-import {createElement} from '../src/render.js';
+import {createElement} from '../render.js';
 
 function createHeaderInfoTemplate () {
   return `<section class="trip-main__trip-info  trip-info">

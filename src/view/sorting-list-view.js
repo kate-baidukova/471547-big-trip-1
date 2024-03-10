@@ -1,4 +1,4 @@
-import {createElement} from '../src/render.js';
+import {createElement} from '../render.js';
 
 function createListSortingTemplate () {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
