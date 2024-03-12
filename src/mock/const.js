@@ -1,6 +1,6 @@
 const POINTS_COUNT = 5;
 const PHOTOS_COUNT = 5;
-const OFFERS_COUNT = 5;
+const OFFERS_COUNT = 10;
 
 const TYPE_ROUTE_POINTS = [
   'taxi',
