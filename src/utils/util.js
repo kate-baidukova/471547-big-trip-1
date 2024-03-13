@@ -24,6 +24,13 @@ const getRandomInteger = (max) => Math.floor(Math.random() * max);
 
 const getRandomArrayElement = (items) => items[getRandomNumber(0, items.length - 1)];
 
+//получаем случайное булево значение
+
+function getRandomBoolean() {
+  const randomNumber = Math.random();
+  return randomNumber >= 0.5;
+}
+
 //делаем первую букву заглавной
 
 const capitalizeFirstLetter = (string) => !string ? string : string.charAt(0).toUpperCase() + string.slice(1);
@@ -79,4 +86,4 @@ const getRandomId = (min, max) => {
   };
 };
 
-export {getRandomNumber, getRandomInteger, getRandomArrayElement, capitalizeFirstLetter, humanizeDate, calcPointDuration, formatDateTime, formatShortDate, formatTime, getRandomId};
+export {getRandomNumber, getRandomInteger, getRandomArrayElement, getRandomBoolean, capitalizeFirstLetter, humanizeDate, calcPointDuration, formatDateTime, formatShortDate, formatTime, getRandomId};
