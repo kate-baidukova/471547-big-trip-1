@@ -2,8 +2,8 @@ const POINTS_COUNT = 5;
 const PHOTOS_COUNT = 5;
 const OFFERS_COUNT = 10;
 
-const MIN_RANDOM_ID = 5;
-const MAX_RANDOM_ID = 20;
+const MIN_RANDOM_ID = 1;
+const MAX_RANDOM_ID = 200;
 const PHOTOS_RANDOM_COUNT = 50;
 const MIN_PRICE = 1000;
 const MAX_PRICE = 10000;
