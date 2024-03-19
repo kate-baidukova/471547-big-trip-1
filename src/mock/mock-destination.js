@@ -19,13 +19,13 @@ function createDestination() {
     };
   }
 
-  const renderPhotos = Array.from({length: getRandomNumber(0, PHOTOS_COUNT)}, makePhoto);
+  const photos = Array.from({length: getRandomNumber(0, PHOTOS_COUNT)}, makePhoto);
 
   return {
     id: generateDestinationId(),
     name: getRandomArrayElement(DESTINATIONS),
     description,
-    photos: renderPhotos,
+    photos,
   };
 }
 
