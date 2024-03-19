@@ -5,7 +5,7 @@ const generatePointId = getRandomId(RandomId.MIN, RandomId.MAX);
 
 const createPoint = (type, destinationId, offersIds) => ({
   id: generatePointId(),
-  type: type,
+  type,
   destination: destinationId,
   dateFrom: new Date('2024-02-29, 21:00'),
   dateTo: new Date('2024-03-03, 21:00'),

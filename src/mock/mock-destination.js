@@ -14,7 +14,7 @@ function createDestination() {
 
   function makePhoto() {
     return {
-      description: description,
+      description,
       src: `https://loremflickr.com/248/152?random=${getRandomInteger(PHOTOS_RANDOM_COUNT)}`
     };
   }
@@ -24,7 +24,7 @@ function createDestination() {
   return {
     id: generateDestinationId(),
     name: getRandomArrayElement(DESTINATIONS),
-    description: description,
+    description,
     photos: renderPhotos,
   };
 }
