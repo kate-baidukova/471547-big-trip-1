@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 
 import {humanizeDate, capitalizeFirstLetter} from '../utils/util.js';
 
-import {DATE_FORMAT} from '../mock/const.js';
+import {DateFormat} from '../mock/const.js';
 
 function createOffersTemplate (offers) {
   return offers.length > 0 ?
@@ -21,10 +21,10 @@ function createTripEventElementTemplate (point, offers, destination) {
 
   const {type, dateFrom, dateTo, price, isFavorite} = point;
   const {name} = destination;
-  const dateFromHumanized = humanizeDate(dateFrom, DATE_FORMAT.monthDay);
-  const dateFromHumanizedAttr = humanizeDate(dateFrom, DATE_FORMAT.dateAttr);
-  const timeFromHumanized = humanizeDate(dateFrom, DATE_FORMAT.hourMinute);
-  const timeToHumanized = humanizeDate(dateTo, DATE_FORMAT.hourMinute);
+  const dateFromHumanized = humanizeDate(dateFrom, DateFormat.SHORT);
+  const dateFromHumanizedAttr = humanizeDate(dateFrom, DateFormat.ATTRIBUTE);
+  const timeFromHumanized = humanizeDate(dateFrom, DateFormat.TIME);
+  const timeToHumanized = humanizeDate(dateTo, DateFormat.TIME);
   const favorite = isFavorite ? 'event__favorite-btn--active' : '';
   const pointOffers = offers.filter((offer) => point.offers.includes(offer.id));
   const offersTemplate = createOffersTemplate(pointOffers);

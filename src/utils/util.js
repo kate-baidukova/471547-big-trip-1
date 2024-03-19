@@ -1,4 +1,4 @@
-import {DATE_FORMAT, MSEC_IN_DAY, MSEC_IN_HOUR} from '../mock/const.js';
+import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../mock/const.js';
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -40,13 +40,13 @@ const capitalizeFirstLetter = (string) => !string ? string : string.charAt(0).to
 const humanizeDate = (date, dateFormat) => date ? dayjs(date).format(dateFormat) : '';
 
 const formatDateTime = (inputDate) => //задаем дату в полном формате
-  inputDate ? dayjs(inputDate).format(DATE_FORMAT.fullDate) : '';
+  inputDate ? dayjs(inputDate).format(DateFormat.FULL) : '';
 
 const formatShortDate = (inputDate) => //задаем месяцы
-  inputDate ? dayjs(inputDate).format(DATE_FORMAT.monthDay) : '';
+  inputDate ? dayjs(inputDate).format(DateFormat.SHORT) : '';
 
 const formatTime = (inputDate) => // задаем часы/минуты
-  inputDate ? dayjs(inputDate).format(DATE_FORMAT.hourMinute) : '';
+  inputDate ? dayjs(inputDate).format(DateFormat.TIME) : '';
 
 const calcPointDuration = (dateFrom, dateTo) => {
   const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom));

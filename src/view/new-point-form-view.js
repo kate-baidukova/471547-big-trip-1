@@ -1,5 +1,5 @@
 import {createElement} from '../render.js';
-import {TYPE_ROUTE_POINTS, DATE_FORMAT} from '../mock/const.js';
+import {TYPE_ROUTE_POINTS, DateFormat} from '../mock/const.js';
 import {humanizeDate, capitalizeFirstLetter} from '../utils/util.js';
 
 const POINT_FORM = {
@@ -63,8 +63,8 @@ function createNewPointFormTemplate (point, offers, destination) {
   const {type, dateFrom, dateTo, price} = point;
   const {name, description, photos} = typeof destination !== 'undefined' ? destination : '';
   const destinationName = typeof name !== 'undefined' ? name : '';
-  const dateFromHumanized = humanizeDate(dateFrom, DATE_FORMAT.fullDate);
-  const dateToHumanized = humanizeDate(dateTo, DATE_FORMAT.fullDate);
+  const dateFromHumanized = humanizeDate(dateFrom, DateFormat.FULL);
+  const dateToHumanized = humanizeDate(dateTo, DateFormat.FULL);
   const typesList = createPointsTypeList(TYPE_ROUTE_POINTS, type);
   const offersTemplate = createOffersTemplate(offers);
   const destinationTemplate = typeof destination !== 'undefined' ? (createDestinationTemplate({name, description, photos})) : '';

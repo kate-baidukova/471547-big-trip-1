@@ -62,18 +62,11 @@ const DESCRIPTIONS = [
   'Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
 ];
 
-/*
-const STATUS = [
-  'past',
-  'future',
-  'present',
-];
-*/
-const DATE_FORMAT = {
-  fullDate: 'DD/MM/YY HH:mm',
-  dateAttr: 'YYYY-MM-DD',
-  monthDay: 'MMM DD',
-  hourMinute: 'HH:mm',
+const DateFormat = {
+  FULL: 'DD/MM/YY HH:mm',
+  ATTRIBUTE: 'YYYY-MM-DD',
+  SHORT: 'MMM DD',
+  TIME: 'HH:mm',
 };
 
 const MSEC_IN_SEC = 1000;
@@ -84,4 +77,4 @@ const HOUR_IN_DAY = 24;
 const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
 const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
 
-export {POINTS_COUNT, PHOTOS_COUNT, OFFERS_COUNT, RandomId, RandomPrice, PHOTOS_RANDOM_COUNT, TYPE_ROUTE_POINTS, DESTINATIONS, OFFERS, DESCRIPTIONS, DATE_FORMAT, MSEC_IN_HOUR, MSEC_IN_DAY};
+export {POINTS_COUNT, PHOTOS_COUNT, OFFERS_COUNT, RandomId, RandomPrice, PHOTOS_RANDOM_COUNT, TYPE_ROUTE_POINTS, DESTINATIONS, OFFERS, DESCRIPTIONS, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY};
