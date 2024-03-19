@@ -53,16 +53,12 @@ const calcPointDuration = (dateFrom, dateTo) => {
 
   let pointDuration = 0;
 
-  switch (true) {
-    case (timeDiff >= MSEC_IN_DAY):
-      pointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
-      break;
-    case (timeDiff >= MSEC_IN_HOUR):
-      pointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
-      break;
-    case (timeDiff < MSEC_IN_HOUR):
-      pointDuration = dayjs.duration(timeDiff).format('mm[M]');
-      break;
+  if (timeDiff >= MSEC_IN_DAY) {
+    pointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
+  } else if (timeDiff >= MSEC_IN_HOUR) {
+    pointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
+  } else if (timeDiff < MSEC_IN_HOUR) {
+    pointDuration = dayjs.duration(timeDiff).format('mm[M]');
   }
 
   return pointDuration;
