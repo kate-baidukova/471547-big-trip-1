@@ -73,7 +73,7 @@ const calcPointDuration = (dateFrom, dateTo) => {
 const getRandomId = (min, max) => {
   const previousValues = [];
 
-  return function () {
+  const getValue = () => {
     let currentValue = getRandomNumber(min, max);
     if (previousValues.length >= (max - min + 1)) {
       return null;
@@ -84,6 +84,8 @@ const getRandomId = (min, max) => {
     previousValues.push(currentValue);
     return currentValue;
   };
+
+  return getValue;
 };
 
 export {getRandomNumber, getRandomInteger, getRandomArrayElement, getRandomBoolean, capitalizeFirstLetter, humanizeDate, calcPointDuration, formatDateTime, formatShortDate, formatTime, getRandomId};

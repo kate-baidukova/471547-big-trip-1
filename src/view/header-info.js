@@ -16,7 +16,7 @@ function createHeaderInfoTemplate() {
 
 export default class HeaderInfoView {
   getTemplate() {
-    return createHeaderInfoTemplate ();
+    return createHeaderInfoTemplate();
   }
 
   getElement() {
