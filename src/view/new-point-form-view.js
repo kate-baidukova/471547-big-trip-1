@@ -15,9 +15,9 @@ const POINT_FORM = {
 function createPointsTypeList (types, type) {
   return types.map((element) => `
   <div class="event__type-item">
-            <input id="event-type-${element}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${element}" ${element === type ? 'checked' : ''}>
-            <label class="event__type-label  event__type-label--${element}" for="event-type-${element}-1">${capitalizeFirstLetter(element)}</label>
-          </div>`).join('');
+    <input id="event-type-${element}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${element}" ${element === type ? 'checked' : ''}>
+    <label class="event__type-label  event__type-label--${element}" for="event-type-${element}-1">${capitalizeFirstLetter(element)}</label>
+  </div>`).join('');
 }
 
 function createOffersTemplate (offers) {
