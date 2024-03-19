@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 import {TYPE_ROUTE_POINTS, DateFormat} from '../mock/const.js';
-import {humanizeDate, capitalizeFirstLetter} from '../utils/util.js';
+import {humanizeDate, capitalizeFirstLetter} from '../mock/mock-utils.js';
 
 const POINT_FORM = {
   id: 1,
@@ -134,11 +134,11 @@ export default class NewPointFormView {
     this.destination = destination;
   }
 
-  getTemplate () {
+  getTemplate() {
     return createNewPointFormTemplate (this.point, this.offers, this.destination);
   }
 
-  getElement () {
+  getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
@@ -146,7 +146,7 @@ export default class NewPointFormView {
     return this.element;
   }
 
-  removeElement () {
+  removeElement() {
     this.element = null;
   }
 }

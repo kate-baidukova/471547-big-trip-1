@@ -1,17 +1,17 @@
 import {createElement} from '../render.js';
 
-function createTripListTemplate () {
+function createTripListTemplate() {
   return `
   <ul class="trip-events__list"></ul>
   `;
 }
 
 export default class TripEventsListView {
-  getTemplate () {
+  getTemplate() {
     return createTripListTemplate;
   }
 
-  getElement () {
+  getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
@@ -19,7 +19,7 @@ export default class TripEventsListView {
     return this.element;
   }
 
-  removeElement () {
+  removeElement() {
     this.element = null;
   }
 }

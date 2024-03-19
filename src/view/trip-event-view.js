@@ -1,10 +1,9 @@
 import {createElement} from '../render.js';
 
-import {humanizeDate, capitalizeFirstLetter} from '../utils/util.js';
-
+import {humanizeDate, capitalizeFirstLetter} from '../mock/mock-utils.js';
 import {DateFormat} from '../mock/const.js';
 
-function createOffersTemplate (offers) {
+function createOffersTemplate(offers) {
   return offers.length > 0 ?
     `<h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
@@ -17,7 +16,7 @@ function createOffersTemplate (offers) {
     </ul>` : '';
 }
 
-function createTripEventElementTemplate (point, offers, destination) {
+function createTripEventElementTemplate(point, offers, destination) {
 
   const {type, dateFrom, dateTo, price, isFavorite} = point;
   const {name} = destination;
@@ -69,11 +68,11 @@ export default class TripEventElementView {
     this.destination = destination;
   }
 
-  getTemplate () {
+  getTemplate() {
     return createTripEventElementTemplate (this.point, this.offers, this.destination);
   }
 
-  getElement () {
+  getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
@@ -81,7 +80,7 @@ export default class TripEventElementView {
     return this.element;
   }
 
-  removeElement () {
+  removeElement() {
     this.element = null;
   }
 }

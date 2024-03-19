@@ -7,7 +7,7 @@ export default class HeaderInfoPresenter {
     this.headContainer = headContainer;
   }
 
-  init () {
+  init() {
     render (new HeaderInfoView, this.headContainer, RenderPosition.AFTERBEGIN);
   }
 }

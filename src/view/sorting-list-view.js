@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 
-function createListSortingTemplate () {
+function createListSortingTemplate() {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
   <div class="trip-sort__item  trip-sort__item--day">
     <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day">
@@ -30,11 +30,11 @@ function createListSortingTemplate () {
 }
 
 export default class ListSortingView {
-  getTemplate () {
+  getTemplate() {
     return createListSortingTemplate;
   }
 
-  getElement () {
+  getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
@@ -42,7 +42,7 @@ export default class ListSortingView {
     return this.element;
   }
 
-  removeElement () {
+  removeElement() {
     this.element = null;
   }
 }

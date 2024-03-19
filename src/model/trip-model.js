@@ -5,7 +5,7 @@ export default class TripModel {
     this.points = this.service.getPoints();
   }
 
-  get () {
+  get() {
     return this.points;
   }
 }

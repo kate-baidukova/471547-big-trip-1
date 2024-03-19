@@ -7,7 +7,7 @@ export default class HeaderFilterPresenter {
     this.headContainer = headContainer;
   }
 
-  init () {
+  init() {
     render (new FiltersList, this.headContainer, RenderPosition.BEFOREEND);
   }
 }

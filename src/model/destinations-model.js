@@ -7,11 +7,11 @@ export default class DestinationsModel {
     this.destinations = this.service.getDestinations();
   }
 
-  get () {
+  get() {
     return this.destinations;
   }
 
-  getById (id) {
+  getById(id) {
     return this.destinations.find((destination) => destination.id === id);
   }
 }

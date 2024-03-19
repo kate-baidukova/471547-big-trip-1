@@ -1,8 +1,8 @@
-import {DESTINATIONS, TYPE_ROUTE_POINTS, POINTS_COUNT, OFFERS_COUNT} from '../mock/const.js';
-import {getRandomArrayElement, getRandomNumber} from '../utils/util.js';
-import {createDestination} from '../mock/mock-destination.js';
-import {createOffer} from '../mock/mock-offer.js';
-import {createPoint} from '../mock/mock-trip.js';
+import {DESTINATIONS, TYPE_ROUTE_POINTS, POINTS_COUNT, OFFERS_COUNT} from './const.js';
+import {getRandomArrayElement, getRandomNumber} from './mock-utils.js';
+import {createDestination} from './mock-destination.js';
+import {createOffer} from './mock-offer.js';
+import {createPoint} from './mock-trip.js';
 
 const destinationCount = getRandomNumber(1, DESTINATIONS.length);
 

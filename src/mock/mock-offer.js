@@ -1,13 +1,13 @@
 import {OFFERS, RandomId, RandomPrice} from './const.js';
-import {getRandomId, getRandomNumber, getRandomArrayElement} from '../utils/util.js';
+import {getRandomId, getRandomNumber, getRandomArrayElement} from './mock-utils.js';
 
-const generateOfferId = getRandomId (RandomId.MIN, RandomId.MAX);
+const generateOfferId = getRandomId(RandomId.MIN, RandomId.MAX);
 
-function createOffer () {
+function createOffer() {
   return {
-    id: generateOfferId (),
-    title: getRandomArrayElement (OFFERS),
-    price: getRandomNumber (RandomPrice.MIN, RandomPrice.MAX),
+    id: generateOfferId(),
+    title: getRandomArrayElement(OFFERS),
+    price: getRandomNumber(RandomPrice.MIN, RandomPrice.MAX),
   };
 }
 

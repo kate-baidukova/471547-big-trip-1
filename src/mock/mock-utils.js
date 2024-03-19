@@ -1,4 +1,4 @@
-import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../mock/const.js';
+import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from './const.js';
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -74,12 +74,12 @@ const getRandomId = (min, max) => {
   const previousValues = [];
 
   return function () {
-    let currentValue = getRandomNumber (min, max);
+    let currentValue = getRandomNumber(min, max);
     if (previousValues.length >= (max - min + 1)) {
       return null;
     }
     while (previousValues.includes(currentValue)) {
-      currentValue = getRandomNumber (min, max);
+      currentValue = getRandomNumber(min, max);
     }
     previousValues.push(currentValue);
     return currentValue;
