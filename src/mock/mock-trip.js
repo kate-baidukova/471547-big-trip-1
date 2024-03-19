@@ -1,7 +1,7 @@
-import {MIN_RANDOM_ID, MAX_RANDOM_ID, MIN_PRICE, MAX_PRICE} from './const.js';
+import {RandomId, RandomPrice} from './const.js';
 import {getRandomNumber, getRandomId, getRandomBoolean} from '../utils/util.js';
 
-const generatePointId = getRandomId (MIN_RANDOM_ID, MAX_RANDOM_ID);
+const generatePointId = getRandomId (RandomId.MIN, RandomId.MAX);
 
 const createPoint = (type, destinationId, offersIds) => ({
   id: generatePointId (),
@@ -9,7 +9,7 @@ const createPoint = (type, destinationId, offersIds) => ({
   destination: destinationId,
   dateFrom: new Date('2024-02-29, 21:00'),
   dateTo: new Date('2024-03-03, 21:00'),
-  price: getRandomNumber(MIN_PRICE, MAX_PRICE),
+  price: getRandomNumber(RandomPrice.MIN, RandomPrice.MAX),
   offers: offersIds,
   isFavourite: getRandomBoolean (),
 });

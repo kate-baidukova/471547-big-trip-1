@@ -2,11 +2,17 @@ const POINTS_COUNT = 5;
 const PHOTOS_COUNT = 5;
 const OFFERS_COUNT = 10;
 
-const MIN_RANDOM_ID = 1;
-const MAX_RANDOM_ID = 200;
+const RandomId = {
+  MIN: 1,
+  MAX: 200,
+};
+
 const PHOTOS_RANDOM_COUNT = 50;
-const MIN_PRICE = 1000;
-const MAX_PRICE = 10000;
+
+const RandomPrice = {
+  MIN: 1000,
+  MAX: 10000,
+};
 
 const TYPE_ROUTE_POINTS = [
   'taxi',
@@ -17,7 +23,7 @@ const TYPE_ROUTE_POINTS = [
   'flight',
   'check-in',
   'sightseeing',
-  'restaurant'
+  'restaurant',
 ];
 
 const DESTINATIONS = [
@@ -29,7 +35,7 @@ const DESTINATIONS = [
   'Vyborg',
   'Kaliningrad',
   'Samara',
-  'Kazan'
+  'Kazan',
 ];
 
 const OFFERS = [
@@ -41,7 +47,7 @@ const OFFERS = [
   'Book tickets',
   'Add meal',
   'Choose seats',
-  'Travel by train'
+  'Travel by train',
 ];
 
 const DESCRIPTIONS = [
@@ -53,14 +59,14 @@ const DESCRIPTIONS = [
   'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat.',
   'Aliquam id orci ut lectus varius viverra.',
   'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis.',
-  'Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.'
+  'Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
 ];
 
 /*
 const STATUS = [
   'past',
   'future',
-  'present'
+  'present',
 ];
 */
 const DATE_FORMAT = {
@@ -78,4 +84,4 @@ const HOUR_IN_DAY = 24;
 const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
 const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
 
-export {POINTS_COUNT, PHOTOS_COUNT, OFFERS_COUNT, MIN_RANDOM_ID, MAX_RANDOM_ID, MIN_PRICE, MAX_PRICE, PHOTOS_RANDOM_COUNT, TYPE_ROUTE_POINTS, DESTINATIONS, OFFERS, DESCRIPTIONS, DATE_FORMAT, MSEC_IN_HOUR, MSEC_IN_DAY};
+export {POINTS_COUNT, PHOTOS_COUNT, OFFERS_COUNT, RandomId, RandomPrice, PHOTOS_RANDOM_COUNT, TYPE_ROUTE_POINTS, DESTINATIONS, OFFERS, DESCRIPTIONS, DATE_FORMAT, MSEC_IN_HOUR, MSEC_IN_DAY};

@@ -1,7 +1,7 @@
-import {DESTINATIONS, PHOTOS_COUNT, DESCRIPTIONS, MIN_RANDOM_ID, MAX_RANDOM_ID, PHOTOS_RANDOM_COUNT} from './const.js';
+import {DESTINATIONS, PHOTOS_COUNT, DESCRIPTIONS, RandomId, PHOTOS_RANDOM_COUNT} from './const.js';
 import {getRandomArrayElement, getRandomId, getRandomInteger, getRandomNumber} from '../utils/util.js';
 
-const generateDestinationId = getRandomId(MIN_RANDOM_ID, MAX_RANDOM_ID);
+const generateDestinationId = getRandomId(RandomId.MIN, RandomId.MAX);
 
 function createDestination () {
 
@@ -25,7 +25,7 @@ function createDestination () {
     id: generateDestinationId (),
     name: getRandomArrayElement (DESTINATIONS),
     description: description,
-    photos: renderPhotos
+    photos: renderPhotos,
   };
 }
 
