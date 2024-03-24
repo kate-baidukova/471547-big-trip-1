@@ -24,7 +24,7 @@ function getRandomBoolean() {
 
 //создаем счетчик для генерации случайного ID
 
-const getRandomId = (min, max) => {
+/*const getRandomId = (min, max) => {
   const previousValues = [];
 
   const getValue = () => {
@@ -40,12 +40,11 @@ const getRandomId = (min, max) => {
   };
 
   return getValue;
-};
+};*/
 
 export {
   getRandomNumber,
   getRandomInteger,
   getRandomArrayElement,
   getRandomBoolean,
-  getRandomId,
 };

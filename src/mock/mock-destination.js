@@ -1,12 +1,12 @@
-import {DESTINATIONS, PHOTOS_COUNT, DESCRIPTIONS, RandomId, PHOTOS_RANDOM_COUNT} from './mock-const.js';
-import {getRandomArrayElement, getRandomId, getRandomInteger, getRandomNumber} from './mock-utils.js';
+import {DESTINATIONS, PHOTOS_COUNT, DESCRIPTIONS, PHOTOS_RANDOM_COUNT} from './mock-const.js';
+import {getRandomArrayElement, getRandomInteger, getRandomNumber} from './mock-utils.js';
 
-const generateDestinationId = getRandomId(RandomId.MIN, RandomId.MAX);
+//const generateDestinationId = crypto.randomUUID();
 
 function createDestination() {
 
   const makeDescription = () => Array.from(
-    {length: getRandomNumber(1, DESCRIPTIONS.length)},
+    {length: getRandomNumber(0, DESCRIPTIONS.length)},
     () => getRandomArrayElement(DESCRIPTIONS),
   ).join(' ');
 
@@ -22,7 +22,7 @@ function createDestination() {
   const photos = Array.from({length: getRandomNumber(0, PHOTOS_COUNT)}, makePhoto);
 
   return {
-    id: generateDestinationId(),
+    id: crypto.randomUUID(),
     name: getRandomArrayElement(DESTINATIONS),
     description,
     photos,

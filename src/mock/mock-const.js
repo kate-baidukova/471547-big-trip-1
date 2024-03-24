@@ -2,11 +2,6 @@ const POINTS_COUNT = 10;
 const PHOTOS_COUNT = 5;
 const OFFERS_COUNT = 10;
 
-const RandomId = {
-  MIN: 1,
-  MAX: 200,
-};
-
 const PHOTOS_RANDOM_COUNT = 50;
 
 const RandomPrice = {
@@ -54,7 +49,6 @@ export {
   POINTS_COUNT,
   PHOTOS_COUNT,
   OFFERS_COUNT,
-  RandomId,
   RandomPrice,
   PHOTOS_RANDOM_COUNT,
   DESTINATIONS,
