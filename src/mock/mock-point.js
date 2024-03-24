@@ -1,9 +1,10 @@
-import {RandomId, RandomPrice} from './const.js';
+import {RandomId, RandomPrice} from './mock-const.js';
 import {getRandomNumber, getRandomId, getRandomBoolean} from './mock-utils.js';
 
 const generatePointId = getRandomId(RandomId.MIN, RandomId.MAX);
 
 const createPoint = (type, destinationId, offersIds) => ({
+
   id: generatePointId(),
   type,
   destination: destinationId,

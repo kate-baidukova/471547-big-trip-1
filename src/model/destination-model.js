@@ -1,4 +1,4 @@
-export default class DestinationsModel {
+export default class DestinationModel {
 
   destinations = null;
 

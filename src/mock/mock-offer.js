@@ -1,4 +1,4 @@
-import {OFFERS, RandomId, RandomPrice} from './const.js';
+import {OFFERS, RandomId, RandomPrice} from './mock-const.js';
 import {getRandomId, getRandomNumber, getRandomArrayElement} from './mock-utils.js';
 
 const generateOfferId = getRandomId(RandomId.MIN, RandomId.MAX);

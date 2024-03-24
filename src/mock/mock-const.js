@@ -1,4 +1,4 @@
-const POINTS_COUNT = 5;
+const POINTS_COUNT = 10;
 const PHOTOS_COUNT = 5;
 const OFFERS_COUNT = 10;
 
@@ -13,18 +13,6 @@ const RandomPrice = {
   MIN: 1000,
   MAX: 10000,
 };
-
-const TYPE_ROUTE_POINTS = [
-  'taxi',
-  'bus',
-  'train',
-  'ship',
-  'drive',
-  'flight',
-  'check-in',
-  'sightseeing',
-  'restaurant',
-];
 
 const DESTINATIONS = [
   'Krasnodar',
@@ -62,19 +50,14 @@ const DESCRIPTIONS = [
   'Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
 ];
 
-const DateFormat = {
-  FULL: 'DD/MM/YY HH:mm',
-  ATTRIBUTE: 'YYYY-MM-DD',
-  SHORT: 'MMM DD',
-  TIME: 'HH:mm',
+export {
+  POINTS_COUNT,
+  PHOTOS_COUNT,
+  OFFERS_COUNT,
+  RandomId,
+  RandomPrice,
+  PHOTOS_RANDOM_COUNT,
+  DESTINATIONS,
+  OFFERS,
+  DESCRIPTIONS
 };
-
-const MSEC_IN_SEC = 1000;
-const SEC_IN_MIN = 60;
-const MIN_IN_HOUR = 60;
-const HOUR_IN_DAY = 24;
-
-const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
-const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
-
-export {POINTS_COUNT, PHOTOS_COUNT, OFFERS_COUNT, RandomId, RandomPrice, PHOTOS_RANDOM_COUNT, TYPE_ROUTE_POINTS, DESTINATIONS, OFFERS, DESCRIPTIONS, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY};

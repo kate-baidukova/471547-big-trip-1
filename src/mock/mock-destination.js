@@ -1,4 +1,4 @@
-import {DESTINATIONS, PHOTOS_COUNT, DESCRIPTIONS, RandomId, PHOTOS_RANDOM_COUNT} from './const.js';
+import {DESTINATIONS, PHOTOS_COUNT, DESCRIPTIONS, RandomId, PHOTOS_RANDOM_COUNT} from './mock-const.js';
 import {getRandomArrayElement, getRandomId, getRandomInteger, getRandomNumber} from './mock-utils.js';
 
 const generateDestinationId = getRandomId(RandomId.MIN, RandomId.MAX);

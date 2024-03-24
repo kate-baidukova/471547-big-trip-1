@@ -1,8 +1,10 @@
-import {DESTINATIONS, TYPE_ROUTE_POINTS, POINTS_COUNT, OFFERS_COUNT} from './const.js';
-import {getRandomArrayElement, getRandomNumber} from './mock-utils.js';
-import {createDestination} from './mock-destination.js';
-import {createOffer} from './mock-offer.js';
-import {createPoint} from './mock-trip.js';
+import {POINTS_TYPES} from '../const.js';
+
+import {DESTINATIONS, POINTS_COUNT, OFFERS_COUNT} from '../mock/mock-const.js';
+import {getRandomArrayElement, getRandomNumber} from '../mock/mock-utils.js';
+import {createDestination} from '../mock/mock-destination.js';
+import {createOffer} from '../mock/mock-offer.js';
+import {createPoint} from '../mock/mock-point.js';
 
 const destinationCount = getRandomNumber(1, DESTINATIONS.length);
 
@@ -36,7 +38,7 @@ export default class MockData {
   }
 
   collectOffers() {
-    return TYPE_ROUTE_POINTS.map((type) => ({
+    return POINTS_TYPES.map((type) => ({
       type,
       offers: Array.from({length: getRandomNumber(1, getRandomNumber(0, OFFERS_COUNT))}, () => createOffer()),
     }));
@@ -45,7 +47,7 @@ export default class MockData {
   collectPoints() {
     return Array.from({length: POINTS_COUNT}, () => {
 
-      const type = getRandomArrayElement(TYPE_ROUTE_POINTS);
+      const type = getRandomArrayElement(POINTS_TYPES);
       const destination = getRandomArrayElement(this.destinations);
       const hasOffers = getRandomNumber(0, 1);
 

@@ -1,16 +1,6 @@
 import {createElement} from '../render.js';
-import {TYPE_ROUTE_POINTS, DateFormat} from '../mock/const.js';
-import {humanizeDate, capitalizeFirstLetter} from '../mock/mock-utils.js';
-
-const POINT_FORM = {
-  id: 1,
-  type: 'Bus',
-  offers: [],
-  destination: '',
-  dateFrom: '',
-  dateTo: '',
-  price: 0
-};
+import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
+import {humanizeDate, capitalizeFirstLetter} from '../utils.js';
 
 function createPointsTypeList (types, type) {
   return types.map((element) => `
@@ -20,15 +10,15 @@ function createPointsTypeList (types, type) {
   </div>`).join('');
 }
 
-function createOffersTemplate (offers) {
+function createOffersTemplate (offers, type) {
   return offers.length > 0 ? `<section class="event__details">
   <section class="event__section  event__section--offers">
     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
     <div class="event__available-offers">
     ${offers.map((offer) =>
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}" checked>
-        <label class="event__offer-label" for="event-offer-${offer.id}-1">
+        <input class="event__offer-checkbox visually-hidden" id="event-offer-${type}-${offer.id}" type="checkbox" name="event-offer-${offer.id}" checked>
+        <label class="event__offer-label" for="event-offer-${type}-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${offer.price}</span>
@@ -39,6 +29,7 @@ function createOffersTemplate (offers) {
 }
 
 function createDestinationTemplate ({name, description, photos}) {
+
   const photosTemplate = createPhotosTemplate(photos);
 
   return `<section class="event__section  event__section--destination">
@@ -58,25 +49,27 @@ function createPhotosTemplate (photos) {
 </div>` : '';
 }
 
-function createNewPointFormTemplate (point, offers, destination) {
+function createNewPointTemplate (point, offers, destination) {
 
   const {type, dateFrom, dateTo, price} = point;
   const {name, description, photos} = typeof destination !== 'undefined' ? destination : '';
   const destinationName = typeof name !== 'undefined' ? name : '';
-  const dateFromHumanized = humanizeDate(dateFrom, DateFormat.FULL);
-  const dateToHumanized = humanizeDate(dateTo, DateFormat.FULL);
-  const typesList = createPointsTypeList(TYPE_ROUTE_POINTS, type);
+  const typesList = createPointsTypeList(POINTS_TYPES, type);
+
+  const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM);
+  const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM);
+
   const offersTemplate = createOffersTemplate(offers);
   const destinationTemplate = typeof destination !== 'undefined' ? (createDestinationTemplate({name, description, photos})) : '';
 
   return `<form class="event event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
-      <label class="event__type  event__type-btn" for="event-type-toggle-1">
+      <label class="event__type  event__type-btn" for="event-type-toggle-${point.id}">
         <span class="visually-hidden">Choose event type</span>
         <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="${type}">
       </label>
-      <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+      <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${point.id}" type="checkbox">
 
       <div class="event__type-list">
         <fieldset class="event__type-group">
@@ -89,29 +82,29 @@ function createNewPointFormTemplate (point, offers, destination) {
     </div>
 
     <div class="event__field-group  event__field-group--destination">
-      <label class="event__label  event__type-output" for="event-destination-1">
+      <label class="event__label  event__type-output" for="event-destination-${point.id}">
         ${type}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
-      <datalist id="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${destinationName}" list="destination-list-${point.id}">
+      <datalist id="destination-list-${point.id}">
         <option value="${destinationName}"></option>
       </datalist>
     </div>
 
     <div class="event__field-group  event__field-group--time">
-      <label class="visually-hidden" for="event-start-time-1">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFromHumanized}">
+      <label class="visually-hidden" for="event-start-time-${point.id}">From</label>
+      <input class="event__input  event__input--time" id="event-start-time-${point.id}" type="text" name="event-start-time" value="${startTimeInForm}">
       &mdash;
-      <label class="visually-hidden" for="event-end-time-1">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateToHumanized}">
+      <label class="visually-hidden" for="event-end-time-${point.id}">To</label>
+      <input class="event__input  event__input--time" id="event-end-time-${point.id}" type="text" name="event-end-time" value="${endTimeInForm}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
-      <label class="event__label" for="event-price-1">
+      <label class="event__label" for="event-price-${point.id}">
         <span class="visually-hidden">Price</span>
         &euro; ${price}
       </label>
-      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+      <input class="event__input  event__input--price" id="event-price-${point.id}" type="text" name="event-price" value="">
     </div>
 
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -126,16 +119,16 @@ function createNewPointFormTemplate (point, offers, destination) {
 </form>`;
 }
 
-export default class NewPointFormView {
+export default class NewPointView {
 
-  constructor ({point = POINT_FORM, offers, destination}) {
+  constructor ({point = NEW_POINT_FORM, offers, destination}) {
     this.point = point;
     this.offers = offers;
     this.destination = destination;
   }
 
   getTemplate() {
-    return createNewPointFormTemplate (this.point, this.offers, this.destination);
+    return createNewPointTemplate (this.point, this.offers, this.destination);
   }
 
   getElement() {

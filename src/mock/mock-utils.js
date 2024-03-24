@@ -1,12 +1,3 @@
-import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from './const.js';
-
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
-
 //получаем случайное число из заданного диапазона
 
 const getRandomNumber = (a, b) => {
@@ -31,39 +22,6 @@ function getRandomBoolean() {
   return randomNumber >= 0.5;
 }
 
-//делаем первую букву заглавной
-
-const capitalizeFirstLetter = (string) => !string ? string : string.charAt(0).toUpperCase() + string.slice(1);
-
-//задаем формат даты
-
-const humanizeDate = (date, dateFormat) => date ? dayjs(date).format(dateFormat) : '';
-
-const formatDateTime = (inputDate) => //задаем дату в полном формате
-  inputDate ? dayjs(inputDate).format(DateFormat.FULL) : '';
-
-const formatShortDate = (inputDate) => //задаем месяцы
-  inputDate ? dayjs(inputDate).format(DateFormat.SHORT) : '';
-
-const formatTime = (inputDate) => // задаем часы/минуты
-  inputDate ? dayjs(inputDate).format(DateFormat.TIME) : '';
-
-const calcPointDuration = (dateFrom, dateTo) => {
-  const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom));
-
-  let pointDuration = 0;
-
-  if (timeDiff >= MSEC_IN_DAY) {
-    pointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
-  } else if (timeDiff >= MSEC_IN_HOUR) {
-    pointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
-  } else if (timeDiff < MSEC_IN_HOUR) {
-    pointDuration = dayjs.duration(timeDiff).format('mm[M]');
-  }
-
-  return pointDuration;
-};
-
 //создаем счетчик для генерации случайного ID
 
 const getRandomId = (min, max) => {
@@ -84,4 +42,10 @@ const getRandomId = (min, max) => {
   return getValue;
 };
 
-export {getRandomNumber, getRandomInteger, getRandomArrayElement, getRandomBoolean, capitalizeFirstLetter, humanizeDate, calcPointDuration, formatDateTime, formatShortDate, formatTime, getRandomId};
+export {
+  getRandomNumber,
+  getRandomInteger,
+  getRandomArrayElement,
+  getRandomBoolean,
+  getRandomId,
+};
