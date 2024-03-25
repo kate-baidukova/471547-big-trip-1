@@ -52,15 +52,15 @@ function createPhotosTemplate (photos) {
 function createNewPointTemplate (point, offers, destination) {
 
   const {type, dateFrom, dateTo, price} = point;
-  const {name, description, photos} = typeof destination !== 'undefined' ? destination : '';
-  const destinationName = typeof name !== 'undefined' ? name : '';
+  const {name, description, photos} = destination;
+  const destinationName = name;
   const typesList = createPointsTypeList(POINTS_TYPES, type);
 
   const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM);
   const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM);
 
   const offersTemplate = createOffersTemplate(offers);
-  const destinationTemplate = typeof destination !== 'undefined' ? (createDestinationTemplate({name, description, photos})) : '';
+  const destinationsTemplate = createDestinationTemplate({name, description, photos});
 
   return `<form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -113,7 +113,7 @@ function createNewPointTemplate (point, offers, destination) {
   <section class="event__details">
 
     ${offersTemplate}
-    ${destinationTemplate}
+    ${destinationsTemplate}
 
   </section>
 </form>`;
