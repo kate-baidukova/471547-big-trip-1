@@ -31,7 +31,7 @@ function createListSortingTemplate() {
 
 export default class ListSortingView {
   getTemplate() {
-    return createListSortingTemplate;
+    return createListSortingTemplate();
   }
 
   getElement() {
