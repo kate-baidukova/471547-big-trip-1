@@ -1,12 +1,13 @@
 import {POINTS_TYPES} from '../const.js';
 
 import {DESTINATIONS, POINTS_COUNT, OFFERS_COUNT} from '../mock/mock-const.js';
+import { DESTINATIONS_COUNT } from '../const.js';
 import {getRandomArrayElement, getRandomNumber} from '../mock/mock-utils.js';
 import {createDestination} from '../mock/mock-destination.js';
 import {createOffer} from '../mock/mock-offer.js';
 import {createPoint} from '../mock/mock-point.js';
 
-const destinationCount = getRandomNumber(1, DESTINATIONS.length);
+//const destinationsCount = getRandomNumber(1, DESTINATIONS.length);
 
 export default class MockData {
 
@@ -34,13 +35,13 @@ export default class MockData {
   }
 
   collectDestinations() {
-    return Array.from({length: destinationCount}, () => createDestination());
+    return Array.from({length: DESTINATIONS_COUNT}, () => createDestination());
   }
 
   collectOffers() {
     return POINTS_TYPES.map((type) => ({
       type,
-      offers: Array.from({length: getRandomNumber(1, getRandomNumber(0, OFFERS_COUNT))}, () => createOffer()),
+      offers: Array.from({length: getRandomNumber(1, getRandomNumber(1, OFFERS_COUNT))}, () => createOffer()),
     }));
   }
 

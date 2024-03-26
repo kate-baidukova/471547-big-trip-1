@@ -1,3 +1,17 @@
+const DESTINATIONS_COUNT = 1;
+
+const DESTINATIONS = [
+  'Krasnodar',
+  'St. Petersburg',
+  'Mariupol',
+  'Pyatigorsk',
+  'Sochi',
+  'Vyborg',
+  'Kaliningrad',
+  'Samara',
+  'Kazan',
+];
+
 const POINTS_TYPES = [
   'taxi',
   'bus',
@@ -36,4 +50,4 @@ const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
 const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
 
 
-export {POINTS_TYPES, NEW_POINT_FORM, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY};
+export {DESTINATIONS_COUNT, DESTINATIONS, POINTS_TYPES, NEW_POINT_FORM, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY};

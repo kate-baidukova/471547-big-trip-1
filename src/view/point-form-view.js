@@ -1,0 +1,187 @@
+import {createElement} from '../render.js';
+import {POINTS_TYPES, DateFormat, NEW_POINT_FORM, DESTINATIONS} from '../const.js';
+import {humanizeDate, capitalizeFirstLetter} from '../utils.js';
+
+//создаем шаблон для типов инвентов/POINTS_TYPES
+
+function createPointsTypeList(types, type) {
+  return types.map((item) => `
+  <div class="event__type-item">
+    <input id="event-type-${item.type}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.type}" ${item === type ? 'checked' : ''}>
+    <label class="event__type-label  event__type-label--${item.type}" for="event-type-${item.type}">${capitalizeFirstLetter(item)}</label>
+  </div>`).join('');
+}
+
+//создаем шаблон для офферов
+
+function createOffersTemplate(offers, type, id) {
+  return offers.map((offer) => `
+  <div class="event__offer-selector">
+    <input class="event__offer-checkbox visually-hidden" id="event-offer-${type}-${offer.id}" type="checkbox" name="event-offer-${type}" ${offers.includes(id) ? 'checked' : ''}>
+    <label class="event__offer-label" for="event-offer-${type}-${offer.id}">
+        <span class="event__offer-title">${offer.title}</span>
+          &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offer.price}</span>
+      </label>
+  </div>`).join('');
+}
+
+//создаем шаблон для списка направлений
+
+function createDestinationsList(pointDestinations, point) {
+  return pointDestinations.map((city) => `
+  <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${city.name}" list="destination-list-${point.id}">
+    <datalist id="destination-list-${point.id}">
+      <option value="${city.name}"></option>`).join('');
+}
+
+//создаем шаблон для направления
+
+function createDestinationTemplate(destination) {
+
+  const photosTemplate = createPhotosTemplate(destination.photos);
+  const descripionTemplate = createDestinationDescription(destination.description);
+
+  return `<section class="event__section  event__section--destination">
+    ${descripionTemplate}
+    ${photosTemplate}
+  </section>`;
+}
+
+//создаем шаблон для фото под направление
+
+function createPhotosTemplate(photos) {
+  return `
+  <div class="event__photos-container">
+    <div class="event__photos-tape">
+      ${photos.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join('')}
+    </div>
+  </div>`;
+}
+
+//создаем описание направления
+
+function createDestinationDescription(pointDestinations) {
+  return pointDestinations.map((item) => `
+  <h3 class="event__section-title  event__section-title--destination">${item.name}</h3>
+              <p class="event__destination-description">${item.description}</p>`);
+}
+
+//создаем шаблон поинта
+
+function createPointTemplate (point = NEW_POINT_FORM, pointOffers, pointDestinations) {
+
+  const {type, dateFrom, dateTo, price} = point;
+
+  const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
+
+  //направления
+
+  const destinationsList = createDestinationsList(DESTINATIONS, point);
+  const destinationTemplate = createDestinationTemplate(pointDestinations);
+
+  //офферы
+
+  const offersTemplate = createOffersTemplate(pointOffers); //собираем актуальные офферы под поинт
+
+  //время
+
+  const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
+  const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
+
+  return `<form class="event event--edit" action="#" method="post">
+  <header class="event__header">
+    <div class="event__type-wrapper">
+      <label class="event__type  event__type-btn" for="event-type-toggle-${point.id}">
+        <span class="visually-hidden">Choose event type</span>
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="${type}">
+      </label>
+      <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${point.id}" type="checkbox">
+
+      <div class="event__type-list">
+        <fieldset class="event__type-group">
+          <legend class="visually-hidden">Event type</legend>
+
+          ${typesList}
+
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="event__field-group  event__field-group--destination">
+      <label class="event__label  event__type-output" for="event-destination-${point.id}">
+        ${type}
+      </label>
+
+      ${destinationsList}
+
+      </datalist>
+    </div>
+
+    <div class="event__field-group  event__field-group--time">
+      <label class="visually-hidden" for="event-start-time-${point.id}">From</label>
+      <input class="event__input  event__input--time" id="event-start-time-${point.id}" type="text" name="event-start-time" value="${startTimeInForm}">
+      &mdash;
+      <label class="visually-hidden" for="event-end-time-${point.id}">To</label>
+      <input class="event__input  event__input--time" id="event-end-time-${point.id}" type="text" name="event-end-time" value="${endTimeInForm}">
+    </div>
+
+    <div class="event__field-group  event__field-group--price">
+      <label class="event__label" for="event-price-${point.id}">
+        <span class="visually-hidden">Price</span>
+        &euro;
+      </label>
+      <input class="event__input  event__input--price" id="event-price-${point.id}" type="text" name="event-price" value="${price}">
+    </div>
+
+    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+    <button class="event__reset-btn" type="reset">Delete</button>
+    <button class="event__rollup-btn" type="button">
+      <span class="visually-hidden">Open event</span>
+    </button>
+  </header>
+  <section class="event__details">
+    <section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+      <div class="event__available-offers">
+
+        ${offersTemplate}
+
+      </div>
+    </section>
+
+    ${destinationTemplate}
+
+  </section>
+</form>`;
+}
+
+export default class PointFormView {
+
+  constructor ({point = NEW_POINT_FORM, pointOffers, pointDestinations}) {
+    this.point = point;
+    this.pointOffers = pointOffers;
+    this.pointDestinations = pointDestinations;
+  }
+
+  getTemplate() {
+    return createPointTemplate ({
+      point: this.point,
+      pointDestinations: this.pointDestinations,
+      pointOffers: this.pointOffers
+    });
+  }
+
+  getElement() {
+    if (!this.element) {
+      this.element = createElement(this.getTemplate());
+    }
+
+    return this.element;
+  }
+
+  removeElement() {
+    this.element = null;
+  }
+}

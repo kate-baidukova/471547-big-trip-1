@@ -1,8 +1,6 @@
 import {RandomPrice} from './mock-const.js';
 import {getRandomNumber, getRandomBoolean} from './mock-utils.js';
 
-//const generatePointId = getRandomId(RandomId.MIN, RandomId.MAX);
-
 const createPoint = (type, destinationId, offersIds) => ({
 
   id: crypto.randomUUID(),
@@ -13,6 +11,7 @@ const createPoint = (type, destinationId, offersIds) => ({
   price: getRandomNumber(RandomPrice.MIN, RandomPrice.MAX),
   offers: offersIds,
   isFavourite: getRandomBoolean(),
+
 });
 
 export {createPoint};

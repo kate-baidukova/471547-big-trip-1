@@ -9,18 +9,6 @@ const RandomPrice = {
   MAX: 10000,
 };
 
-const DESTINATIONS = [
-  'Krasnodar',
-  'St. Petersburg',
-  'Mariupol',
-  'Pyatigorsk',
-  'Sochi',
-  'Vyborg',
-  'Kaliningrad',
-  'Samara',
-  'Kazan',
-];
-
 const OFFERS = [
   'Order Uber',
   'Add luggage',
@@ -51,7 +39,6 @@ export {
   OFFERS_COUNT,
   RandomPrice,
   PHOTOS_RANDOM_COUNT,
-  DESTINATIONS,
   OFFERS,
   DESCRIPTIONS
 };

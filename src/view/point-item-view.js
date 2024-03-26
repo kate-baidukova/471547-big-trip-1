@@ -4,7 +4,7 @@ function createPointListItem() {
   return '<li class="trip-events__item"></li>';
 }
 
-export default class PointsListItem {
+export default class PointItem {
   getTemplate () {
     return createPointListItem();
   }

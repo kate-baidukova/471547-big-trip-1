@@ -28,7 +28,7 @@ function createFiltersListTemplate() {
 
 export default class FiltersListView {
   getTemplate() {
-    return createFiltersListTemplate;
+    return createFiltersListTemplate();
   }
 
   getElement() {

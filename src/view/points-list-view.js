@@ -6,9 +6,9 @@ function createTripListTemplate() {
   `;
 }
 
-export default class TripPointsListView {
+export default class PointsListView {
   getTemplate() {
-    return createTripListTemplate;
+    return createTripListTemplate();
   }
 
   getElement() {
