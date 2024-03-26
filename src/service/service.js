@@ -1,6 +1,6 @@
 import {POINTS_TYPES} from '../const.js';
 
-import {DESTINATIONS, POINTS_COUNT, OFFERS_COUNT} from '../mock/mock-const.js';
+import {POINTS_COUNT, OFFERS_COUNT} from '../mock/mock-const.js';
 import { DESTINATIONS_COUNT } from '../const.js';
 import {getRandomArrayElement, getRandomNumber} from '../mock/mock-utils.js';
 import {createDestination} from '../mock/mock-destination.js';

@@ -64,7 +64,7 @@ function createPhotosTemplate(photos) {
 function createDestinationDescription(pointDestinations) {
   return pointDestinations.map((item) => `
   <h3 class="event__section-title  event__section-title--destination">${item.name}</h3>
-              <p class="event__destination-description">${item.description}</p>`);
+  <p class="event__destination-description">${item.description}</p>`);
 }
 
 //создаем шаблон поинта
