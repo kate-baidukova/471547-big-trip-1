@@ -1,5 +1,5 @@
 import {createElement} from '../render.js';
-import {POINTS_TYPES, DateFormat, NEW_POINT_FORM, DESTINATIONS} from '../const.js';
+import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
 import {humanizeDate, capitalizeFirstLetter} from '../utils.js';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
@@ -28,8 +28,8 @@ function createOffersTemplate(offers, type, id) {
 
 //создаем шаблон для списка направлений
 
-function createDestinationsList(pointDestinations, point) {
-  return pointDestinations.map((city) => `
+function createDestinationsList(destinations, point) {
+  return destinations.map((city) => `
   <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${city.name}" list="destination-list-${point.id}">
     <datalist id="destination-list-${point.id}">
       <option value="${city.name}"></option>`).join('');
@@ -39,11 +39,11 @@ function createDestinationsList(pointDestinations, point) {
 
 function createDestinationTemplate(destination) {
 
-  const photosTemplate = createPhotosTemplate(destination.photos);
-  const descripionTemplate = createDestinationDescription(destination.description);
+  const photosTemplate = createPhotosTemplate(destination);
+  const descriptionTemplate = createDestinationDescription(destination.description);
 
   return `<section class="event__section  event__section--destination">
-    ${descripionTemplate}
+    ${descriptionTemplate}
     ${photosTemplate}
   </section>`;
 }
@@ -61,15 +61,15 @@ function createPhotosTemplate(photos) {
 
 //создаем описание направления
 
-function createDestinationDescription(pointDestinations) {
-  return pointDestinations.map((item) => `
+function createDestinationDescription(destinations) {
+  return destinations.map((item) => `
   <h3 class="event__section-title  event__section-title--destination">${item.name}</h3>
   <p class="event__destination-description">${item.description}</p>`);
 }
 
 //создаем шаблон поинта
 
-function createPointTemplate (point = NEW_POINT_FORM, pointOffers, pointDestinations) {
+function createPointTemplate (point = NEW_POINT_FORM, pointOffers, destinations) {
 
   const {type, dateFrom, dateTo, price} = point;
 
@@ -77,8 +77,9 @@ function createPointTemplate (point = NEW_POINT_FORM, pointOffers, pointDestinat
 
   //направления
 
-  const destinationsList = createDestinationsList(DESTINATIONS, point);
-  const destinationTemplate = createDestinationTemplate(pointDestinations);
+  const destinationsList = createDestinationsList(destinations, point);
+  const pointDestination = destinations.find((city) => city.id === point.destination);
+  const destinationTemplate = createDestinationTemplate(pointDestination);
 
   //офферы
 
@@ -159,18 +160,14 @@ function createPointTemplate (point = NEW_POINT_FORM, pointOffers, pointDestinat
 
 export default class PointFormView {
 
-  constructor ({point = NEW_POINT_FORM, pointOffers, pointDestinations}) {
+  constructor ({point = NEW_POINT_FORM, pointOffers, destinations}) {
     this.point = point;
     this.pointOffers = pointOffers;
-    this.pointDestinations = pointDestinations;
+    this.pointDestination = destinations;
   }
 
   getTemplate() {
-    return createPointTemplate ({
-      point: this.point,
-      pointDestinations: this.pointDestinations,
-      pointOffers: this.pointOffers
-    });
+    return createPointTemplate (this.point, this.destinations, this.pointOffers);
   }
 
   getElement() {

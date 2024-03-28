@@ -32,7 +32,7 @@ export default class TripPresenter {
       new PointFormView({
         point: this.points[0],
         pointOffers: this.offersModel.getByType(this.points[0].type),
-        pointDestinations: this.destinationsModel.getById(this.points[0].destination),
+        pointDestination: this.destinationsModel.getById(this.points[0].destination),
       }),
       this.pointItemComponent.getElement()
     ); //определяем форму в первый li
