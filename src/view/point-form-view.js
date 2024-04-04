@@ -39,8 +39,10 @@ function createDestinationsList(destinations, point) {
 
 function createDestinationTemplate(destination) {
 
-  const photosTemplate = createPhotosTemplate(destination);
-  const descriptionTemplate = createDestinationDescription(destination.description);
+  const {photos, description} = destination;
+
+  const photosTemplate = createPhotosTemplate(photos);
+  const descriptionTemplate = createDescriptionTemplate(description);
 
   return `<section class="event__section  event__section--destination">
     ${descriptionTemplate}
@@ -61,10 +63,10 @@ function createPhotosTemplate(photos) {
 
 //создаем описание направления
 
-function createDestinationDescription(destinations) {
-  return destinations.map((item) => `
-  <h3 class="event__section-title  event__section-title--destination">${item.name}</h3>
-  <p class="event__destination-description">${item.description}</p>`);
+function createDescriptionTemplate(destination) {
+  return `
+  <h3 class="event__section-title  event__section-title--destination">${destination.name}</h3>
+  <p class="event__destination-description">${destination.description}</p>`;
 }
 
 //создаем шаблон поинта
@@ -77,9 +79,11 @@ function createPointTemplate (point = NEW_POINT_FORM, pointOffers, destinations)
 
   //направления
 
-  const destinationsList = createDestinationsList(destinations, point);
-  const pointDestination = destinations.find((city) => city.id === point.destination);
-  const destinationTemplate = createDestinationTemplate(pointDestination);
+  const destinationsList = createDestinationsList(destinations, point); //выбор направления в меню
+
+  const pointDestination = destinations.find((city) => city.id === point.destination); // отбираем направление для поинта
+
+  const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
 
   //офферы
 
