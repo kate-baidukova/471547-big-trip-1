@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Ekaterina Baidukova](https://up.htmlacademy.ru/ecmascript-individual/1/user/471547).
-* Наставник: `Олег Соловьев`.
+* Наставник: `Алексей Хабиров`.
 
 ---
 
