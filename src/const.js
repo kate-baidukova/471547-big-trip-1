@@ -1,4 +1,4 @@
-const DESTINATIONS_COUNT = 1;
+const DESTINATIONS_COUNT = 15;
 
 const DESTINATIONS = [
   'Krasnodar',
@@ -10,6 +10,15 @@ const DESTINATIONS = [
   'Kaliningrad',
   'Samara',
   'Kazan',
+  'Melburn',
+  'Oslo',
+  'Hallstatt',
+  'Cassis',
+  'Danang',
+  'Tokyo',
+  'Chengdu',
+  'Samui',
+  'Mahe',
 ];
 
 const POINTS_TYPES = [

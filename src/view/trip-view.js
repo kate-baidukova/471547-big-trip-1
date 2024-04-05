@@ -1,9 +1,7 @@
 import {createElement} from '../render.js';
 import {humanizeDate, calcPointDuration} from '../utils.js';
 
-
 function createOffersListTemplate(pointOffers) {
-
   return (
     `<ul class="event__selected-offers">
       ${pointOffers.map((offer) => (
@@ -17,9 +15,7 @@ function createOffersListTemplate(pointOffers) {
   );
 }
 
-
 function createTripListTemplate ({point, pointDestination, pointOffers}) {
-
   const {
     price, dateFrom, dateTo, isFavorite, type
   } = point;
@@ -75,14 +71,12 @@ export default class TripView {
     });
   }
 
-
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
     return this.element;
   }
-
 
   removeElement() {
     this.element = null;

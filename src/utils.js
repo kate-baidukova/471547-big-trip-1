@@ -1,5 +1,4 @@
 import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from './const.js';
-
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';

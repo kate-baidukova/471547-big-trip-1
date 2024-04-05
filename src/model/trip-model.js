@@ -1,6 +1,6 @@
 export default class TripModel {
 
-  constructor (service) {
+  constructor(service) {
     this.service = service;
     this.points = this.service.getPoints();
   }

@@ -42,9 +42,7 @@ function createDestinationsList(destinations, point) {
 //создаем шаблон для направления
 
 function createDestinationTemplate(destination) {
-
   const {photos, description} = destination;
-
   const photosTemplate = createPhotosTemplate(photos);
   const descriptionTemplate = createDescriptionTemplate(description);
 
@@ -172,7 +170,6 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, destinations) 
 }
 
 export default class PointFormView {
-
   constructor({point = NEW_POINT_FORM, pointOffers, destinations}) {
     this.point = point;
     this.pointOffers = pointOffers;

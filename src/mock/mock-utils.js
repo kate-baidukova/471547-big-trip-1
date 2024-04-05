@@ -22,26 +22,6 @@ function getRandomBoolean() {
   return randomNumber >= 0.5;
 }
 
-//создаем счетчик для генерации случайного ID
-
-/*const getRandomId = (min, max) => {
-  const previousValues = [];
-
-  const getValue = () => {
-    let currentValue = getRandomNumber(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomNumber(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-
-  return getValue;
-};*/
-
 export {
   getRandomNumber,
   getRandomInteger,

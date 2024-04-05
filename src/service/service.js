@@ -6,13 +6,11 @@ import {createDestination} from '../mock/mock-destination.js';
 import {createOffer} from '../mock/mock-offer.js';
 import {createPoint} from '../mock/mock-point.js';
 export default class MockData {
-
   destinations = [];
   offers = [];
   points = [];
 
   constructor() {
-
     this.destinations = this.collectDestinations();
     this.offers = this.collectOffers();
     this.points = this.collectPoints();
@@ -43,7 +41,6 @@ export default class MockData {
 
   collectPoints() {
     return Array.from({length: POINTS_COUNT}, () => {
-
       const type = getRandomArrayElement(POINTS_TYPES);
       const destinationId = getRandomArrayElement(this.destinations).id;
       const hasOffers = getRandomNumber(0, 1);

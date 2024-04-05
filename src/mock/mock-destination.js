@@ -3,7 +3,6 @@ import {DESTINATIONS} from '../const.js';
 import {getRandomArrayElement, getRandomInteger, getRandomNumber} from './mock-utils.js';
 
 function createDestination() {
-
   const city = getRandomArrayElement(DESTINATIONS);
 
   const makeDescription = () => Array.from(
