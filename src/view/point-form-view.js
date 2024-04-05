@@ -85,7 +85,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
 
   const destinationsList = createDestinationsList(destinations); //выбор направления в меню
   const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
-console.log(destinationTemplate)
+
   //офферы
 
   const offersTemplate = createOffersTemplate(pointOffers); //собираем актуальные офферы под поинт

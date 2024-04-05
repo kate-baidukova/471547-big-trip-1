@@ -1,5 +1,6 @@
 import {createElement} from '../render.js';
 import {humanizeDate, calcPointDuration} from '../utils.js';
+import {DateFormat} from '../const.js';
 
 function createOffersListTemplate(pointOffers) {
   return (
@@ -20,18 +21,22 @@ function createTripListTemplate ({point, pointOffers, pointDestination}) {
     price, dateFrom, dateTo, isFavorite, type
   } = point;
 
+  const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
+  const startTime = humanizeDate(dateFrom, DateFormat.TIME);
+  const endTime = humanizeDate(dateTo, DateFormat.TIME);
+
   return (`
     <div class="event">
-        <time class="event__date" datetime="${humanizeDate(dateFrom)}">${humanizeDate(dateFrom)}</time>
+        <time class="event__date" datetime="${startDateShort}">${startDateShort}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${pointDestination.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">${humanizeDate(dateFrom)}</time>
+            <time class="event__start-time" datetime="2019-03-18T10:30">${startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">${humanizeDate(dateTo)}</time>
+            <time class="event__end-time" datetime="2019-03-18T11:00">${endTime}</time>
           </p>
           <p class="event__duration">${calcPointDuration(dateFrom, dateTo)}</p>
         </div>

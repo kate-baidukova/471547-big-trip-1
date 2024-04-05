@@ -40,5 +40,5 @@ export {
   RandomPrice,
   PHOTOS_RANDOM_COUNT,
   OFFERS,
-  DESCRIPTIONS
+  DESCRIPTIONS,
 };

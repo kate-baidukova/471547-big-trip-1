@@ -1,12 +1,13 @@
 import {RandomPrice} from './mock-const.js';
 import {getRandomNumber, getRandomBoolean} from './mock-utils.js';
+import {getRandomDate} from './mock-utils.js';
 
 const createPoint = (type, destinationId, offersIds) => ({
   id: crypto.randomUUID(),
   type,
   destination: destinationId,
-  dateFrom: new Date('2024-02-29, 21:00'),
-  dateTo: new Date('2024-03-03, 21:00'),
+  dateFrom: getRandomDate(new Date(), new Date(2025, 0, 1)),
+  dateTo:  getRandomDate(new Date(2025, 0, 1), new Date(2029, 0, 1)),
   price: getRandomNumber(RandomPrice.MIN, RandomPrice.MAX),
   offers: offersIds,
   isFavourite: getRandomBoolean(),

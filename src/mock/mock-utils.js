@@ -1,3 +1,10 @@
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
+
 //получаем случайное число из заданного диапазона
 
 const getRandomNumber = (a, b) => {
@@ -22,9 +29,15 @@ function getRandomBoolean() {
   return randomNumber >= 0.5;
 }
 
+//получаем случайную дату
+
+const getRandomDate = (start, end) => new Date(start.getTime()
+  + Math.random() * (end.getTime() - start.getTime()));
+
 export {
   getRandomNumber,
   getRandomInteger,
   getRandomArrayElement,
   getRandomBoolean,
+  getRandomDate,
 };
