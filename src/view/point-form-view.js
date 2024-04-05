@@ -173,7 +173,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, destinations) 
 
 export default class PointFormView {
 
-  constructor ({point = NEW_POINT_FORM, pointOffers, destinations}) {
+  constructor({point = NEW_POINT_FORM, pointOffers, destinations}) {
     this.point = point;
     this.pointOffers = pointOffers;
     this.pointDestination = destinations;

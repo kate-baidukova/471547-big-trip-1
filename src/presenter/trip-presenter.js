@@ -12,7 +12,7 @@ export default class TripPresenter {
   pointsListComponent = new PointsListView();//ul
   pointItemComponent = new PointItem();//li, без наполнения
 
-  constructor ({mainContentContainer, destinationsModel, offersModel, tripModel}) {
+  constructor({mainContentContainer, destinationsModel, offersModel, tripModel}) {
 
     this.mainContentContainer = mainContentContainer;
     this.destinationsModel = destinationsModel;

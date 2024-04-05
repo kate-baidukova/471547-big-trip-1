@@ -7,7 +7,7 @@ function createPointListItem() {
 }
 
 export default class PointItem {
-  getTemplate () {
+  getTemplate() {
     return createPointListItem();
   }
 
