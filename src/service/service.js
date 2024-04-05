@@ -49,7 +49,7 @@ export default class MockData {
     return Array.from({length: POINTS_COUNT}, () => {
 
       const type = getRandomArrayElement(POINTS_TYPES);
-      const destination = getRandomArrayElement(this.destinations);
+      const destinationId = getRandomArrayElement(this.destinations).id;
       const hasOffers = getRandomNumber(0, 1);
 
       const offersByType = this.offers
@@ -61,7 +61,7 @@ export default class MockData {
           .map((offer) => offer.id)
         : [];
 
-      return createPoint(type, offersIds, destination.id);
+      return createPoint(type, offersIds, destinationId);
     });
   }
 }
