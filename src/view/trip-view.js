@@ -15,7 +15,7 @@ function createOffersListTemplate(pointOffers) {
   );
 }
 
-function createTripListTemplate ({point, pointDestination, pointOffers}) {
+function createTripListTemplate ({point, pointOffers, pointDestination}) {
   const {
     price, dateFrom, dateTo, isFavorite, type
   } = point;
@@ -57,17 +57,17 @@ function createTripListTemplate ({point, pointDestination, pointOffers}) {
 }
 
 export default class TripView {
-  constructor({ point, pointDestination, pointOffers }) {
+  constructor({point, pointOffers, pointDestination}) {
     this.point = point;
-    this.pointDestination = pointDestination;
     this.pointOffers = pointOffers;
+    this.pointDestination = pointDestination;
   }
 
   getTemplate() {
     return createTripListTemplate({
       point: this.point,
-      pointDestination: this.pointDestination,
-      pointOffers: this.pointOffers
+      pointOffers: this.pointOffers,
+      pointDestination: this.pointDestination
     });
   }
 

@@ -54,7 +54,7 @@ export default class MockData {
           .map((offer) => offer.id)
         : [];
 
-      return createPoint(type, offersIds, destinationId);
+      return createPoint(type, destinationId, offersIds);
     });
   }
 }

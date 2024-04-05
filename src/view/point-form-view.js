@@ -30,21 +30,19 @@ function createOffersTemplate(offers, type, id) {
 
 //создаем шаблон для списка направлений
 
-function createDestinationsList(destinations, point) {
-  return destinations.map((city) => (`
-    <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${city.name}" list="destination-list-${point.id}">
-    <datalist id="destination-list-${point.id}">
-      <option value="${city.name}"></option>
-    </datalist>
-  `)).join('');
+function createDestinationsList(destinations) {
+
+  return (`
+    ${destinations.map((city) => `<option value="${city.name}"></option>`).join('')}
+  `);
 }
 
 //создаем шаблон для направления
 
-function createDestinationTemplate(destination) {
-  const {photos, description} = destination;
+function createDestinationTemplate(pointDestination) {
+  const {photos} = pointDestination;
   const photosTemplate = createPhotosTemplate(photos);
-  const descriptionTemplate = createDescriptionTemplate(description);
+  const descriptionTemplate = createDescriptionTemplate(pointDestination);
 
   return (`
     <section class="event__section  event__section--destination">
@@ -68,16 +66,16 @@ function createPhotosTemplate(photos) {
 
 //создаем описание направления
 
-function createDescriptionTemplate(destination) {
+function createDescriptionTemplate(pointDestination) {
   return (`
-    <h3 class="event__section-title  event__section-title--destination">${destination.name}</h3>
-    <p class="event__destination-description">${destination.description}</p>
+    <h3 class="event__section-title  event__section-title--destination">${pointDestination.name}</h3>
+    <p class="event__destination-description">${pointDestination.description}</p>
   `);
 }
 
 //создаем шаблон поинта
 
-function createPointTemplate(point = NEW_POINT_FORM, pointOffers, destinations) {
+function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
 
   const {type, dateFrom, dateTo, price} = point;
 
@@ -85,12 +83,9 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, destinations) 
 
   //направления
 
-  const destinationsList = createDestinationsList(destinations, point); //выбор направления в меню
-
-  const pointDestination = destinations.find((city) => city.id === point.destination); // отбираем направление для поинта
-
+  const destinationsList = createDestinationsList(destinations); //выбор направления в меню
   const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
-
+console.log(destinationTemplate)
   //офферы
 
   const offersTemplate = createOffersTemplate(pointOffers); //собираем актуальные офферы под поинт
@@ -125,8 +120,10 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, destinations) 
             ${type}
           </label>
 
+          <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-${point.id}">
+          <datalist id="destination-list-${point.id}">
           ${destinationsList}
-
+          </datalist>
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -170,14 +167,15 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, destinations) 
 }
 
 export default class PointFormView {
-  constructor({point = NEW_POINT_FORM, pointOffers, destinations}) {
+  constructor({point = NEW_POINT_FORM, pointOffers, pointDestination, destinations}) {
     this.point = point;
     this.pointOffers = pointOffers;
-    this.pointDestination = destinations;
+    this.pointDestination = pointDestination;
+    this.destinations = destinations;
   }
 
   getTemplate() {
-    return createPointTemplate (this.point, this.destinations, this.pointOffers);
+    return createPointTemplate (this.point, this.pointOffers, this.pointDestination, this.destinations);
   }
 
   getElement() {

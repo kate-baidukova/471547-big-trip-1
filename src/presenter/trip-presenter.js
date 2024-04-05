@@ -29,6 +29,7 @@ export default class TripPresenter {
         point: this.points[0],
         pointOffers: this.offersModel.getByType(this.points[0].type),
         pointDestination: this.destinationsModel.getById(this.points[0].destination),
+        destinations: this.destinationsModel.get(),
       }),
       this.pointItemComponent.getElement()
     ); //определяем форму в первый li
@@ -37,8 +38,8 @@ export default class TripPresenter {
       render(
         new TripView({
           point,
+          pointOffers: this.offersModel.getByType(point.type),
           pointDestination: this.destinationsModel.getById(point.destination),
-          pointOffers: this.offersModel.getByType(point.type)
         }),
         this.pointsListComponent.getElement()
       ); //рендерим поинт (закрытая карточка) в li
