@@ -1,7 +1,9 @@
 import {createElement} from '../render.js';
 
 function createPointListItem() {
-  return '<li class="trip-events__item"></li>';
+  return (`
+    <li class="trip-events__item"></li>
+  `);
 }
 
 export default class PointItem {

@@ -1,14 +1,10 @@
 import {POINTS_TYPES} from '../const.js';
-
 import {POINTS_COUNT, OFFERS_COUNT} from '../mock/mock-const.js';
-import { DESTINATIONS_COUNT } from '../const.js';
+import {DESTINATIONS_COUNT} from '../const.js';
 import {getRandomArrayElement, getRandomNumber} from '../mock/mock-utils.js';
 import {createDestination} from '../mock/mock-destination.js';
 import {createOffer} from '../mock/mock-offer.js';
 import {createPoint} from '../mock/mock-point.js';
-
-//const destinationsCount = getRandomNumber(1, DESTINATIONS.length);
-
 export default class MockData {
 
   destinations = [];
