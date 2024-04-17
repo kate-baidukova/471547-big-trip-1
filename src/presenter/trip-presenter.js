@@ -22,7 +22,7 @@ export default class TripPresenter {
   init() {
     render(this.sortingComponent, this.mainContentContainer, RenderPosition.BEFOREEND); //сортировка
     render(this.pointsListComponent, this.mainContentContainer); //список поинтов определяем в общ. контейнер
-    render(this.pointItemComponent, this.pointsListComponent.getElement()); //вставляем li в список поинтов
+    render(this.pointItemComponent, this.pointsListComponent.element); //вставляем li в список поинтов
 
     render(
       new PointFormView({
@@ -31,7 +31,7 @@ export default class TripPresenter {
         pointDestination: this.destinationsModel.getById(this.points[0].destination),
         destinations: this.destinationsModel.get(),
       }),
-      this.pointItemComponent.getElement()
+      this.pointItemComponent.element
     ); //определяем форму в первый li
 
     this.points.forEach((point) => {
@@ -41,7 +41,7 @@ export default class TripPresenter {
           pointOffers: this.offersModel.getByType(point.type),
           pointDestination: this.destinationsModel.getById(point.destination),
         }),
-        this.pointsListComponent.getElement()
+        this.pointsListComponent.element
       ); //рендерим поинт (закрытая карточка) в li
     });
   }
