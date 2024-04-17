@@ -1,4 +1,4 @@
-import {render, RenderPosition} from '../render.js';
+import {render, RenderPosition} from '../framework/render.js';
 import PointsListView from '../view/points-list-view.js';
 import PointFormView from '../view/point-form-view.js';
 import TripView from '../view/trip-view.js';
