@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import {createElement} from '../framework/render.js';
 import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
 import {humanizeDate, capitalizeFirstLetter} from '../utils.js';
 

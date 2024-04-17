@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import {createElement} from '../framework/render.js';
 import {humanizeDate, calcPointDuration} from '../utils.js';
 import {DateFormat} from '../const.js';
 
