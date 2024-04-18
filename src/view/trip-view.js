@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeDate, calcPointDuration} from '../utils.js';
 import {DateFormat} from '../const.js';
 
@@ -61,29 +61,32 @@ function createTripListTemplate ({point, pointOffers, pointDestination}) {
   `);
 }
 
-export default class TripView {
-  constructor({point, pointOffers, pointDestination}) {
-    this.point = point;
-    this.pointOffers = pointOffers;
-    this.pointDestination = pointDestination;
+export default class TripView extends AbstractView {
+  #point = null;
+  #pointOffers = null;
+  #pointDestination = null;
+  #handleEventClick = null;
+
+  constructor({point, pointOffers, pointDestination, onEditClick}) {
+    super();
+    this.#point = point;
+    this.#pointOffers = pointOffers;
+    this.#pointDestination = pointDestination;
+    this.#handleEventClick = onEditClick;
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   }
 
-  getTemplate() {
+  get template() {
     return createTripListTemplate({
-      point: this.point,
-      pointOffers: this.pointOffers,
-      pointDestination: this.pointDestination
+      point: this.#point,
+      pointOffers: this.#pointOffers,
+      pointDestination: this.#pointDestination
     });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #editClickHandler = (event) => {
+    event.preventDefault();
+    this.#handleEventClick();
+  };
 }
