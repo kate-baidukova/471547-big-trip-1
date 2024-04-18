@@ -66,7 +66,7 @@ export default class TripPresenter {
       }
     });
 
-    function ifEscKeyDownHandler (evt) {
+    function ifEscKeyDownHandler(evt) {
       if (evt.key === 'Escape') {
         evt.preventDefault();
         replacePointToForm();
