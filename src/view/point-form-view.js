@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
-import {humanizeDate, capitalizeFirstLetter} from '../utils.js';
+import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 

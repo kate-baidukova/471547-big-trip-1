@@ -33,6 +33,13 @@ const POINTS_TYPES = [
   'restaurant',
 ];
 
+const FiltersTypes = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PRESENT: 'Present',
+  PAST: 'Past',
+};
+
 const NEW_POINT_FORM = {
   id: 1,
   type: 'Bus',
@@ -50,13 +57,14 @@ const DateFormat = {
   TIME: 'HH:mm',
 };
 
-const MSEC_IN_SEC = 1000;
-const SEC_IN_MIN = 60;
-const MIN_IN_HOUR = 60;
-const HOUR_IN_DAY = 24;
+const Timing = {
+  MSEC_IN_SEC: 1000,
+  SEC_IN_MIN: 60,
+  MIN_IN_HOUR: 60,
+  HOUR_IN_DAY: 24,
+};
 
-const MSEC_IN_HOUR = MIN_IN_HOUR * SEC_IN_MIN * MSEC_IN_SEC;
-const MSEC_IN_DAY = HOUR_IN_DAY * MSEC_IN_HOUR;
+const MSEC_IN_HOUR = Timing.MIN_IN_HOUR * Timing.SEC_IN_MIN * Timing.MSEC_IN_SEC;
+const MSEC_IN_DAY = Timing.HOUR_IN_DAY * MSEC_IN_HOUR;
 
-
-export {DESTINATIONS_COUNT, DESTINATIONS, POINTS_TYPES, NEW_POINT_FORM, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY};
+export {DESTINATIONS_COUNT, DESTINATIONS, POINTS_TYPES, FiltersTypes, NEW_POINT_FORM, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY};

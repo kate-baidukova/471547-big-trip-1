@@ -14,14 +14,14 @@ const destinationsModel = new DestinationsModel(mockData);
 const offersModel = new OffersModel(mockData);
 const tripModel = new TripModel(mockData);
 
-const mainElement = document.querySelector('.page-body');
+//const mainElement = document.querySelector('.page-body');
 const mainContentElement = document.querySelector('.trip-main');
 const eventsContainerElement = document.querySelector('.trip-events');
-const tripControlsElement = mainElement.querySelector('.trip-controls__filters');
+//const tripControlsElement = mainElement.querySelector('.trip-controls__filters');
 
 //header
 const headerInfoPresenter = new HeaderInfoPresenter ({headContainer: mainContentElement});
-const headerFilterPresenter = new HeaderFilterPresenter ({headContainer: tripControlsElement});
+const headerFilterPresenter = new HeaderFilterPresenter ({tripModel});
 
 //main
 const mainPresenter = new TripPresenter ({
