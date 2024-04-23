@@ -1,14 +1,23 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
-import {humanizeDate, capitalizeFirstLetter} from '../utils.js';
+import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
 function createPointsTypeList(types, type) {
   return types.map((item) => (`
     <div class="event__type-item">
-      <input id="event-type-${item.type}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.type}" ${item === type ? 'checked' : ''}>
-      <label class="event__type-label  event__type-label--${item.type}" for="event-type-${item.type}">${capitalizeFirstLetter(item)}</label>
+      <input
+        id="event-type-${item.type}"
+        class="event__type-input  visually-hidden"
+        type="radio"
+        name="event-type"
+        value="${item.type}"
+        ${item === type ? 'checked' : ''}>
+      <label
+        class="event__type-label  event__type-label--${item.type}"
+        for="event-type-${item.type}">${capitalizeFirstLetter(item)}
+      </label>
     </div>
   `)).join('');
 }
@@ -18,7 +27,11 @@ function createPointsTypeList(types, type) {
 function createOffersTemplate(offers, type, id) {
   return offers.map((offer) => (`
     <div class="event__offer-selector">
-      <input class="event__offer-checkbox visually-hidden" id="event-offer-${type}-${offer.id}" type="checkbox" name="event-offer-${type}" ${offers.includes(id) ? 'checked' : ''}>
+      <input
+        class="event__offer-checkbox visually-hidden"
+        id="event-offer-${type}-${offer.id}"
+        type="checkbox"
+        name="event-offer-${type}" ${offers.includes(id) ? 'checked' : ''}>
       <label class="event__offer-label" for="event-offer-${type}-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
