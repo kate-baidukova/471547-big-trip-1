@@ -2,9 +2,11 @@ import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../const.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
+dayjs.extend(isBetween);
 
 //задаем формат даты
 
@@ -37,6 +39,14 @@ const calcPointDuration = (dateFrom, dateTo) => {
   return pointDuration;
 };
 
+//определяем актуальность события
+
+const isPastDate = (date) => dayjs(date).isBefore(dayjs());
+
+const isPresentDate = (dateFrom, dateTo) => dayjs().isBetween(dateFrom, dateTo, 'day');
+
+const isFutureDate = (date) => dayjs(date).isAfter(dayjs());
+
 //делаем первую букву заглавной
 
 const capitalizeFirstLetter = (string) => !string ? string : string.charAt(0).toUpperCase() + string.slice(1);
@@ -47,5 +57,8 @@ export {
   formatShortDate,
   formatTime,
   calcPointDuration,
+  isPastDate,
+  isPresentDate,
+  isFutureDate,
   capitalizeFirstLetter,
 };

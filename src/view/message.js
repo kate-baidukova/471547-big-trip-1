@@ -6,7 +6,7 @@ function createNoEventsMessage() {
   `);
 }
 
-export default class NoEventsMessage extends AbstractView {
+export default class MessageView extends AbstractView {
   get template() {
     return createNoEventsMessage();
   }

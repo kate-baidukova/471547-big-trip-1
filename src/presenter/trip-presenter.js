@@ -4,7 +4,7 @@ import PointFormView from '../view/point-form-view.js';
 import TripView from '../view/trip-view.js';
 import PointItem from '../view/point-item-view.js';
 import SortingView from '../view/sorting-view.js';
-import NoEventsMessage from '../view/no-events.js';
+import MessageView from '../view/message.js';
 
 export default class TripPresenter {
   #mainContentContainer = null;
@@ -14,7 +14,7 @@ export default class TripPresenter {
   #sortingComponent = new SortingView();//сортировка
   #pointsListComponent = new PointsListView();//ul
   #pointItemComponent = new PointItem();//li, без наполнения
-  #noEventsComponent = new NoEventsMessage();
+  #messageViewComponent = new MessageView();
 
 
   #points = [];
@@ -37,8 +37,8 @@ export default class TripPresenter {
 
   #renderPoints() {
 
-    if (this.#points.length < 1) {
-      render(this.#noEventsComponent, this.#mainContentContainer); //вывод сообщения, если нет поинтов
+    if (this.#points.length === 0) {
+      render(this.#messageViewComponent, this.#mainContentContainer); //вывод сообщения, если нет поинтов
       return;
     }
 
