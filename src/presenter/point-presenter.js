@@ -24,6 +24,7 @@ export default class PointPresenter {
 
   init(point) {
     this.#point = point;
+
     const prevPointComponent = this.#pointComponent;
     const prevEditPointComponent = this.#editPointComponent;
 
@@ -111,4 +112,3 @@ export default class PointPresenter {
     this.#onDataChange({...this.#point, isFavourite: !this.#point.isFavourite});
   };
 }
-
