@@ -1,6 +1,6 @@
 import HeaderInfoPresenter from './presenter/header-info-presenter.js';
 import HeaderFilterPresenter from './presenter/header-filter-presenter.js';
-import TripPresenter from './presenter/trip-presenter.js';
+import MainPresenter from './presenter/main-presenter.js';
 
 import MockData from './service/service.js';
 
@@ -24,7 +24,7 @@ const headerInfoPresenter = new HeaderInfoPresenter ({headContainer: mainContent
 const headerFilterPresenter = new HeaderFilterPresenter ({tripModel});
 
 //main
-const mainPresenter = new TripPresenter ({
+const mainPresenter = new MainPresenter ({
   mainContentContainer: eventsContainerElement,
   destinationsModel,
   offersModel,
