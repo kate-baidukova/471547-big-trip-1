@@ -179,7 +179,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
   `);
 }
 
-export default class PointFormView extends AbstractView {
+export default class PointFormEditView extends AbstractView {
   #point = null;
   #pointOffers = null;
   #pointDestination = null;

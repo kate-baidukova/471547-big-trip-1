@@ -1,96 +1,36 @@
-import {render, RenderPosition, replace} from '../framework/render.js';
-import PointsListView from '../view/points-list-view.js';
-import PointFormView from '../view/point-form-view.js';
-import TripView from '../view/trip-view.js';
-import PointItem from '../view/point-item-view.js';
-import SortingView from '../view/sorting-view.js';
-import MessageView from '../view/message.js';
+import HeaderInfoPresenter from './header-info-presenter.js';
+import HeaderFilterPresenter from './header-filter-presenter.js';
+import PointsPresenter from '../presenter/points-presenter.js';
+import MockData from '../service/service.js';
+import DestinationsModel from '../model/destinations-model.js';
+import OffersModel from '../model/offers-model.js';
+import TripModel from '../model/trip-model.js';
 
-export default class TripPresenter {
-  #mainContentContainer = null;
-  #destinationsModel = null;
-  #offersModel = null;
+const mainContentElement = document.querySelector('.trip-main');
+const eventsContainerElement = document.querySelector('.trip-events');
 
-  #sortingComponent = new SortingView();//сортировка
-  #pointsListComponent = new PointsListView();//ul
-  #pointItemComponent = new PointItem();//li, без наполнения
-  #messageViewComponent = new MessageView();
+const mockData = new MockData();
 
+const destinationsModel = new DestinationsModel(mockData);
+const offersModel = new OffersModel(mockData);
+const tripModel = new TripModel(mockData);
 
-  #points = [];
+//header
+const headerInfoPresenter = new HeaderInfoPresenter ({headContainer: mainContentElement});
+const headerFilterPresenter = new HeaderFilterPresenter ({tripModel});
 
-  constructor({mainContentContainer, destinationsModel, offersModel, tripModel}) {
-    this.#mainContentContainer = mainContentContainer;
-    this.#destinationsModel = destinationsModel;
-    this.#offersModel = offersModel;
+//экземпляр класса для поинтов маршрута
+const pointsPresenter = new PointsPresenter ({
+  eventsContainerElement: eventsContainerElement,
+  destinationsModel,
+  tripModel,
+  offersModel,
+});
 
-    this.#points = [...tripModel.get()];
-  }
-
+export default class MainPresenter {
   init() {
-    render(this.#sortingComponent, this.#mainContentContainer, RenderPosition.BEFOREEND); //сортировка
-    render(this.#pointsListComponent, this.#mainContentContainer); //список поинтов определяем в общ. контейнер
-    render(this.#pointItemComponent, this.#pointsListComponent.element); //вставляем li в список поинтов
-
-    this.#renderPoints(this.#points);
-  }
-
-  #renderPoints() {
-
-    if (this.#points.length === 0) {
-      render(this.#messageViewComponent, this.#mainContentContainer); //вывод сообщения, если нет поинтов
-      return;
-    }
-
-    this.#points.forEach((point) => {
-      this.#renderPoint(point);
-    });
-  }
-
-  #renderPoint(point) {
-    const tripView = new TripView({
-      point,
-      pointOffers: this.#offersModel.getByType(point.type),
-      pointDestination: this.#destinationsModel.getById(point.destination),
-
-      onEditClick: () => {
-        replaceFormToPoint();
-        document.addEventListener('keydown', ifEscKeyDownHandler);
-      }
-    });
-
-    const editPoint = new PointFormView({
-      point: this.#points[0],
-      pointOffers: this.#offersModel.getByType(this.#points[0].type),
-      pointDestination: this.#destinationsModel.getById(this.#points[0].destination),
-      destinations: this.#destinationsModel.get(),
-
-      onFormSubmit: () => {
-        replacePointToForm();
-        document.removeEventListener('keydown', ifEscKeyDownHandler);
-      },
-
-      onCloseEditFormButton: () => {
-        replacePointToForm();
-      }
-    });
-
-    function ifEscKeyDownHandler(evt) {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replacePointToForm();
-        document.removeEventListener('keydown', ifEscKeyDownHandler);
-      }
-    }
-
-    function replaceFormToPoint() {
-      replace(editPoint, tripView);
-    }
-
-    function replacePointToForm() {
-      replace(tripView, editPoint);
-    }
-
-    render(tripView, this.#pointItemComponent.element);
+    headerInfoPresenter.init();
+    headerFilterPresenter.init();
+    pointsPresenter.init();
   }
 }
