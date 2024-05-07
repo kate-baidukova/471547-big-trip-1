@@ -1,6 +1,6 @@
 import HeaderInfoPresenter from './header-info-presenter.js';
 import HeaderFilterPresenter from './header-filter-presenter.js';
-import PointsPresenter from '../presenter/points-presenter.js';
+import PointsPresenter from './points-presenter.js';
 import MockData from '../service/service.js';
 import DestinationsModel from '../model/destinations-model.js';
 import OffersModel from '../model/offers-model.js';

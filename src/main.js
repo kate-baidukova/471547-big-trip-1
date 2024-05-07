@@ -1,4 +1,4 @@
-import MainPresenter from './presenter/main-presenter.js';
+import MainPresenter from './presenter/app-presenter.js';
 
 const mainPresenter = new MainPresenter();
 
