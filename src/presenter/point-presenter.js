@@ -1,6 +1,6 @@
 import {render, replace, remove} from '../framework/render.js';
 import {Mode} from '../const.js';
-import PointFormEditView from '../view/point-form-view.js';
+import PointFormEditView from '../view/point-form-edit-view.js';
 import PointView from '../view/point-view.js';
 
 export default class PointPresenter {
