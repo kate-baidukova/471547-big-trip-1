@@ -24,14 +24,14 @@ function createPointsTypeList(types, type) {
 
 //создаем шаблон для офферов
 
-function createOffersTemplate(offers, type, id) {
+function createOffersTemplate(offers, type) {
   return offers.map((offer) => (`
     <div class="event__offer-selector">
       <input
         class="event__offer-checkbox visually-hidden"
         id="event-offer-${type}-${offer.id}"
         type="checkbox"
-        name="event-offer-${type}" ${offers.includes(id) ? 'checked' : ''}>
+        name="event-offer-${type}" ${offer.type === type ? 'checked' : ''}>
       <label class="event__offer-label" for="event-offer-${type}-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
