@@ -2,23 +2,23 @@ import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeDate, calcPointDuration} from '../utils/utils.js';
 import {DateFormat} from '../const.js';
 
-function createOffersListTemplate(pointOffers) {
+function createOffersListTemplate(offers, pointOffers) {
   return (
     `<ul class="event__selected-offers">
-      ${pointOffers.map((offer) => (
+      ${pointOffers.map((item) => offers.includes(item.id) ? (
       `<li class="event__offer">
-        <span class="event__offer-title">${offer.title}</span>
+        <span class="event__offer-title">${item.title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offer.price}</span>
-      </li>`))
-      .join('')}
+        <span class="event__offer-price">${item.price}</span>
+      </li>`)
+      : '').join('')}
     </ul>`
   );
 }
 
 function createTripListTemplate ({point, pointOffers, pointDestination}) {
   const {
-    price, dateFrom, dateTo, isFavourite, type
+    price, dateFrom, dateTo, isFavourite, type, offers
   } = point;
 
   const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
@@ -46,7 +46,7 @@ function createTripListTemplate ({point, pointOffers, pointDestination}) {
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-          ${createOffersListTemplate(pointOffers)}
+          ${createOffersListTemplate(offers, pointOffers)}
           </ul>
 
           <button class="event__favorite-btn ${isFavourite ? 'event__favorite-btn--active"' : ''} type="button">
