@@ -24,18 +24,18 @@ function createPointsTypeList(types, type) {
 
 //создаем шаблон для офферов
 
-function createOffersTemplate(offers, type, id) {
-  return offers.map((offer) => (`
+function createOffersTemplate(offers, pointOffers) {
+  return pointOffers.map((item) => (`
     <div class="event__offer-selector">
       <input
         class="event__offer-checkbox visually-hidden"
-        id="event-offer-${type}-${offer.id}"
+        id="event-offer-${item.title}-${item.id}"
         type="checkbox"
-        name="event-offer-${type}" ${offers.includes(id) ? 'checked' : ''}>
-      <label class="event__offer-label" for="event-offer-${type}-${offer.id}">
-          <span class="event__offer-title">${offer.title}</span>
+        name="event-offer-${item.type}" ${offers.includes(item.id) ? 'checked' : ''}>
+      <label class="event__offer-label" for="event-offer-${item.type}-${item.id}">
+          <span class="event__offer-title">${item.title}</span>
             &plus;&euro;&nbsp;
-          <span class="event__offer-price">${offer.price}</span>
+          <span class="event__offer-price">${item.price}</span>
         </label>
     </div>
   `)).join('');
@@ -90,7 +90,7 @@ function createDescriptionTemplate(pointDestination) {
 
 function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
 
-  const {type, dateFrom, dateTo, price} = point;
+  const {type, dateFrom, dateTo, price, offers} = point;
 
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
@@ -101,7 +101,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
 
   //офферы
 
-  const offersTemplate = createOffersTemplate(pointOffers); //собираем актуальные офферы под поинт
+  const offersList = createOffersTemplate(offers, pointOffers); //собираем актуальные офферы под поинт
 
   //время
 
@@ -167,7 +167,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
 
           <div class="event__available-offers">
 
-            ${offersTemplate}
+            ${offersList}
 
           </div>
         </section>
@@ -179,7 +179,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
   `);
 }
 
-export default class PointFormView extends AbstractView {
+export default class PointFormEditView extends AbstractView {
   #point = null;
   #pointOffers = null;
   #pointDestination = null;

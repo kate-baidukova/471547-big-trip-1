@@ -51,6 +51,10 @@ const isFutureDate = (date) => dayjs(date).isAfter(dayjs());
 
 const capitalizeFirstLetter = (string) => !string ? string : string.charAt(0).toUpperCase() + string.slice(1);
 
+//выбор обновленного события
+
+const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
+
 export {
   humanizeDate,
   formatFullDate,
@@ -61,4 +65,5 @@ export {
   isPresentDate,
   isFutureDate,
   capitalizeFirstLetter,
+  updateItem,
 };
