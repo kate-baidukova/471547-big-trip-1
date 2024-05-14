@@ -109,6 +109,9 @@ export default class PointPresenter {
   };
 
   #pointFavouriteHandler = () => {
-    this.#onDataChange({...this.#point, isFavourite: !this.#point.isFavourite});
+    this.#onDataChange({
+      ...this.#point,
+      isFavourite: !this.#point.isFavourite
+    });
   };
 }

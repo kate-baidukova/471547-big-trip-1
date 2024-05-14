@@ -72,12 +72,33 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const SortingTypes = {
+const SortTypes = {
   DAY: 'day',
   EVENT: 'event',
   TIME: 'time',
   PRICE: 'price',
   OFFER: 'offer',
-}
+};
 
-export {DESTINATIONS_COUNT, DESTINATIONS, POINTS_TYPES, FiltersTypes, NEW_POINT_FORM, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY, Mode, SortingTypes};
+const EnabledSortTypes = {
+  [SortTypes.DAY]: true,
+  [SortTypes.EVENT]: false,
+  [SortTypes.TIME]: true,
+  [SortTypes.PRICE]: true,
+  [SortTypes.OFFER]: false,
+};
+
+
+export {
+  DESTINATIONS_COUNT,
+  DESTINATIONS,
+  POINTS_TYPES,
+  FiltersTypes,
+  NEW_POINT_FORM,
+  DateFormat,
+  MSEC_IN_HOUR,
+  MSEC_IN_DAY,
+  Mode,
+  SortTypes,
+  EnabledSortTypes
+};
