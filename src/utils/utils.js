@@ -1,4 +1,4 @@
-import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../const.js';
+import {SortTypes, DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../const.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -12,15 +12,6 @@ dayjs.extend(isBetween);
 
 const humanizeDate = (date, dateFormat) => date ? dayjs(date).format(dateFormat) : '';
 
-const formatFullDate = (inputDate) => //задаем дату в полном формате
-  inputDate ? dayjs(inputDate).format(DateFormat.FULL) : '';
-
-const formatShortDate = (inputDate) => //задаем месяцы
-  inputDate ? dayjs(inputDate).format(DateFormat.DATE) : '';
-
-const formatTime = (inputDate) => // задаем часы/минуты
-  inputDate ? dayjs(inputDate).format(DateFormat.TIME) : '';
-
 //вычисляем продолжительность события
 
 const calcPointDuration = (dateFrom, dateTo) => {
@@ -28,12 +19,16 @@ const calcPointDuration = (dateFrom, dateTo) => {
 
   let pointDuration = 0;
 
-  if (timeDiff >= MSEC_IN_DAY) {
-    pointDuration = dayjs.duration(timeDiff).format('DD[D] HH[H] mm[M]');
-  } else if (timeDiff >= MSEC_IN_HOUR) {
-    pointDuration = dayjs.duration(timeDiff).format('HH[H] mm[M]');
-  } else if (timeDiff < MSEC_IN_HOUR) {
-    pointDuration = dayjs.duration(timeDiff).format('mm[M]');
+  switch (true){
+    case (timeDiff >= MSEC_IN_DAY):
+      pointDuration = dayjs.duration(timeDiff).format(DateFormat.DAYS_HOURS_MINUTES);
+      break;
+    case (timeDiff > MSEC_IN_HOUR || timeDiff < MSEC_IN_DAY):
+      pointDuration = dayjs.duration(timeDiff).format(DateFormat.HOURS_MINUTES);
+      break;
+    case (timeDiff < MSEC_IN_HOUR):
+      pointDuration = dayjs.duration(timeDiff).format(DateFormat.MINUTES);
+      break;
   }
 
   return pointDuration;
@@ -55,15 +50,42 @@ const capitalizeFirstLetter = (string) => !string ? string : string.charAt(0).to
 
 const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
 
+//сортируем поинты по цене
+
+const sortPointsByPrice = (currentPoint, nextPoint) => nextPoint.price - currentPoint.price;
+
+//сортируем поинты по дате
+
+const sortPointsByDate = (currentPoint, nextPoint) => dayjs(nextPoint.dateFrom).diff(dayjs(currentPoint.dateFrom));
+
+//сортируем поинты по времени
+
+const sortPointsByTime = (currentPoint, nextPoint) => {
+  const currentPointDuration = dayjs(currentPoint.dateTo).diff(dayjs(currentPoint.dateFrom));
+  const nextPointDuration = dayjs(nextPoint.dateTo).diff(dayjs(nextPoint.dateFrom));
+
+  return nextPointDuration - currentPointDuration;
+};
+
+const sorting = {
+  [SortTypes.DAY]: (points) => [...points].sort(sortPointsByDate),
+  [SortTypes.EVENT]: () => {
+    throw new Error(`Sort by ${SortTypes.EVENT} is disabled`);
+  },
+  [SortTypes.TIME]: (points) => [...points].sort(sortPointsByTime),
+  [SortTypes.PRICE]: (points) => [...points].sort(sortPointsByPrice),
+  [SortTypes.OFFER]: () => {
+    throw new Error(`Sort by ${SortTypes.OFFER} is disabled`);
+  }
+};
+
 export {
   humanizeDate,
-  formatFullDate,
-  formatShortDate,
-  formatTime,
   calcPointDuration,
   isPastDate,
   isPresentDate,
   isFutureDate,
   capitalizeFirstLetter,
   updateItem,
+  sorting,
 };

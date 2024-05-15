@@ -55,6 +55,9 @@ const DateFormat = {
   FULL: 'YYYY-MM-DD',
   DATE: 'MMM DD',
   TIME: 'HH:mm',
+  MINUTES: 'mm[M]',
+  HOURS_MINUTES: 'HH[H] mm[M]',
+  DAYS_HOURS_MINUTES: 'DD[D] HH[H] mm[M]',
 };
 
 const Timing = {
@@ -72,4 +75,33 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-export {DESTINATIONS_COUNT, DESTINATIONS, POINTS_TYPES, FiltersTypes, NEW_POINT_FORM, DateFormat, MSEC_IN_HOUR, MSEC_IN_DAY, Mode};
+const SortTypes = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer',
+};
+
+const EnabledSortTypes = {
+  [SortTypes.DAY]: true,
+  [SortTypes.EVENT]: false,
+  [SortTypes.TIME]: true,
+  [SortTypes.PRICE]: true,
+  [SortTypes.OFFER]: false,
+};
+
+
+export {
+  DESTINATIONS_COUNT,
+  DESTINATIONS,
+  POINTS_TYPES,
+  FiltersTypes,
+  NEW_POINT_FORM,
+  DateFormat,
+  MSEC_IN_HOUR,
+  MSEC_IN_DAY,
+  Mode,
+  SortTypes,
+  EnabledSortTypes
+};

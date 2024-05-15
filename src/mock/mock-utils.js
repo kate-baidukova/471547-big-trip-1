@@ -5,6 +5,14 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
+//задаем старт ивенту рандомно
+
+const getRandomDateTo = (dateFrom) => dayjs(dateFrom).add((Math.random() * 30), 'day').add((Math.random() * 10), 'hour').add((Math.random() * 10), 'minute');
+
+//получаем случайную дату
+
+const getRandomDate = (start, end) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+
 //получаем случайное число из заданного диапазона
 
 const getRandomNumber = (a, b) => {
@@ -29,12 +37,8 @@ function getRandomBoolean() {
   return randomNumber >= 0.5;
 }
 
-//получаем случайную дату
-
-const getRandomDate = (start, end) => new Date(start.getTime()
-  + Math.random() * (end.getTime() - start.getTime()));
-
 export {
+  getRandomDateTo,
   getRandomNumber,
   getRandomInteger,
   getRandomArrayElement,
