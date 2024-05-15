@@ -23,7 +23,7 @@ const calcPointDuration = (dateFrom, dateTo) => {
     case (timeDiff >= MSEC_IN_DAY):
       pointDuration = dayjs.duration(timeDiff).format(DateFormat.DAYS_HOURS_MINUTES);
       break;
-    case (timeDiff >= MSEC_IN_HOUR):
+    case (timeDiff > MSEC_IN_HOUR || timeDiff < MSEC_IN_DAY):
       pointDuration = dayjs.duration(timeDiff).format(DateFormat.HOURS_MINUTES);
       break;
     case (timeDiff < MSEC_IN_HOUR):
