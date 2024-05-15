@@ -55,6 +55,9 @@ const DateFormat = {
   FULL: 'YYYY-MM-DD',
   DATE: 'MMM DD',
   TIME: 'HH:mm',
+  MINUTES: 'mm[M]',
+  HOURS_MINUTES: 'HH[H] mm[M]',
+  DAYS_HOURS_MINUTES: 'DD[D] HH[H] mm[M]',
 };
 
 const Timing = {
