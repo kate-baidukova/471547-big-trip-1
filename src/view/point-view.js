@@ -16,7 +16,7 @@ function createOffersListTemplate(offers, pointOffers) {
   );
 }
 
-function createTripListTemplate ({point, pointOffers, pointDestination}) {
+function createTripListTemplate({point, pointOffers, pointDestination}) {
   const {
     price, dateFrom, dateTo, isFavourite, type, offers
   } = point;

@@ -1,6 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
 import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
