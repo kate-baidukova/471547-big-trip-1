@@ -1,10 +1,6 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
 import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
-import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
@@ -92,9 +88,9 @@ function createDescriptionTemplate(pointDestination) {
 
 //создаем шаблон поинта
 
-function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
+function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
 
-  const {type, dateFrom, dateTo, price, offers} = point;
+  const {type, dateFrom, dateTo, price, offers, id} = point;
 
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
@@ -105,7 +101,7 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
 
   //офферы
 
-  const offersList = createOffersTemplate(offers, pointOffers); //собираем актуальные офферы под поинт
+  const offersList = pointOffers.length ? createOffersTemplate(offers, pointOffers) : ''; //собираем актуальные офферы под поинт
 
   //время
 
@@ -116,11 +112,11 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
-          <label class="event__type  event__type-btn" for="event-type-toggle-${point.id}">
+          <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
             <span class="visually-hidden">Choose event type</span>
             <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="${type}">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${point.id}" type="checkbox">
+          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
 
           <div class="event__type-list">
             <fieldset class="event__type-group">
@@ -133,30 +129,40 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-${point.id}">
+          <label class="event__label  event__type-output" for="event-destination-${id}">
             ${type}
           </label>
 
-          <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-${point.id}">
-          <datalist id="destination-list-${point.id}">
+          <input
+          class="event__input  event__input--destination"
+          id="event-destination-${id}"
+          type="text" name="event-destination"
+          value="${pointDestination ? pointDestination.name : ''}"
+          list="destination-list-${id}">
+          <datalist id="destination-list-${id}">
           ${destinationsList}
           </datalist>
         </div>
 
         <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-${point.id}">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-${point.id}" type="text" name="event-start-time" value="${startTimeInForm}">
+          <label class="visually-hidden" for="event-start-time-${id}">From</label>
+          <input
+          class="event__input  event__input--time"
+          id="event-start-time-${id}"
+          type="text"
+          name="event-start-time"
+          value="${startTimeInForm}">
           &mdash;
-          <label class="visually-hidden" for="event-end-time-${point.id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${point.id}" type="text" name="event-end-time" value="${endTimeInForm}">
+          <label class="visually-hidden" for="event-end-time-${id}">To</label>
+          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${endTimeInForm}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-${point.id}">
+          <label class="event__label" for="event-price-${id}">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${point.id}" type="text" name="event-price" value="${price}">
+          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${price}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -183,31 +189,80 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
   `);
 }
 
-export default class PointFormEditView extends AbstractView {
-  #point = null;
+export default class PointFormEditView extends AbstractStatefulView {
   #pointOffers = null;
   #pointDestination = null;
   #destinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
+  #handleDeleteClick = null;
 
-  constructor ({point, pointOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton}) {
+  constructor ({point, pointOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton, onDeleteClick}) {
     super();
-    this.#point = point;
+    this._setState(PointFormEditView.parsePointToState(point));
     this.#pointOffers = pointOffers;
     this.#pointDestination = pointDestination;
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
-
-    this.element.addEventListener('submit', this.#formSubmitHandler);
-
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this.#handleDeleteClick = onDeleteClick;
+    this._restoreHandlers();
   }
 
   get template() {
-    return createPointTemplate (this.#point, this.#pointOffers, this.#pointDestination, this.#destinations);
+    return createEditPointTemplate(this._state, this.#pointOffers, this.#pointDestination, this.#destinations);
   }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+  }
+
+  reset(point) {
+    this.updateElement(
+      PointFormEditView.parsePointToState(point)
+    );
+  }
+
+  #typeChangeHandler = (evt) => {
+    this.updateElement({
+      type: evt.target.value,
+      pointOffers: []
+    });
+  };
+
+  #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    const currentDestination = this.#destinations.find((destination) => destination.name === evt.target.value)?.id;
+    this.updateElement({
+      destination: currentDestination || this._state.pointDestination
+    });
+  };
+
+  #offerChangeHandler = (evt) => {
+    evt.preventDefault();
+    const checkedOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+    this.updateElement({
+      offers: checkedOffers.map((offer) => +offer.dataset.offerId)
+    });
+  };
+
+  #priceChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      price: evt.target.value
+    });
+  };
+
+  #formDeleteHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(PointFormEditView.parseStateToPoint(this._state), this.#pointOffers, this.#pointDestination, this.destinations);
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
@@ -218,4 +273,13 @@ export default class PointFormEditView extends AbstractView {
     evt.preventDefault();
     this.#handleCloseEditFormButton();
   };
+
+  static parsePointToState(point) {
+    return {...point};
+  }
+
+  static parseStateToPoint(state) {
+    return {...state};
+  }
 }
+
