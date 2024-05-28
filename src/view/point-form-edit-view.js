@@ -96,11 +96,13 @@ function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDesti
 
   const {type, price, offers, id} = point;
 
+  const allDestinations = destinations;
+
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
   //направления
 
-  const destinationsList = createDestinationsList(destinations); //выбор направления в меню
+  const destinationsList = createDestinationsList(allDestinations); //выбор направления в меню
   const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
 
   //офферы
@@ -201,9 +203,9 @@ export default class PointFormEditView extends AbstractStatefulView {
   #destinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
-  #handleDeleteClick = null;
+  #newCity = null;
 
-  constructor ({point, pointOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton, onDeleteClick}) {
+  constructor ({point, pointOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton}) {
     super();
     this._setState(PointFormEditView.parsePointToState(point));
     this.#pointOffers = pointOffers;
@@ -211,7 +213,6 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
-    this.#handleDeleteClick = onDeleteClick;
     this._restoreHandlers();
   }
 
@@ -227,28 +228,31 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
 
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-
   }
 
   reset(point) {
-    this.updateElement(
-      PointFormEditView.parsePointToState(point)
-    );
+    this._setState(PointFormEditView.parsePointToState(point));
+    this.updateElement(this._setState);
   }
 
   #typeChangeHandler = (evt) => {
     if (evt.target.closest('.event__type-label')) {
+
       this.updateElement({
-        type: this._state.type = evt.target.dataset.type
+        type: this._state.type = evt.target.dataset.type,
+        offers: [],
       });
     }
   };
 
+  #selectingDestinations(name) {
+    this.#newCity = this.#destinations.find((destination) => destination.name === name);
+  }
+
   #destinationChangeHandler = (evt) => {
-    evt.preventDefault();
-    const currentDestination = this.#destinations.find((destination) => destination.name === evt.target.value)?.id;
+    this.#selectingDestinations(evt.target.value);
     this.updateElement({
-      destination: currentDestination || this._state.pointDestination
+      destination: this._state.destination = this.#newCity.id
     });
   };
 
@@ -270,15 +274,12 @@ export default class PointFormEditView extends AbstractStatefulView {
     });
   };
 
-  #formDeleteHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleDeleteClick();
-  };
-
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(PointFormEditView.parseStateToPoint(this._state));
   };
+
+  //для кнопки открытия/закрытия формы редактирования
 
   #closeEditFormButtonHandler = (evt) => {
     evt.preventDefault();

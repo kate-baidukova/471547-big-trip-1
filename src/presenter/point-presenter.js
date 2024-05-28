@@ -44,7 +44,6 @@ export default class PointPresenter {
 
       onFormSubmit: this.#pointEditSubmitHandler,
       onCloseEditFormButton: this.#pointCloseEditHandler,
-      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevPointComponent === null || prevEditPointComponent === null) {
@@ -102,10 +101,6 @@ export default class PointPresenter {
   #pointCloseEditHandler = () => {
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-  };
-
-  #handleDeleteClick = (point) => {
-    this.#onDataChange(point);
   };
 
   #pointEditSubmitHandler = (point) => {
