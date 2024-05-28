@@ -26,7 +26,7 @@ function createPointsTypeList(types, type) {
 
 //создаем шаблон для офферов
 
-function createOffersTemplate(offers, pointOffers) {
+function createOffersTemplate(allOffers, pointOffers) {
   return pointOffers.map((offer) => (`
     <div class="event__offer-selector">
       <input
@@ -34,7 +34,7 @@ function createOffersTemplate(offers, pointOffers) {
         id="event-offer-${offer.id}"
         type="checkbox"
         data-offer-id="${offer.id}"
-        name="event-offer-${offer.title}" ${offers.includes(offer.id) ? ' checked' : ''}
+        name="event-offer-${offer.title}" ${allOffers.includes(offer.id) ? ' checked' : ''}
       >
       <label class="event__offer-label" for="event-offer-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
@@ -92,22 +92,22 @@ function createDescriptionTemplate(pointDestination) {
 
 //создаем шаблон поинта
 
-function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
+function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, pointDestination, destinations) {
 
-  const {type, price, offers, id} = point;
+  const {type, price, id} = point;
 
-  const allDestinations = destinations;
+  const pointOffers = allOffers.find((offer) => offer.type === type).offers;
 
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
   //направления
 
-  const destinationsList = createDestinationsList(allDestinations); //выбор направления в меню
+  const destinationsList = createDestinationsList(destinations); //выбор направления в меню
   const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
 
   //офферы
 
-  const offersList = pointOffers.length ? createOffersTemplate(offers, pointOffers) : ''; //собираем актуальные офферы под поинт
+  const offersList = pointOffers.length ? createOffersTemplate(allOffers, pointOffers) : ''; //собираем актуальные офферы под поинт
 
   //время
 
@@ -198,17 +198,17 @@ function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDesti
 }
 
 export default class PointFormEditView extends AbstractStatefulView {
-  #pointOffers = null;
+  #allOffers = null;
   #pointDestination = null;
   #destinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
   #newCity = null;
 
-  constructor ({point, pointOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton}) {
+  constructor ({point, allOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton}) {
     super();
     this._setState(PointFormEditView.parsePointToState(point));
-    this.#pointOffers = pointOffers;
+    this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
@@ -217,7 +217,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#pointOffers, this.#pointDestination, this.#destinations);
+    return createEditPointTemplate(this._state, this.#allOffers, this.#pointDestination, this.#destinations);
   }
 
   _restoreHandlers() {
@@ -294,4 +294,3 @@ export default class PointFormEditView extends AbstractStatefulView {
     return {...state};
   }
 }
-

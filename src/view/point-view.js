@@ -16,10 +16,11 @@ function createOffersListTemplate(offers, pointOffers) {
   );
 }
 
-function createTripListTemplate({point, pointOffers, pointDestination}) {
-  const {
-    price, isFavourite, type, offers
-  } = point;
+function createTripListTemplate({point, allOffers, pointDestination}) {
+  const {price, isFavourite, type} = point;
+
+  const pointOffers = allOffers.find((offer) => offer.type === type).offers;
+
 
   //const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
   //const startTime = humanizeDate(dateFrom, DateFormat.TIME);
@@ -46,7 +47,7 @@ function createTripListTemplate({point, pointOffers, pointDestination}) {
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-          ${createOffersListTemplate(offers, pointOffers)}
+          ${createOffersListTemplate(allOffers, pointOffers)}
           </ul>
 
           <button class="event__favorite-btn ${isFavourite ? 'event__favorite-btn--active' : ''}" type="button">
@@ -65,15 +66,15 @@ function createTripListTemplate({point, pointOffers, pointDestination}) {
 
 export default class PointView extends AbstractView {
   #point = null;
-  #pointOffers = null;
+  #allOffers = null;
   #pointDestination = null;
   #handleEventClick = null;
   #handleFavouriteClick = null;
 
-  constructor({point, pointOffers, pointDestination, onEditClick, onFavouriteClick}) {
+  constructor({point, allOffers, pointDestination, onEditClick, onFavouriteClick}) {
     super();
     this.#point = point;
-    this.#pointOffers = pointOffers;
+    this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#handleEventClick = onEditClick;
     this.#handleFavouriteClick = onFavouriteClick;
@@ -86,7 +87,7 @@ export default class PointView extends AbstractView {
   get template() {
     return createTripListTemplate({
       point: this.#point,
-      pointOffers: this.#pointOffers,
+      allOffers: this.#allOffers,
       pointDestination: this.#pointDestination
     });
   }
