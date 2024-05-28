@@ -5,18 +5,19 @@ import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
 function createPointsTypeList(types, type) {
-  return types.map((item) => (`
+  return types.map((pointType) => (`
     <div class="event__type-item">
       <input
-        id="event-type-${item.type}"
+        id="event-type-${pointType}"
         class="event__type-input  visually-hidden"
         type="radio"
         name="event-type"
-        value="${item.type}"
-        ${item === type ? 'checked' : ''}>
+        value="${pointType}"
+        ${pointType === type ? 'checked' : ''}
+      >
       <label
-        class="event__type-label  event__type-label--${item.type}"
-        for="event-type-${item.type}">${capitalizeFirstLetter(item)}
+        class="event__type-label  event__type-label--${pointType}"
+        for="event-type-${pointType}">${capitalizeFirstLetter(pointType)}
       </label>
     </div>
   `)).join('');
@@ -25,17 +26,19 @@ function createPointsTypeList(types, type) {
 //создаем шаблон для офферов
 
 function createOffersTemplate(offers, pointOffers) {
-  return pointOffers.map((item) => (`
+  return pointOffers.map((offer) => (`
     <div class="event__offer-selector">
       <input
         class="event__offer-checkbox visually-hidden"
-        id="event-offer-${item.title}-${item.id}"
+        id="event-offer-${offer.id}"
         type="checkbox"
-        name="event-offer-${item.type}" ${offers.includes(item.id) ? 'checked' : ''}>
-      <label class="event__offer-label" for="event-offer-${item.type}-${item.id}">
-          <span class="event__offer-title">${item.title}</span>
+        data-offer-id="${offer.id}"
+        name="event-offer-${offer.title}" ${offers.includes(offer.id) ? ' checked' : ''}
+      >
+      <label class="event__offer-label" for="event-offer-${offer.id}">
+          <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
-          <span class="event__offer-price">${item.price}</span>
+          <span class="event__offer-price">${offer.price}</span>
         </label>
     </div>
   `)).join('');
@@ -71,7 +74,7 @@ function createPhotosTemplate(photos) {
   return (`
     <div class="event__photos-container">
       <div class="event__photos-tape">
-        ${photos.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join('')}
+        ${photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`).join('')}
       </div>
     </div>
   `);
@@ -105,8 +108,8 @@ function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDesti
 
   //время
 
-  const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
-  const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
+  //const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
+  //const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
 
   return (`
     <form class="event event--edit" action="#" method="post">
@@ -134,12 +137,13 @@ function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDesti
           </label>
 
           <input
-          class="event__input  event__input--destination"
-          id="event-destination-${id}"
-          type="text" name="event-destination"
-          value="${pointDestination ? pointDestination.name : ''}"
-          list="destination-list-${id}">
-          <datalist id="destination-list-${id}">
+            class="event__input  event__input--destination"
+            id="event-destination-${id}"
+            type="text" name="event-destination"
+            value="${pointDestination ? pointDestination.name : ''}"
+            list="destination-list-${id}">
+            <datalist id="destination-list-${id}"
+          >
           ${destinationsList}
           </datalist>
         </div>
@@ -147,14 +151,15 @@ function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDesti
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-${id}">From</label>
           <input
-          class="event__input  event__input--time"
-          id="event-start-time-${id}"
-          type="text"
-          name="event-start-time"
-          value="${startTimeInForm}">
+            class="event__input  event__input--time"
+            id="event-start-time-${id}"
+            type="text"
+            name="event-start-time"
+            value=""
+          >
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${endTimeInForm}">
+          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -214,7 +219,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+    this.element.addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
@@ -230,9 +235,13 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   #typeChangeHandler = (evt) => {
+    evt.preventDefault();
     this.updateElement({
-      type: evt.target.value,
-      pointOffers: []
+      point: {
+        ...this._state.point,
+        type: evt.target.value,
+        offers: [],
+      }
     });
   };
 
@@ -244,24 +253,30 @@ export default class PointFormEditView extends AbstractStatefulView {
     });
   };
 
-  #offerChangeHandler = (evt) => {
-    evt.preventDefault();
+  #offerChangeHandler = () => {
     const checkedOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    this.updateElement({
-      offers: checkedOffers.map((offer) => +offer.dataset.offerId)
+
+    this._setState({
+      point: {
+        ...this._state.point,
+        offers: checkedOffers.map((element) => element.dataset.offerId)
+      }
     });
   };
 
   #priceChangeHandler = (evt) => {
     evt.preventDefault();
-    this.updateElement({
-      price: evt.target.value
+    this._setState({
+      point: {
+        ...this._state.point,
+        price: Number(evt.target.value)
+      }
     });
   };
 
   #formDeleteHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(PointFormEditView.parseStateToPoint(this._state), this.#pointOffers, this.#pointDestination, this.destinations);
+    this.#handleDeleteClick(PointFormEditView.parseStateToPoint(this._state));
   };
 
   #formSubmitHandler = (evt) => {

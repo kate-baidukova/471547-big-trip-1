@@ -5,7 +5,7 @@ import {DateFormat} from '../const.js';
 function createOffersListTemplate(offers, pointOffers) {
   return (
     `<ul class="event__selected-offers">
-      ${pointOffers.map((item) => offers.includes(item.id) ? (
+    ${pointOffers.map((item) => offers.includes(item.id) ? (
       `<li class="event__offer">
         <span class="event__offer-title">${item.title}</span>
         &plus;&euro;&nbsp;
