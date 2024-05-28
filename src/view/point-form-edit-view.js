@@ -47,19 +47,19 @@ function createOffersTemplate(allOffers, pointOffers) {
 
 //создаем шаблон для списка направлений
 
-function createDestinationsList(destinations) {
+function createDestinationsList(allDestinations) {
 
   return (`
-    ${destinations.map((city) => `<option value="${city.name}"></option>`).join('')}
+    ${allDestinations.map((city) => `<option value="${city.name}"></option>`).join('')}
   `);
 }
 
 //создаем шаблон для направления
 
-function createDestinationTemplate(pointDestination) {
-  const {photos} = pointDestination;
+function createDestinationTemplate(destination) {
+  const {photos} = destination;
   const photosTemplate = createPhotosTemplate(photos);
-  const descriptionTemplate = createDescriptionTemplate(pointDestination);
+  const descriptionTemplate = createDescriptionTemplate(destination);
 
   return (`
     <section class="event__section  event__section--destination">
@@ -92,17 +92,19 @@ function createDescriptionTemplate(pointDestination) {
 
 //создаем шаблон поинта
 
-function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, pointDestination, destinations) {
+function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinations) {
 
   const {type, price, id} = point;
 
   const pointOffers = allOffers.find((offer) => offer.type === type).offers;
 
+  const pointDestination = allDestinations.find((destination) => destination.id === point.destination);
+
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
   //направления
 
-  const destinationsList = createDestinationsList(destinations); //выбор направления в меню
+  const destinationsList = createDestinationsList(allDestinations); //выбор направления в меню
   const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
 
   //офферы
@@ -199,25 +201,23 @@ function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, pointDestina
 
 export default class PointFormEditView extends AbstractStatefulView {
   #allOffers = null;
-  #pointDestination = null;
-  #destinations = null;
+  #allDestinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
   #newCity = null;
 
-  constructor ({point, allOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton}) {
+  constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton}) {
     super();
     this._setState(PointFormEditView.parsePointToState(point));
     this.#allOffers = allOffers;
-    this.#pointDestination = pointDestination;
-    this.#destinations = destinations;
+    this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
     this._restoreHandlers();
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#allOffers, this.#pointDestination, this.#destinations);
+    return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
 
   _restoreHandlers() {
@@ -246,7 +246,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   };
 
   #selectingDestinations(name) {
-    this.#newCity = this.#destinations.find((destination) => destination.name === name);
+    this.#newCity = this.#allDestinations.find((destination) => destination.name === name);
   }
 
   #destinationChangeHandler = (evt) => {
