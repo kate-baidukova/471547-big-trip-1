@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
-import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
+import {POINTS_TYPES, NEW_POINT_FORM} from '../const.js';
+import {capitalizeFirstLetter} from '../utils/utils.js';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
@@ -16,6 +16,7 @@ function createPointsTypeList(types, type) {
         ${pointType === type ? 'checked' : ''}
       >
       <label
+      data-type="${pointType}"
         class="event__type-label  event__type-label--${pointType}"
         for="event-type-${pointType}">${capitalizeFirstLetter(pointType)}
       </label>
@@ -93,7 +94,7 @@ function createDescriptionTemplate(pointDestination) {
 
 function createEditPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
 
-  const {type, dateFrom, dateTo, price, offers, id} = point;
+  const {type, price, offers, id} = point;
 
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
@@ -219,10 +220,12 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this.element.addEventListener('click', this.#typeChangeHandler);
+
+    this.element.addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
-    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
+
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
@@ -235,14 +238,11 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   #typeChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateElement({
-      point: {
-        ...this._state.point,
-        type: evt.target.value,
-        offers: [],
-      }
-    });
+    if (evt.target.closest('.event__type-label')) {
+      this.updateElement({
+        type: this._state.type = evt.target.dataset.type
+      });
+    }
   };
 
   #destinationChangeHandler = (evt) => {
@@ -281,7 +281,7 @@ export default class PointFormEditView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(PointFormEditView.parseStateToPoint(this._state));
   };
 
   #closeEditFormButtonHandler = (evt) => {
