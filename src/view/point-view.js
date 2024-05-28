@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDate, calcPointDuration} from '../utils/utils.js';
-import {DateFormat} from '../const.js';
+//import {humanizeDate, calcPointDuration} from '../utils/utils.js';
+//import {DateFormat} from '../const.js';
 
 function createOffersListTemplate(offers, pointOffers) {
   return (
@@ -18,28 +18,28 @@ function createOffersListTemplate(offers, pointOffers) {
 
 function createTripListTemplate({point, pointOffers, pointDestination}) {
   const {
-    price, dateFrom, dateTo, isFavourite, type, offers
+    price, isFavourite, type, offers
   } = point;
 
-  const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
-  const startTime = humanizeDate(dateFrom, DateFormat.TIME);
-  const endTime = humanizeDate(dateTo, DateFormat.TIME);
+  //const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
+  //const startTime = humanizeDate(dateFrom, DateFormat.TIME);
+  //const endTime = humanizeDate(dateTo, DateFormat.TIME);
 
   return (`
     <li class="trip-events__item">
       <div class="event">
-          <time class="event__date" datetime="${startDateShort}">${startDateShort}</time>
+          <time class="event__date" datetime=""></time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
           <h3 class="event__title">${type} ${pointDestination.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime="2019-03-18T10:30">${startTime}</time>
+              <time class="event__start-time" datetime="2019-03-18T10:30"></time>
               &mdash;
-              <time class="event__end-time" datetime="2019-03-18T11:00">${endTime}</time>
+              <time class="event__end-time" datetime="2019-03-18T11:00"></time>
             </p>
-            <p class="event__duration">${calcPointDuration(dateFrom, dateTo)}</p>
+            <p class="event__duration"></p>
           </div>
           <p class="event__price">
             &euro;&nbsp;<span class="event__price-value">${price}</span>

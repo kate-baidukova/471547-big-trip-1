@@ -221,14 +221,13 @@ export default class PointFormEditView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this.element.querySelector('.event__save-btn').addEventListener('click', this.#formSubmitHandler);
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     this.element.addEventListener('click', this.#typeChangeHandler);
-
-    this.element.addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
 
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
-    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+
   }
 
   reset(point) {
@@ -267,16 +266,13 @@ export default class PointFormEditView extends AbstractStatefulView {
   #priceChangeHandler = (evt) => {
     evt.preventDefault();
     this._setState({
-      point: {
-        ...this._state.point,
-        price: Number(evt.target.value)
-      }
+      price: evt.target.value
     });
   };
 
   #formDeleteHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(PointFormEditView.parseStateToPoint(this._state));
+    this.#handleDeleteClick();
   };
 
   #formSubmitHandler = (evt) => {
