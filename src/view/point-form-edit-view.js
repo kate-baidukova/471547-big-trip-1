@@ -4,6 +4,7 @@ import {capitalizeFirstLetter, humanizeDate} from '../utils/utils.js';
 
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
 function createPointsTypeList(allTypes, currentType) {
