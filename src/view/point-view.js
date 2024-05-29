@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-//import {humanizeDate, calcPointDuration} from '../utils/utils.js';
-//import {DateFormat} from '../const.js';
+import {humanizeDate, calcPointDuration} from '../utils/utils.js';
+import {DateFormat} from '../const.js';
 
 function createOffersListTemplate(pointOffers, selectedOffers) {
   return (
@@ -17,29 +17,28 @@ function createOffersListTemplate(pointOffers, selectedOffers) {
 }
 
 function createTripListTemplate({point, allOffers, pointDestination}) {
-  const {price, isFavourite, type, offers} = point;
-
+  const {price, isFavourite, type, offers, dateFrom, dateTo} = point;
   const pointOffers = allOffers.find((offer) => offer.type === type).offers;
 
-  //const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
-  //const startTime = humanizeDate(dateFrom, DateFormat.TIME);
-  //const endTime = humanizeDate(dateTo, DateFormat.TIME);
+  const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
+  const startTime = humanizeDate(dateFrom, DateFormat.TIME);
+  const endTime = humanizeDate(dateTo, DateFormat.TIME);
 
   return (`
     <li class="trip-events__item">
       <div class="event">
-          <time class="event__date" datetime=""></time>
+          <time class="event__date" datetime="${dateFrom}">${startDateShort}</time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
           <h3 class="event__title">${type} ${pointDestination.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime=""></time>
+              <time class="event__start-time" datetime="${dateFrom}">${startTime}</time>
               &mdash;
-              <time class="event__end-time" datetime=""></time>
+              <time class="event__end-time" "${dateTo}">${endTime}</time>
             </p>
-            <p class="event__duration"></p>
+            <p class="event__duration">${calcPointDuration(dateFrom, dateTo)}</p>
           </div>
           <p class="event__price">
             &euro;&nbsp;<span class="event__price-value">${price}</span>

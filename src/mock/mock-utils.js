@@ -1,14 +1,3 @@
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
-
-//задаем старт ивенту рандомно
-
-const getRandomDateTo = (dateFrom) => dayjs(dateFrom).add((Math.random() * 30), 'day').add((Math.random() * 10), 'hour').add((Math.random() * 10), 'minute');
-
 //получаем случайную дату
 
 const getRandomDate = (start, end) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -38,7 +27,6 @@ function getRandomBoolean() {
 }
 
 export {
-  getRandomDateTo,
   getRandomNumber,
   getRandomInteger,
   getRandomArrayElement,

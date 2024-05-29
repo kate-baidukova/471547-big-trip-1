@@ -11,7 +11,6 @@ dayjs.extend(isBetween);
 //задаем формат даты
 
 const humanizeDate = (date, dateFormat) => date ? dayjs(date).format(dateFormat) : '';
-
 //вычисляем продолжительность события
 
 const calcPointDuration = (dateFrom, dateTo) => {
