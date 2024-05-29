@@ -4,8 +4,8 @@ import {capitalizeFirstLetter} from '../utils/utils.js';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
-function createPointsTypeList(types, type) {
-  return types.map((pointType) => (`
+function createPointsTypeList(allTypes, currentType) {
+  return allTypes.map((pointType) => (`
     <div class="event__type-item">
       <input
         id="event-type-${pointType}"
@@ -13,10 +13,9 @@ function createPointsTypeList(types, type) {
         type="radio"
         name="event-type"
         value="${pointType}"
-        ${pointType === type ? 'checked' : ''}
+        ${pointType === currentType ? 'checked' : ''}
       >
       <label
-      data-type="${pointType}"
         class="event__type-label  event__type-label--${pointType}"
         for="event-type-${pointType}">${capitalizeFirstLetter(pointType)}
       </label>
@@ -26,15 +25,15 @@ function createPointsTypeList(types, type) {
 
 //создаем шаблон для офферов
 
-function createOffersTemplate(allOffers, pointOffers) {
+function createOffersTemplate(pointOffers, selectedOffers) {
   return pointOffers.map((offer) => (`
     <div class="event__offer-selector">
       <input
         class="event__offer-checkbox visually-hidden"
         id="event-offer-${offer.id}"
         type="checkbox"
-        data-offer-id="${offer.id}"
-        name="event-offer-${offer.title}" ${allOffers.includes(offer.id) ? ' checked' : ''}
+        value="${offer.id}"
+        name="event-offer-${offer.title}" ${selectedOffers.includes(offer.id) ? 'checked' : ''}
       >
       <label class="event__offer-label" for="event-offer-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
@@ -49,17 +48,15 @@ function createOffersTemplate(allOffers, pointOffers) {
 
 function createDestinationsList(allDestinations) {
 
-  return (`
-    ${allDestinations.map((city) => `<option value="${city.name}"></option>`).join('')}
-  `);
+  return `${allDestinations.map((city) => `<option value="${city.name}"></option>`).join('')}`;
 }
 
 //создаем шаблон для направления
 
-function createDestinationTemplate(destination) {
-  const {photos} = destination;
+function createDestinationTemplate(pointDestination) {
+  const {photos} = pointDestination;
   const photosTemplate = createPhotosTemplate(photos);
-  const descriptionTemplate = createDescriptionTemplate(destination);
+  const descriptionTemplate = createDescriptionTemplate(pointDestination);
 
   return (`
     <section class="event__section  event__section--destination">
@@ -94,9 +91,9 @@ function createDescriptionTemplate(pointDestination) {
 
 function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinations) {
 
-  const {type, price, id} = point;
+  const {type, price, id, offers} = point;
 
-  const pointOffers = allOffers.find((offer) => offer.type === type).offers;
+  const pointOffers = allOffers.find((offer) => offer.type === type).offers; //офферы по типу
 
   const pointDestination = allDestinations.find((destination) => destination.id === point.destination);
 
@@ -109,7 +106,7 @@ function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinati
 
   //офферы
 
-  const offersList = pointOffers.length ? createOffersTemplate(allOffers, pointOffers) : ''; //собираем актуальные офферы под поинт
+  const offersList = pointOffers.length ? createOffersTemplate(pointOffers, offers) : ''; //собираем актуальные офферы под поинт
 
   //время
 
@@ -204,7 +201,6 @@ export default class PointFormEditView extends AbstractStatefulView {
   #allDestinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
-  #newCity = null;
 
   constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton}) {
     super();
@@ -221,12 +217,11 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
+    this.element.addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
-    this.element.querySelector('.event__save-btn').addEventListener('click', this.#formSubmitHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
-    this.element.addEventListener('click', this.#typeChangeHandler);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
-
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
   }
 
@@ -236,35 +231,32 @@ export default class PointFormEditView extends AbstractStatefulView {
   }
 
   #typeChangeHandler = (evt) => {
-    if (evt.target.closest('.event__type-label')) {
+    const newType = evt.target.value;
 
-      this.updateElement({
-        type: this._state.type = evt.target.dataset.type,
-        offers: [],
-      });
-    }
+    this.updateElement({
+      type: newType,
+      offers: [],
+    });
   };
 
-  #selectingDestinations(name) {
-    this.#newCity = this.#allDestinations.find((destination) => destination.name === name);
+  #selectDestination(name) {
+    return this.#allDestinations.find((destination) => destination.name === name);
   }
 
   #destinationChangeHandler = (evt) => {
-    this.#selectingDestinations(evt.target.value);
+    const newCity = this.#selectDestination(evt.target.value);
+
     this.updateElement({
-      destination: this._state.destination = this.#newCity.id
+      destination: newCity.id
     });
   };
 
-  #offerChangeHandler = () => {
-    const checkedOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+  #offerChangeHandler = (evt) => {
+    const newOffers = evt.target.checked
+      ? this._state.offers.concat(evt.target.value)
+      : this._state.offers.filter((offer) => offer !== evt.target.value);
 
-    this._setState({
-      point: {
-        ...this._state.point,
-        offers: checkedOffers.map((element) => element.dataset.offerId)
-      }
-    });
+    this._setState({...this._state.point, offers: newOffers});
   };
 
   #priceChangeHandler = (evt) => {
