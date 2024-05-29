@@ -309,7 +309,7 @@ export default class PointFormEditView extends AbstractStatefulView {
       ...flatpickerConfig,
       defaultDate: this._state.dateFrom,
       onClose: this.#closeFromDateHandler,
-      maxDate: this._state.dateTo,
+      maxDate: this._state.dateTo
     });
 
     this.#datePickerTo = flatpickr(endDatePickr, {
@@ -338,6 +338,20 @@ export default class PointFormEditView extends AbstractStatefulView {
 
     this.#datePickerFrom.set('maxDate'. selectedDate);
   };
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datePickerFrom) {
+      this.#datePickerFrom.destroy();
+      this.#datePickerFrom = null;
+    }
+
+    if (this.#datePickerTo) {
+      this.#datePickerTo.destroy();
+      this.#datePickerTo = null;
+    }
+  }
 
   static parsePointToState(point) {
     return {...point};
