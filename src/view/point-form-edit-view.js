@@ -1,22 +1,23 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import {POINTS_TYPES, DateFormat, NEW_POINT_FORM} from '../const.js';
-import {humanizeDate, capitalizeFirstLetter} from '../utils/utils.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {POINTS_TYPES, NEW_POINT_FORM} from '../const.js';
+import {capitalizeFirstLetter} from '../utils/utils.js';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
-function createPointsTypeList(types, type) {
-  return types.map((item) => (`
+function createPointsTypeList(allTypes, currentType) {
+  return allTypes.map((pointType) => (`
     <div class="event__type-item">
       <input
-        id="event-type-${item.type}"
+        id="event-type-${pointType}"
         class="event__type-input  visually-hidden"
         type="radio"
         name="event-type"
-        value="${item.type}"
-        ${item === type ? 'checked' : ''}>
+        value="${pointType}"
+        ${pointType === currentType ? 'checked' : ''}
+      >
       <label
-        class="event__type-label  event__type-label--${item.type}"
-        for="event-type-${item.type}">${capitalizeFirstLetter(item)}
+        class="event__type-label  event__type-label--${pointType}"
+        for="event-type-${pointType}">${capitalizeFirstLetter(pointType)}
       </label>
     </div>
   `)).join('');
@@ -24,18 +25,20 @@ function createPointsTypeList(types, type) {
 
 //создаем шаблон для офферов
 
-function createOffersTemplate(offers, pointOffers) {
-  return pointOffers.map((item) => (`
+function createOffersTemplate(pointOffers, selectedOffers) {
+  return pointOffers.map((offer) => (`
     <div class="event__offer-selector">
       <input
         class="event__offer-checkbox visually-hidden"
-        id="event-offer-${item.title}-${item.id}"
+        id="event-offer-${offer.id}"
         type="checkbox"
-        name="event-offer-${item.type}" ${offers.includes(item.id) ? 'checked' : ''}>
-      <label class="event__offer-label" for="event-offer-${item.type}-${item.id}">
-          <span class="event__offer-title">${item.title}</span>
+        value="${offer.id}"
+        name="event-offer-${offer.title}" ${selectedOffers.includes(offer.id) ? 'checked' : ''}
+      >
+      <label class="event__offer-label" for="event-offer-${offer.id}">
+          <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
-          <span class="event__offer-price">${item.price}</span>
+          <span class="event__offer-price">${offer.price}</span>
         </label>
     </div>
   `)).join('');
@@ -43,11 +46,9 @@ function createOffersTemplate(offers, pointOffers) {
 
 //создаем шаблон для списка направлений
 
-function createDestinationsList(destinations) {
+function createDestinationsList(allDestinations) {
 
-  return (`
-    ${destinations.map((city) => `<option value="${city.name}"></option>`).join('')}
-  `);
+  return `${allDestinations.map((city) => `<option value="${city.name}"></option>`).join('')}`;
 }
 
 //создаем шаблон для направления
@@ -71,7 +72,7 @@ function createPhotosTemplate(photos) {
   return (`
     <div class="event__photos-container">
       <div class="event__photos-tape">
-        ${photos.map((item) => `<img class="event__photo" src="${item.src}" alt="${item.description}">`).join('')}
+        ${photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`).join('')}
       </div>
     </div>
   `);
@@ -88,35 +89,39 @@ function createDescriptionTemplate(pointDestination) {
 
 //создаем шаблон поинта
 
-function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestination, destinations) {
+function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinations) {
 
-  const {type, dateFrom, dateTo, price, offers} = point;
+  const {type, price, id, offers} = point;
+
+  const pointOffers = allOffers.find((offer) => offer.type === type).offers; //офферы по типу
+
+  const pointDestination = allDestinations.find((destination) => destination.id === point.destination);
 
   const typesList = createPointsTypeList(POINTS_TYPES, type); //получаем список типов ивентов для поинта
 
   //направления
 
-  const destinationsList = createDestinationsList(destinations); //выбор направления в меню
+  const destinationsList = createDestinationsList(allDestinations); //выбор направления в меню
   const destinationTemplate = createDestinationTemplate(pointDestination); //создаем шаблон для блочка Destination
 
   //офферы
 
-  const offersList = createOffersTemplate(offers, pointOffers); //собираем актуальные офферы под поинт
+  const offersList = pointOffers.length ? createOffersTemplate(pointOffers, offers) : ''; //собираем актуальные офферы под поинт
 
   //время
 
-  const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
-  const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
+  //const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
+  //const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
 
   return (`
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
-          <label class="event__type  event__type-btn" for="event-type-toggle-${point.id}">
+          <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
             <span class="visually-hidden">Choose event type</span>
             <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="${type}">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${point.id}" type="checkbox">
+          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
 
           <div class="event__type-list">
             <fieldset class="event__type-group">
@@ -129,30 +134,42 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
         </div>
 
         <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-${point.id}">
+          <label class="event__label  event__type-output" for="event-destination-${id}">
             ${type}
           </label>
 
-          <input class="event__input  event__input--destination" id="event-destination-${point.id}" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-${point.id}">
-          <datalist id="destination-list-${point.id}">
+          <input
+            class="event__input  event__input--destination"
+            id="event-destination-${id}"
+            type="text" name="event-destination"
+            value="${pointDestination ? pointDestination.name : ''}"
+            list="destination-list-${id}">
+            <datalist id="destination-list-${id}"
+          >
           ${destinationsList}
           </datalist>
         </div>
 
         <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-${point.id}">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-${point.id}" type="text" name="event-start-time" value="${startTimeInForm}">
+          <label class="visually-hidden" for="event-start-time-${id}">From</label>
+          <input
+            class="event__input  event__input--time"
+            id="event-start-time-${id}"
+            type="text"
+            name="event-start-time"
+            value=""
+          >
           &mdash;
-          <label class="visually-hidden" for="event-end-time-${point.id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${point.id}" type="text" name="event-end-time" value="${endTimeInForm}">
+          <label class="visually-hidden" for="event-end-time-${id}">To</label>
+          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="">
         </div>
 
         <div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-${point.id}">
+          <label class="event__label" for="event-price-${id}">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${point.id}" type="text" name="event-price" value="${price}">
+          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${price}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -179,39 +196,93 @@ function createPointTemplate(point = NEW_POINT_FORM, pointOffers, pointDestinati
   `);
 }
 
-export default class PointFormEditView extends AbstractView {
-  #point = null;
-  #pointOffers = null;
-  #pointDestination = null;
-  #destinations = null;
+export default class PointFormEditView extends AbstractStatefulView {
+  #allOffers = null;
+  #allDestinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
 
-  constructor ({point, pointOffers, pointDestination, destinations, onFormSubmit, onCloseEditFormButton}) {
+  constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton}) {
     super();
-    this.#point = point;
-    this.#pointOffers = pointOffers;
-    this.#pointDestination = pointDestination;
-    this.#destinations = destinations;
+    this._setState(PointFormEditView.parsePointToState(point));
+    this.#allOffers = allOffers;
+    this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
-
-    this.element.addEventListener('submit', this.#formSubmitHandler);
-
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this._restoreHandlers();
   }
 
   get template() {
-    return createPointTemplate (this.#point, this.#pointOffers, this.#pointDestination, this.#destinations);
+    return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
+
+  _restoreHandlers() {
+    this.element.addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+  }
+
+  reset(point) {
+    this._setState(PointFormEditView.parsePointToState(point));
+    this.updateElement(this._setState);
+  }
+
+  #typeChangeHandler = (evt) => {
+    const newType = evt.target.value;
+
+    this.updateElement({
+      type: newType,
+      offers: [],
+    });
+  };
+
+  #selectDestination(name) {
+    return this.#allDestinations.find((destination) => destination.name === name);
+  }
+
+  #destinationChangeHandler = (evt) => {
+    const newCity = this.#selectDestination(evt.target.value);
+
+    this.updateElement({
+      destination: newCity.id
+    });
+  };
+
+  #offerChangeHandler = (evt) => {
+    const newOffers = evt.target.checked
+      ? this._state.offers.concat(evt.target.value)
+      : this._state.offers.filter((offer) => offer !== evt.target.value);
+
+    this._setState({...this._state.point, offers: newOffers});
+  };
+
+  #priceChangeHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({
+      price: evt.target.value
+    });
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(PointFormEditView.parseStateToPoint(this._state));
   };
+
+  //для кнопки открытия/закрытия формы редактирования
 
   #closeEditFormButtonHandler = (evt) => {
     evt.preventDefault();
     this.#handleCloseEditFormButton();
   };
+
+  static parsePointToState(point) {
+    return {...point};
+  }
+
+  static parseStateToPoint(state) {
+    return {...state};
+  }
 }

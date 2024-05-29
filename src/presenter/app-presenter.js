@@ -16,11 +16,11 @@ const offersModel = new OffersModel(mockData);
 const tripModel = new TripModel(mockData);
 
 //header
-const headerInfoPresenter = new HeaderInfoPresenter ({headContainer: mainContentElement});
-const headerFilterPresenter = new HeaderFilterPresenter ({tripModel});
+const headerInfoPresenter = new HeaderInfoPresenter({headContainer: mainContentElement});
+const headerFilterPresenter = new HeaderFilterPresenter({tripModel});
 
 //экземпляр класса для поинтов маршрута
-const pointsPresenter = new PointsPresenter ({
+const pointsPresenter = new PointsPresenter({
   eventsContainerElement: eventsContainerElement,
   destinationsModel,
   tripModel,

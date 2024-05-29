@@ -6,7 +6,7 @@ export default class OffersModel {
     this.#offers = this.service.getOffers();
   }
 
-  get offers() {
+  get() {
     return this.#offers;
   }
 

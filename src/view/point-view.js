@@ -1,52 +1,52 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDate, calcPointDuration} from '../utils/utils.js';
-import {DateFormat} from '../const.js';
+//import {humanizeDate, calcPointDuration} from '../utils/utils.js';
+//import {DateFormat} from '../const.js';
 
-function createOffersListTemplate(offers, pointOffers) {
+function createOffersListTemplate(pointOffers, selectedOffers) {
   return (
     `<ul class="event__selected-offers">
-      ${pointOffers.map((item) => offers.includes(item.id) ? (
+    ${pointOffers.map((offer) => selectedOffers.includes(offer.id) ? (
       `<li class="event__offer">
-        <span class="event__offer-title">${item.title}</span>
+        <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">${item.price}</span>
+        <span class="event__offer-price">${offer.price}</span>
       </li>`)
       : '').join('')}
     </ul>`
   );
 }
 
-function createTripListTemplate ({point, pointOffers, pointDestination}) {
-  const {
-    price, dateFrom, dateTo, isFavourite, type, offers
-  } = point;
+function createTripListTemplate({point, allOffers, pointDestination}) {
+  const {price, isFavourite, type, offers} = point;
 
-  const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
-  const startTime = humanizeDate(dateFrom, DateFormat.TIME);
-  const endTime = humanizeDate(dateTo, DateFormat.TIME);
+  const pointOffers = allOffers.find((offer) => offer.type === type).offers;
+
+  //const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
+  //const startTime = humanizeDate(dateFrom, DateFormat.TIME);
+  //const endTime = humanizeDate(dateTo, DateFormat.TIME);
 
   return (`
     <li class="trip-events__item">
       <div class="event">
-          <time class="event__date" datetime="${startDateShort}">${startDateShort}</time>
+          <time class="event__date" datetime=""></time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
           <h3 class="event__title">${type} ${pointDestination.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime="2019-03-18T10:30">${startTime}</time>
+              <time class="event__start-time" datetime=""></time>
               &mdash;
-              <time class="event__end-time" datetime="2019-03-18T11:00">${endTime}</time>
+              <time class="event__end-time" datetime=""></time>
             </p>
-            <p class="event__duration">${calcPointDuration(dateFrom, dateTo)}</p>
+            <p class="event__duration"></p>
           </div>
           <p class="event__price">
             &euro;&nbsp;<span class="event__price-value">${price}</span>
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-          ${createOffersListTemplate(offers, pointOffers)}
+          ${createOffersListTemplate(pointOffers, offers)}
           </ul>
 
           <button class="event__favorite-btn ${isFavourite ? 'event__favorite-btn--active' : ''}" type="button">
@@ -65,15 +65,15 @@ function createTripListTemplate ({point, pointOffers, pointDestination}) {
 
 export default class PointView extends AbstractView {
   #point = null;
-  #pointOffers = null;
+  #allOffers = null;
   #pointDestination = null;
   #handleEventClick = null;
   #handleFavouriteClick = null;
 
-  constructor({point, pointOffers, pointDestination, onEditClick, onFavouriteClick}) {
+  constructor({point, allOffers, pointDestination, onEditClick, onFavouriteClick}) {
     super();
     this.#point = point;
-    this.#pointOffers = pointOffers;
+    this.#allOffers = allOffers;
     this.#pointDestination = pointDestination;
     this.#handleEventClick = onEditClick;
     this.#handleFavouriteClick = onFavouriteClick;
@@ -86,7 +86,7 @@ export default class PointView extends AbstractView {
   get template() {
     return createTripListTemplate({
       point: this.#point,
-      pointOffers: this.#pointOffers,
+      allOffers: this.#allOffers,
       pointDestination: this.#pointDestination
     });
   }
