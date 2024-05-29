@@ -1,6 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {POINTS_TYPES, NEW_POINT_FORM} from '../const.js';
-import {capitalizeFirstLetter} from '../utils/utils.js';
+import {POINTS_TYPES, NEW_POINT_FORM, DateFormat} from '../const.js';
+import {capitalizeFirstLetter, humanizeDate} from '../utils/utils.js';
+
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
@@ -91,7 +94,7 @@ function createDescriptionTemplate(pointDestination) {
 
 function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinations) {
 
-  const {type, price, id, offers} = point;
+  const {type, price, id, offers, dateFrom, dateTo} = point;
 
   const pointOffers = allOffers.find((offer) => offer.type === type).offers; //офферы по типу
 
@@ -110,8 +113,8 @@ function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinati
 
   //время
 
-  //const startTimeInForm = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
-  //const endTimeInForm = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
+  const startDateFormat = humanizeDate(dateFrom, DateFormat.DATE_IN_FORM); //время старта ивента
+  const endDateFormat = humanizeDate(dateTo, DateFormat.DATE_IN_FORM); //время финиша ивента
 
   return (`
     <form class="event event--edit" action="#" method="post">
@@ -157,11 +160,17 @@ function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinati
             id="event-start-time-${id}"
             type="text"
             name="event-start-time"
-            value=""
+            value="${startDateFormat}"
           >
           &mdash;
           <label class="visually-hidden" for="event-end-time-${id}">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="">
+          <input
+            class="event__input  event__input--time"
+            id="event-end-time-${id}"
+            type="text"
+            name="event-end-time"
+            value="${endDateFormat}"
+          >
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -201,6 +210,8 @@ export default class PointFormEditView extends AbstractStatefulView {
   #allDestinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
+  #datePickerFrom = null;
+  #datePickerTo = null;
 
   constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton}) {
     super();
@@ -223,6 +234,7 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.#setDatepicker();
   }
 
   reset(point) {
@@ -277,6 +289,69 @@ export default class PointFormEditView extends AbstractStatefulView {
     evt.preventDefault();
     this.#handleCloseEditFormButton();
   };
+
+  //работа с библиотекой flatpickr
+
+  #setDatepicker = () => {
+    const startDatePickr = this.element.querySelector('.event__input--time[name="event-start-time"]');
+    const endDatePickr = this.element.querySelector('.event__input--time[name="event-end-time"]');
+
+    const flatpickerConfig = {
+      dateFormat: 'd/m/y H:i',
+      enableTime: true,
+      locale: {
+        firstDayOfWeek: 1,
+      },
+      'time_24hr': true,
+    };
+
+    this.#datePickerFrom = flatpickr(startDatePickr, {
+      ...flatpickerConfig,
+      defaultDate: this._state.dateFrom,
+      onClose: this.#closeFromDateHandler,
+      maxDate: this._state.dateTo
+    });
+
+    this.#datePickerTo = flatpickr(endDatePickr, {
+      ...flatpickerConfig,
+      defaultDate: this._state.dateTo,
+      onClose: this.#closeToDateHandler,
+      minDate: this._state.dateFrom,
+    });
+
+  };
+
+  #closeFromDateHandler = ([selectedDate]) => {
+    this._setState({
+      ...this._state,
+      dateFrom: selectedDate
+    });
+
+    this.#datePickerTo.set('minDate'. selectedDate);
+  };
+
+  #closeToDateHandler = ([selectedDate]) => {
+    this._setState({
+      ...this._state,
+      dateTo: selectedDate
+    });
+
+    this.#datePickerFrom.set('maxDate'. selectedDate);
+  };
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datePickerFrom) {
+      this.#datePickerFrom.destroy();
+      this.#datePickerFrom = null;
+    }
+
+    if (this.#datePickerTo) {
+      this.#datePickerTo.destroy();
+      this.#datePickerTo = null;
+    }
+  }
 
   static parsePointToState(point) {
     return {...point};
