@@ -75,6 +75,11 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
+const EDIT_TYPE = {
+  EDITING: 'EDITING',
+  CREATING: 'CREATING',
+};
+
 const SortTypes = {
   DAY: 'day',
   EVENT: 'event',
@@ -91,6 +96,24 @@ const EnabledSortTypes = {
   [SortTypes.OFFER]: false,
 };
 
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT:'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT'
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const EMPTY_LIST_MESSAGE = {
+  EVERYTHING: 'Click New Event to create your first point',
+  FUTURE: 'There are no future events now',
+  PRESENT: 'There are no present events now',
+  PAST: 'There are no past events now'
+};
 
 export {
   DESTINATIONS_COUNT,
@@ -102,6 +125,10 @@ export {
   MSEC_IN_HOUR,
   MSEC_IN_DAY,
   Mode,
+  EDIT_TYPE,
   SortTypes,
-  EnabledSortTypes
+  EnabledSortTypes,
+  UserAction,
+  UpdateType,
+  EMPTY_LIST_MESSAGE
 };

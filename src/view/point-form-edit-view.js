@@ -1,9 +1,10 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {POINTS_TYPES, NEW_POINT_FORM, DateFormat} from '../const.js';
+import {POINTS_TYPES, NEW_POINT_FORM, DateFormat, EDIT_TYPE} from '../const.js';
 import {capitalizeFirstLetter, humanizeDate} from '../utils/utils.js';
 
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
@@ -212,8 +213,9 @@ export default class PointFormEditView extends AbstractStatefulView {
   #handleCloseEditFormButton = null;
   #datePickerFrom = null;
   #datePickerTo = null;
+  #currentformType = EDIT_TYPE.EDITING;
 
-  constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton}) {
+  constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton, formType}) {
     super();
     this._setState(PointFormEditView.parsePointToState(point));
     this.#allOffers = allOffers;
@@ -221,15 +223,24 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
     this._restoreHandlers();
+    this.#currentformType = formType;
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations);
+    return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations, this.#currentformType);
   }
 
   _restoreHandlers() {
+    if(this.#currentformType === EDIT_TYPE.EDITING) {
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+    }
+
+    if(this.#currentformType === EDIT_TYPE.CREATING) {
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+    }
+
     this.element.addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
@@ -352,6 +363,11 @@ export default class PointFormEditView extends AbstractStatefulView {
       this.#datePickerTo = null;
     }
   }
+
+  #formDeleteHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseEditFormButton(PointFormEditView.parseStateToWaypoint(this._state, this.#allDestinations, this.#allOffers));
+  };
 
   static parsePointToState(point) {
     return {...point};

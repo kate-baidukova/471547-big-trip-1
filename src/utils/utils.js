@@ -79,6 +79,12 @@ const sorting = {
   }
 };
 
+function isBigDifference(pointA, pointB) {
+  return pointA.dateFrom !== pointB.dateFrom
+  || pointA.price !== pointB.price
+  || calcPointDuration(pointA.dateFrom, pointA.dateTo) !== calcPointDuration(pointB.dateFrom, pointB.dateTo);
+}
+
 export {
   humanizeDate,
   calcPointDuration,
@@ -88,4 +94,8 @@ export {
   capitalizeFirstLetter,
   updateItem,
   sorting,
+  isBigDifference,
+  sortPointsByDate,
+  sortPointsByTime,
+  sortPointsByPrice
 };

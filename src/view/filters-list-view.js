@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import RadioListView from './radio-list.js';
 import {capitalizeFirstLetter} from '../utils/utils.js';
 
 function createFilterItemTemplate(filter, isChecked) {
@@ -28,15 +28,8 @@ function createFiltersListTemplate(filtersItems) {
   `);
 }
 
-export default class FiltersListView extends AbstractView {
-  #filters = null;
-
-  constructor({filters}) {
-    super();
-    this.#filters = filters;
-  }
-
+export default class FiltersListView extends RadioListView {
   get template() {
-    return createFiltersListTemplate(this.#filters);
+    return createFiltersListTemplate(this._items);
   }
 }
