@@ -1,6 +1,7 @@
 import {render, replace, remove} from '../framework/render.js';
 import {Mode, EDIT_TYPE, UserAction, UpdateType} from '../const.js';
 import {isBigDifference} from '../utils/utils.js';
+
 import PointFormEditView from '../view/point-form-edit-view.js';
 import PointView from '../view/point-view.js';
 

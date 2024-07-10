@@ -9,7 +9,7 @@ export default class NewPointPresenter {
 
   #addPointComponent = null;
   #onDataChange = null;
-  #onDestroy = null;
+  #handleDestroy = null;
 
   constructor ({
     container,
@@ -22,7 +22,7 @@ export default class NewPointPresenter {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#onDataChange = onDataChange;
-    this.#onDestroy = onDestroy;
+    this.#handleDestroy = onDestroy;
   }
 
   init() {
@@ -48,7 +48,7 @@ export default class NewPointPresenter {
     }
     remove(this.#addPointComponent);
     this.#addPointComponent = null;
-    this.#onDestroy({isCanceled});
+    this.#handleDestroy({isCanceled});
     document.removeEventListener('keydown', this.#escKeyEventEdit);
   }
 

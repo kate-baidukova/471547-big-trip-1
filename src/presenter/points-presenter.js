@@ -1,23 +1,34 @@
 import {render, remove} from '../framework/render.js';
 
-import PointsView from '../view/points-view.js';
-import PointsListView from '../view/points-list-view.js';
-import PointPresenter from './point-presenter.js';
+import {
+  sortPointsByPrice,
+  sortPointsByDate,
+  sortPointsByTime,
+  sorting
+} from '../utils/utils.js';
 
-import NewPointPresenter from './new-point-presenter.js';
-import NewPointButtonPresenter from './new-point-button-presenter.js';
-
-import MessageView from '../view/message-view.js';
-
-import SortingView from '../view/sorting-view.js';
-import {sortPointsByPrice, sortPointsByDate, sortPointsByTime, sorting} from '../utils/utils.js';
+import {
+  SortTypes,
+  EnabledSortTypes,
+  UpdateType,
+  UserAction,
+  FiltersTypes
+} from '../const.js';
 
 import {filter} from '../utils/filter.js';
 
-import {SortTypes, EnabledSortTypes, UpdateType, UserAction, FiltersTypes} from '../const.js';
+import PointsView from '../view/points-view.js';
+import PointsListView from '../view/points-list-view.js';
+import NewPointButtonView from '../view/new-point-button-view.js';
+import MessageView from '../view/message-view.js';
+import SortingView from '../view/sorting-view.js';
+
+import NewPointPresenter from './new-point-presenter.js';
+import PointPresenter from './point-presenter.js';
 
 export default class PointsPresenter {
   #eventsContainerElement = null;
+  #headerContainerElement = null;
 
   #tripComponent = new PointsView();
   #tripListComponent = new PointsListView();
@@ -31,7 +42,6 @@ export default class PointsPresenter {
   #filterModel = null;
 
   #newPointPresenter = null;
-  #newPointButtonPresenter = null;
   #emptyListComponent = null;
 
   #sortTypes = [];
@@ -43,15 +53,14 @@ export default class PointsPresenter {
 
   #isCreating = false;
 
-  constructor({eventsContainerElement, destinationsModel, tripModel, offersModel, filterModel}) {
+  constructor({eventsContainerElement, headerContainerElement, destinationsModel, tripModel, offersModel, filterModel}) {
     this.#eventsContainerElement = eventsContainerElement;
+    this.#headerContainerElement = headerContainerElement;
 
     this.#destinationsModel = destinationsModel;
     this.#tripModel = tripModel;
     this.#offersModel = offersModel;
     this.#filterModel = filterModel;
-
-    this.#newPointButtonPresenter = new NewPointButtonPresenter();
 
     this.#newPointPresenter = new NewPointPresenter({
       container: this.#eventsContainerElement,
@@ -87,6 +96,7 @@ export default class PointsPresenter {
     this.#tripPoints = [...this.#tripModel.get()];
 
     if (this.#tripPoints.length) {
+      this.#renderCreatePointButton();
       this.#renderSort();
       this.#renderTripList();
       this.#renderPoints();
@@ -106,13 +116,20 @@ export default class PointsPresenter {
       remove(this.#noRoutePointComponent);
     }
     if (resetSortType) {
-      this.#currentSortType = SortTypes.DEFAULT;
+      this.#currentSortType = SortTypes.DAY;
     }
   }
 
   #clearPointsList = () => {
     this.#pointsPresenter.forEach((presenter) => presenter.destroy());
     this.#pointsPresenter.clear();
+  };
+
+  #renderCreatePointButton = () => {
+    const newPointButtonComponent = new NewPointButtonView({
+      onClick: () => {},
+    });
+    render(newPointButtonComponent, this.#headerContainerElement);
   };
 
   #handleModelEvent = (updateType, data) => {
@@ -161,11 +178,13 @@ export default class PointsPresenter {
   #renderTripList() {
     render(this.#tripListComponent, this.#eventsContainerElement);
     this.#handleSortTypeChange(this.#defaultSortType);
-    if(this.points.length === 0) {
+
+    if(this.#tripPoints.length === 0) {
       this.#renderEmptyList();
+
       return;
     }
-    this.#renderPoints(this.points);
+    this.#renderPoints(this.#tripPoints);
   }
 
   #handleSortTypeChange = (sortType) => {
@@ -202,9 +221,10 @@ export default class PointsPresenter {
     this.#newPointPresenter.init();
   }
 
-  #newPointDestroyHandler = () => {
+  #newPointDestroyHandler = ({isCanceled}) => {
     this.#isCreating = false;
-    if(this.points.length === 0) {
+
+    if(this.#pointsPresenter.length && isCanceled) {
       this.#clearPointsList();
       this.#renderTripList();
     }
