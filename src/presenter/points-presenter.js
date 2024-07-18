@@ -51,8 +51,6 @@ export default class PointsPresenter {
 
   #filterType = FiltersTypes.EVERYTHING;
 
-  #isCreating = false;
-
   constructor({eventsContainerElement, headerContainerElement, destinationsModel, tripModel, offersModel, filterModel}) {
     this.#eventsContainerElement = eventsContainerElement;
     this.#headerContainerElement = headerContainerElement;
@@ -127,7 +125,7 @@ export default class PointsPresenter {
 
   #renderCreatePointButton = () => {
     const newPointButtonComponent = new NewPointButtonView({
-      onClick: () => {},
+      onClick: this.#buttonClickHandler,
     });
     render(newPointButtonComponent, this.#headerContainerElement);
   };
@@ -149,14 +147,16 @@ export default class PointsPresenter {
   };
 
   #handleViewAction = (actionType, updateType, update) => {
-    if (actionType === UserAction.UPDATE_POINT) {
-      this.#tripModel.updatePoint(updateType, update);
-    }
-    if (actionType === UserAction.ADD_POINT) {
-      this.#tripModel.addPoint(updateType, update);
-    }
-    if (actionType === UserAction.DELETE_POINT) {
-      this.#tripModel.deletePoint(updateType, update);
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#tripModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#tripModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#tripModel.deletePoint(updateType, update);
+        break;
     }
   };
 
@@ -213,18 +213,15 @@ export default class PointsPresenter {
     render(this.#emptyListComponent, this.#eventsContainerElement);
   }
 
-  // если в презентере new-point-button он есть, то нужен ли здесь?
-  #buttonClickHandler() {
-    this.#isCreating = true;
+  #buttonClickHandler = () => {
     this.#currentSortType = SortTypes.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FiltersTypes.EVERYTHING);
     this.#newPointPresenter.init();
-  }
+  };
 
-  #newPointDestroyHandler = ({isCanceled}) => {
-    this.#isCreating = false;
+  #newPointDestroyHandler = () => {
 
-    if(this.#pointsPresenter.length && isCanceled) {
+    if(this.#pointsPresenter.length === 0) {
       this.#clearPointsList();
       this.#renderTripList();
     }
