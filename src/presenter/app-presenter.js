@@ -40,7 +40,7 @@ const pointsPresenter = new PointsPresenter({
 });
 
 
-export default class MainPresenter {
+export default class AppPresenter {
   init() {
     headerInfoPresenter.init();
     //headerFilterPresenter.init();

@@ -8,11 +8,11 @@ export default class TripModel extends Observable {
 
   constructor(service) {
     super();
-    this.service = service;
-    this.#points = this.service.getPoints();
+    this.#service = service;
+    this.#points = this.#service.getPoints();
   }
 
-  get() {
+  get points() {
     return this.#points;
   }
 

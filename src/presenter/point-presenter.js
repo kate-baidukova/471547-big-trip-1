@@ -1,5 +1,5 @@
 import {render, replace, remove} from '../framework/render.js';
-import {Mode, EDIT_TYPE, UserAction, UpdateType} from '../const.js';
+import {Mode, FORM_TYPE, UserAction, UpdateType} from '../const.js';
 import {isBigDifference} from '../utils/utils.js';
 
 import PointFormEditView from '../view/point-form-edit-view.js';
@@ -54,7 +54,7 @@ export default class PointPresenter {
       allDestinations: this.#destinationsModel.get(),
       onFormSubmit: this.#pointEditSubmitHandler,
       onCloseEditFormButton: this.#pointCloseEditHandler,
-      formType: EDIT_TYPE.EDITING,
+      formType: FORM_TYPE.EDITING,
     });
 
     if (prevPointComponent === null || prevEditPointComponent === null) {

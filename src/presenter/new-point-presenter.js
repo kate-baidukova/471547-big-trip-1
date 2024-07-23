@@ -1,12 +1,12 @@
 import {RenderPosition, remove, render} from '../framework/render.js';
 import PointFormEditView from '../view/point-form-edit-view.js';
-import {EDIT_TYPE, UpdateType, UserAction} from '../const.js';
+import {FORM_TYPE, UpdateType, UserAction} from '../const.js';
 
 export default class NewPointPresenter {
   #container = null;
   #destinationsModel = [];
   #offersModel = [];
-
+  #point = null;
   #addPointComponent = null;
   #onDataChange = null;
   #handleDestroy = null;
@@ -16,13 +16,13 @@ export default class NewPointPresenter {
     destinationsModel,
     offersModel,
     onDataChange,
-    onDestroy
+    onNewPointDestroy
   }) {
     this.#container = container;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#onDataChange = onDataChange;
-    this.#handleDestroy = onDestroy;
+    this.#handleDestroy = onNewPointDestroy;
   }
 
   init() {
@@ -31,11 +31,12 @@ export default class NewPointPresenter {
     }
 
     this.#addPointComponent = new PointFormEditView({
-      allDestinations: this.#destinationsModel.get(),
+      point: this.#point,
       allOffers: this.#offersModel.get(),
+      allDestinations: this.#destinationsModel.get(),
       onFormSubmit: this.#handleFormSubmit,
       onCloseEditFormButton: this.#handleCloseEditFormButton,
-      formType: EDIT_TYPE.CREATING,
+      formType: FORM_TYPE.CREATING,
     });
 
     render(this.#addPointComponent, this.#container, RenderPosition.AFTERBEGIN);
@@ -58,7 +59,7 @@ export default class NewPointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#onDataChange(
-      UserAction.CREATE_POINT,
+      UserAction.ADD_POINT,
       UpdateType.MINOR,
       point
     );

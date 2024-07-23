@@ -75,7 +75,7 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const EDIT_TYPE = {
+const FORM_TYPE = {
   EDITING: 'EDITING',
   CREATING: 'CREATING',
 };
@@ -125,7 +125,7 @@ export {
   MSEC_IN_HOUR,
   MSEC_IN_DAY,
   Mode,
-  EDIT_TYPE,
+  FORM_TYPE,
   SortTypes,
   EnabledSortTypes,
   UserAction,
