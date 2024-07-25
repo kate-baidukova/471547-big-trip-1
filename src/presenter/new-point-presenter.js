@@ -31,7 +31,6 @@ export default class NewPointPresenter {
     }
 
     this.#addPointComponent = new PointFormEditView({
-      point: this.#point,
       allOffers: this.#offersModel.get(),
       allDestinations: this.#destinationsModel.get(),
       onFormSubmit: this.#handleFormSubmit,

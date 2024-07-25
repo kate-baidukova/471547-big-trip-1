@@ -58,7 +58,10 @@ function createDestinationsList(allDestinations) {
 //создаем шаблон для направления
 
 function createDestinationTemplate(pointDestination) {
-  //const {photos} = pointDestination;
+  if (!pointDestination) {
+    return '';
+  }
+
   const photosTemplate = createPhotosTemplate(pointDestination.photos);
   const descriptionTemplate = createDescriptionTemplate(pointDestination);
 

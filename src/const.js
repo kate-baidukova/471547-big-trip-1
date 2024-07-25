@@ -42,7 +42,7 @@ const FiltersTypes = {
 
 const NEW_POINT_FORM = {
   id: 1,
-  type: 'Bus',
+  type: 'bus',
   offers: [],
   destination: '',
   dateFrom: '',

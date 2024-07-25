@@ -1,4 +1,4 @@
-import {render, remove} from '../framework/render.js';
+import {render, remove, RenderPosition} from '../framework/render.js';
 
 import {
   sortPointsByPrice,
@@ -42,6 +42,7 @@ export default class PointsPresenter {
 
   #newPointPresenter = null;
   #emptyListComponent = null;
+  #newPointButtonComponent = null;
 
   #sortTypes = [];
   #sortComponent = null;
@@ -96,10 +97,9 @@ export default class PointsPresenter {
   }
 
   init() {
-
     this.#renderCreatePointButton();
-    this.#renderSort();
     this.#renderTripList();
+    this.#renderSort();
   }
 
   #clearTripForm({resetSortType = false} = {}) {
@@ -123,22 +123,22 @@ export default class PointsPresenter {
   };
 
   #renderCreatePointButton = () => {
-    const newPointButtonComponent = new NewPointButtonView({
+    this.#newPointButtonComponent = new NewPointButtonView({
       onClick: this.#buttonClickHandler,
     });
-    render(newPointButtonComponent, this.#headerContainerElement);
+    render(this.#newPointButtonComponent, this.#headerContainerElement);
   };
 
   #buttonClickHandler = () => {
     //this.#isCreating = true;
-    this.newPointButtonComponent.element.disabled = true;
+    this.#newPointButtonComponent.setDisabled();
     this.#currentSortType = SortTypes.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FiltersTypes.EVERYTHING);
     this.#newPointPresenter.init();
   };
 
   #newPointDestroyHandler = () => {
-    this.newPointButtonComponent.element.disabled = true;
+    this.#newPointButtonComponent.setEnabled();
     //this.#isCreating = false;
 
     if(this.#pointsPresenter.length === 0) {
@@ -193,7 +193,7 @@ export default class PointsPresenter {
       onSortTypeChange: this.#handleSortTypeChange,
     });
 
-    render(this.#sortComponent, this.#eventsContainerElement);
+    render(this.#sortComponent, this.#eventsContainerElement, RenderPosition.BEFOREBEGIN);
   }
 
   #handleSortTypeChange = (sortType) => {
