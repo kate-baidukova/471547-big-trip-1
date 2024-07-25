@@ -1,9 +1,10 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {POINTS_TYPES, NEW_POINT_FORM, DateFormat} from '../const.js';
+import {POINTS_TYPES, NEW_POINT_FORM, DateFormat, FORM_TYPE} from '../const.js';
 import {capitalizeFirstLetter, humanizeDate} from '../utils/utils.js';
 
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
 
 //создаем шаблон для типов инвентов/POINTS_TYPES
 
@@ -57,8 +58,11 @@ function createDestinationsList(allDestinations) {
 //создаем шаблон для направления
 
 function createDestinationTemplate(pointDestination) {
-  const {photos} = pointDestination;
-  const photosTemplate = createPhotosTemplate(photos);
+  if (!pointDestination) {
+    return '';
+  }
+
+  const photosTemplate = createPhotosTemplate(pointDestination.photos);
   const descriptionTemplate = createDescriptionTemplate(pointDestination);
 
   return (`
@@ -90,9 +94,24 @@ function createDescriptionTemplate(pointDestination) {
   `);
 }
 
+function createButtonTemplate(isCreating) {
+  if (isCreating) {
+    return `
+      <button class="event__reset-btn" type="reset">Cancel</button>
+    `;
+  }
+
+  return `
+    <button class="event__reset-btn" type="reset">Delete</button>
+    <button class="event__rollup-btn" type="button">
+      <span class="visually-hidden">Open event</span>
+    </button>
+  `;
+}
+
 //создаем шаблон поинта
 
-function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinations) {
+function createEditPointTemplate(point, allOffers, allDestinations, formType) {
 
   const {type, price, id, offers, dateFrom, dateTo} = point;
 
@@ -110,6 +129,8 @@ function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinati
   //офферы
 
   const offersList = pointOffers.length ? createOffersTemplate(pointOffers, offers) : ''; //собираем актуальные офферы под поинт
+
+  const isCreating = formType === FORM_TYPE.CREATING;
 
   //время
 
@@ -178,14 +199,13 @@ function createEditPointTemplate(point = NEW_POINT_FORM, allOffers, allDestinati
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" value="${price}">
+          <input class="event__input  event__input--price" id="event-price-${id}" type="number" name="event-price" value="${price}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">Delete</button>
-        <button class="event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
+
+        ${createButtonTemplate(isCreating)}
+
       </header>
       <section class="event__details">
         <section class="event__section  event__section--offers">
@@ -212,8 +232,9 @@ export default class PointFormEditView extends AbstractStatefulView {
   #handleCloseEditFormButton = null;
   #datePickerFrom = null;
   #datePickerTo = null;
+  #currentformType = FORM_TYPE.EDITING;
 
-  constructor ({point, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton}) {
+  constructor ({point = NEW_POINT_FORM, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton, formType}) {
     super();
     this._setState(PointFormEditView.parsePointToState(point));
     this.#allOffers = allOffers;
@@ -221,15 +242,24 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
     this._restoreHandlers();
+    this.#currentformType = formType;
   }
 
   get template() {
-    return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations);
+    return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations, this.#currentformType);
   }
 
   _restoreHandlers() {
+    if(this.#currentformType === FORM_TYPE.EDITING) {
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+    }
+
+    if(this.#currentformType === FORM_TYPE.CREATING) {
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+    }
+
     this.element.addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
@@ -239,7 +269,6 @@ export default class PointFormEditView extends AbstractStatefulView {
 
   reset(point) {
     this._setState(PointFormEditView.parsePointToState(point));
-    this.updateElement(this._setState);
   }
 
   #typeChangeHandler = (evt) => {
@@ -352,6 +381,11 @@ export default class PointFormEditView extends AbstractStatefulView {
       this.#datePickerTo = null;
     }
   }
+
+  #formDeleteHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseEditFormButton();
+  };
 
   static parsePointToState(point) {
     return {...point};

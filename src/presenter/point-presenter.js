@@ -1,15 +1,23 @@
 import {render, replace, remove} from '../framework/render.js';
-import {Mode} from '../const.js';
+import {Mode, FORM_TYPE, UserAction, UpdateType} from '../const.js';
+import {isBigDifference} from '../utils/utils.js';
+
 import PointFormEditView from '../view/point-form-edit-view.js';
 import PointView from '../view/point-view.js';
 
 export default class PointPresenter {
   #pointsListContainer = null;
+
   #destinationsModel = null;
   #offersModel = null;
+  #editPoint = null;
+  #destination = null;
+  #offer = null;
+  #offers = null;
   #point = null;
   #pointComponent = null;
   #editPointComponent = null;
+
   #onDataChange = null;
   #onModeChange = null;
   #mode = Mode.DEFAULT;
@@ -24,6 +32,10 @@ export default class PointPresenter {
 
   init(point) {
     this.#point = point;
+    this.#editPoint = this.#point;
+    this.#destination = this.#destinationsModel.getById(this.#editPoint.destination);
+    this.#offer = this.#offersModel.getByType(this.#editPoint.type);
+    this.#offers = this.#offer.offers;
 
     const prevPointComponent = this.#pointComponent;
     const prevEditPointComponent = this.#editPointComponent;
@@ -31,7 +43,7 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({
       point: this.#point,
       allOffers: this.#offersModel.get(),
-      pointDestination: this.#destinationsModel.getById(point.destination),
+      pointDestination: this.#destination,
       onEditClick: this.#pointEditHandler,
       onFavouriteClick: this.#pointFavouriteHandler
     });
@@ -40,9 +52,9 @@ export default class PointPresenter {
       point: this.#point,
       allOffers: this.#offersModel.get(),
       allDestinations: this.#destinationsModel.get(),
-
       onFormSubmit: this.#pointEditSubmitHandler,
       onCloseEditFormButton: this.#pointCloseEditHandler,
+      formType: FORM_TYPE.EDITING,
     });
 
     if (prevPointComponent === null || prevEditPointComponent === null) {
@@ -104,15 +116,20 @@ export default class PointPresenter {
   };
 
   #pointEditSubmitHandler = (point) => {
+    const isMinorUpdate = isBigDifference(point, this.#point);
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      point,
+      this.#destination,
+      this.#offers);
     this.#replaceFormToPoint();
-    this.#onDataChange(point);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #pointFavouriteHandler = () => {
-    this.#onDataChange({
-      ...this.#point,
-      isFavourite: !this.#point.isFavourite
-    });
+    this.#onDataChange(UserAction.UPDATE_POINT,
+      UpdateType.PATCH, {...this.#point, isFavourite: !this.#point.isFavourite});
   };
 }
+

@@ -57,4 +57,15 @@ export default class MockData {
       return createPoint(type, destinationId, offersIds);
     });
   }
+
+  updatePoint(updatePoint) {
+    return updatePoint;
+  }
+
+  addPoint(data) {
+    return data;
+  }
+
+  deletePoint() {
+  }
 }
