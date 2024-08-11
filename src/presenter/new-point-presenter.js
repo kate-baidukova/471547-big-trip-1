@@ -52,6 +52,24 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#escKeyEventEdit);
   }
 
+  setSaving = () => {
+    this.#addPointComponent.updateElement({
+      isDisabled: true,
+      isSaving: true
+    });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#addPointComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#addPointComponent.shake(resetFormState);
+  };
+
   #handleCloseEditFormButton = () => {
     this.destroy();
   };

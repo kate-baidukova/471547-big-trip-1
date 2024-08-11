@@ -131,5 +131,39 @@ export default class PointPresenter {
     this.#onDataChange(UserAction.UPDATE_POINT,
       UpdateType.PATCH, {...this.#point, isFavourite: !this.#point.isFavourite});
   };
+
+  setSaving = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#editPointComponent.updateElement({
+        isDisabled: true,
+        isSaving: true
+      });
+    }
+  };
+
+  setAborting = () => {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#editPointComponent.shake();
+    }
+
+    if (this.#mode === Mode.EDITING) {
+      const resetFormState = () => {
+        this.#editPointComponent.updateElement({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      };
+
+      this.#editPointComponent.shake(resetFormState);
+    }
+  };
+
+  setRemove = () => {
+    this.#editPointComponent.updateElement({
+      isDisabled: true,
+      isDeleting: true,
+    });
+  };
 }
 
