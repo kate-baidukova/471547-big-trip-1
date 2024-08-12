@@ -62,7 +62,7 @@ function createDestinationTemplate(pointDestination) {
     return '';
   }
 
-  const photosTemplate = createPhotosTemplate(pointDestination.photos);
+  const photosTemplate = createPhotosTemplate(pointDestination.pictures);
   const descriptionTemplate = createDescriptionTemplate(pointDestination);
 
   return (`

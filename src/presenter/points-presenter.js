@@ -121,12 +121,6 @@ export default class PointsPresenter {
     if (resetSortType) {
       this.#currentSortType = SortTypes.DAY;
     }
-
-    if (UpdateType === UpdateType.INIT) {
-      this.#isLoading = false;
-      remove(this.#loadingComponent);
-      this.#renderTripList();
-    }
   }
 
   #clearPointsList = () => {
@@ -175,6 +169,12 @@ export default class PointsPresenter {
         resetSortType: true
       });
 
+      this.#renderTripList();
+    }
+
+    if (updateType === UpdateType.INIT) {
+      this.#isLoading = false;
+      remove(this.#loadingComponent);
       this.#renderTripList();
     }
 
@@ -252,7 +252,7 @@ export default class PointsPresenter {
       return;
     }
 
-    if (this.points.length === 0 && !this.#isCreating) {
+    if (points.length === 0 && !this.#isCreating) {
       this.#renderEmptyList();
       return;
     }
@@ -272,7 +272,7 @@ export default class PointsPresenter {
 
   #renderEmptyList() {
     this.#emptyListComponent = new MessageView({
-      filterType: this.#filterModel.get(),
+      filterType: this.#filterModel.filter,
     });
     render(this.#emptyListComponent, this.#eventsContainerElement);
   }

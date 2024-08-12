@@ -17,11 +17,11 @@ export default class TripModel extends Observable {
 
   async init() {
     try {
-      await Promise.all(
-        [this.#destinationsModel.init()],
+      const [points] = await Promise.all([
+        this.#service.points,
+        this.#destinationsModel.init(),
         this.#offersModel.init()
-      );
-      const points = await this.#service.points;
+      ]);
       this.#points = points.map(adaptToClient);
       this._notify(UpdateType.INIT, {isError: false});
 
