@@ -113,7 +113,7 @@ function createButtonTemplate(isCreating) {
 
 function createEditPointTemplate(point, allOffers, allDestinations, formType) {
 
-  const {type, price, id, offers, dateFrom, dateTo} = point;
+  const {type, basePrice, id, offers, dateFrom, dateTo} = point;
 
   const pointOffers = allOffers.find((offer) => offer.type === type).offers; //офферы по типу
 
@@ -199,7 +199,7 @@ function createEditPointTemplate(point, allOffers, allDestinations, formType) {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-${id}" type="number" name="event-price" value="${price}">
+          <input class="event__input  event__input--price" id="event-price-${id}" type="number" name="event-price" value="${basePrice}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -303,7 +303,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   #priceChangeHandler = (evt) => {
     evt.preventDefault();
     this._setState({
-      price: evt.target.value
+      basePrice: evt.target.value
     });
   };
 

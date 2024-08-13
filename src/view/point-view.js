@@ -17,7 +17,7 @@ function createOffersListTemplate(pointOffers, selectedOffers) {
 }
 
 function createTripListTemplate({point, allOffers, pointDestination}) {
-  const {price, isFavourite, type, offers, dateFrom, dateTo} = point;
+  const {basePrice, isFavourite, type, offers, dateFrom, dateTo} = point;
   const pointOffers = allOffers.find((offer) => offer.type === type).offers;
 
   const startDateShort = humanizeDate(dateFrom, DateFormat.DATE);
@@ -41,7 +41,7 @@ function createTripListTemplate({point, allOffers, pointDestination}) {
             <p class="event__duration">${calcPointDuration(dateFrom, dateTo)}</p>
           </div>
           <p class="event__price">
-            &euro;&nbsp;<span class="event__price-value">${price}</span>
+            &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">

@@ -43,7 +43,7 @@ export default class PointsPresenter {
   #tripModel = null;
   #destinationsModel = null;
   #offersModel = null;
-  #filterModel = null;
+  #filtersModel = null;
 
   #newPointPresenter = null;
   #emptyListComponent = null;
@@ -59,14 +59,14 @@ export default class PointsPresenter {
   #isCreating = false;
   #uiBlocker = new UiBlocker({lowerLimit: TimeLimit.LOWER_LIMIT, upperLimit: TimeLimit.UPPER_LIMIT});
 
-  constructor({eventsContainerElement, headerContainerElement, destinationsModel, tripModel, offersModel, filterModel}) {
+  constructor({eventsContainerElement, headerContainerElement, destinationsModel, tripModel, offersModel, filtersModel}) {
     this.#eventsContainerElement = eventsContainerElement;
     this.#headerContainerElement = headerContainerElement;
 
     this.#destinationsModel = destinationsModel;
     this.#tripModel = tripModel;
     this.#offersModel = offersModel;
-    this.#filterModel = filterModel;
+    this.#filtersModel = filtersModel;
 
     this.#newPointPresenter = new NewPointPresenter({
       container: this.#eventsContainerElement,
@@ -77,11 +77,11 @@ export default class PointsPresenter {
     });
 
     this.#tripModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#filtersModel.addObserver(this.#handleModelEvent);
   }
 
   get routePoints() {
-    this.#filterType = this.#filterModel.filter;
+    this.#filterType = this.#filtersModel.get();
 
     const currentPoints = this.#tripModel.points;
 
@@ -139,7 +139,7 @@ export default class PointsPresenter {
     //this.#isCreating = true;
     this.#newPointButtonComponent.setDisabled();
     this.#currentSortType = SortTypes.DAY;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FiltersTypes.EVERYTHING);
+    this.#filtersModel.setFilter(UpdateType.MAJOR, FiltersTypes.EVERYTHING);
     this.#newPointPresenter.init();
   };
 
@@ -272,7 +272,7 @@ export default class PointsPresenter {
 
   #renderEmptyList() {
     this.#emptyListComponent = new MessageView({
-      filterType: this.#filterModel.filter,
+      filterType: this.#filtersModel.filter,
     });
     render(this.#emptyListComponent, this.#eventsContainerElement);
   }

@@ -1,11 +1,11 @@
 import HeaderInfoPresenter from './header-info-presenter.js';
-//import HeaderFilterPresenter from './header-filter-presenter.js';
+import HeaderFilterPresenter from './header-filter-presenter.js';
 import PointsPresenter from './points-presenter.js';
 
 import DestinationsModel from '../model/destinations-model.js';
 import OffersModel from '../model/offers-model.js';
 import TripModel from '../model/trip-model.js';
-import FiltersModel from '../model/filter-model.js';
+import FiltersModel from '../model/filters-model.js';
 
 import PointApiService from '../service/api-service.js';
 import {END_POINT, AUTHORIZATION} from '../const.js';
@@ -22,16 +22,19 @@ const tripModel = new TripModel(
   destinationsModel,
   offersModel,
 );
-const filterModel = new FiltersModel();
+const filtersModel = new FiltersModel();
 
 //header
+
 const headerInfoPresenter = new HeaderInfoPresenter({
   headContainer: mainContentElement,
-  headerFiltersList: siteFilterContainer,
-  tripModel
 });
-//const headerFilterPresenter = new HeaderFilterPresenter({tripModel});
 
+const headerFilterPresenter = new HeaderFilterPresenter({
+  filterContainer: siteFilterContainer,
+  tripModel: tripModel,
+  filtersModel: filtersModel
+});
 
 //экземпляр класса для поинтов маршрута
 const pointsPresenter = new PointsPresenter({
@@ -40,14 +43,13 @@ const pointsPresenter = new PointsPresenter({
   destinationsModel,
   tripModel,
   offersModel,
-  filterModel,
+  filtersModel,
 });
-
 
 export default class AppPresenter {
   init() {
     headerInfoPresenter.init();
-    //headerFilterPresenter.init();
+    headerFilterPresenter.init();
     pointsPresenter.init();
     tripModel.init();
   }
