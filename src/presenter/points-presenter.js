@@ -227,7 +227,7 @@ export default class PointsPresenter {
       onSortTypeChange: this.#handleSortTypeChange,
     });
 
-    render(this.#sortComponent, this.#eventsContainerElement, RenderPosition.BEFOREBEGIN);
+    render(this.#sortComponent, this.#eventsContainerElement, RenderPosition.AFTERBEGIN);
   }
 
   #handleSortTypeChange = (sortType) => {
