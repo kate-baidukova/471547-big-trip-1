@@ -94,17 +94,18 @@ function createDescriptionTemplate(pointDestination) {
   `);
 }
 
-function createButtonTemplate(isCreating) {
+function createButtonTemplate(isCreating, isDisabled, isDeleting) {
   if (isCreating) {
     return `
-      <button class="event__reset-btn" type="reset">Cancel</button>
-    `;
+    <button class="event__reset-btn" type="reset">Cancel</button>
+  `;
   }
-
   return `
-    <button class="event__reset-btn" type="reset">Delete</button>
+    <button class="event__reset-btn" ${isDisabled ? 'disabled' : ''} type="reset">
+        ${isDeleting ? 'Deleting...' : 'Delete'}
+    </button>
     <button class="event__rollup-btn" type="button">
-      <span class="visually-hidden">Open event</span>
+        <span class="visually-hidden">Open event</span>
     </button>
   `;
 }
@@ -113,7 +114,7 @@ function createButtonTemplate(isCreating) {
 
 function createEditPointTemplate(point, allOffers, allDestinations, formType) {
 
-  const {type, basePrice, id, offers, dateFrom, dateTo} = point;
+  const {type, basePrice, id, offers, dateFrom, dateTo, isDisabled, isSaving, isDeleting} = point;
 
   const pointOffers = allOffers.find((offer) => offer.type === type).offers; //офферы по типу
 
@@ -202,9 +203,8 @@ function createEditPointTemplate(point, allOffers, allDestinations, formType) {
           <input class="event__input  event__input--price" id="event-price-${id}" type="number" name="event-price" value="${basePrice}">
         </div>
 
-        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-
-        ${createButtonTemplate(isCreating)}
+        <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
+            ${createButtonTemplate(isCreating, isDisabled, isDeleting)}
 
       </header>
       <section class="event__details">
@@ -234,7 +234,16 @@ export default class PointFormEditView extends AbstractStatefulView {
   #datePickerTo = null;
   #currentformType = FORM_TYPE.EDITING;
 
-  constructor ({point = NEW_POINT_FORM, allOffers, allDestinations, onFormSubmit, onCloseEditFormButton, formType}) {
+  constructor (
+    {
+      point = NEW_POINT_FORM,
+      allOffers,
+      allDestinations,
+      onFormSubmit,
+      onCloseEditFormButton,
+      formType
+    }
+  ) {
     super();
     this._setState(PointFormEditView.parsePointToState(point));
     this.#allOffers = allOffers;

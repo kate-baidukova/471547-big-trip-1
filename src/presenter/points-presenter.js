@@ -81,7 +81,7 @@ export default class PointsPresenter {
   }
 
   get routePoints() {
-    this.#filterType = this.#filtersModel.get();
+    this.#filterType = this.#filtersModel.filter;
 
     const currentPoints = this.#tripModel.points;
 
@@ -113,6 +113,7 @@ export default class PointsPresenter {
 
     this.#pointsPresenter.forEach((presenter) => presenter.destroy());
     this.#pointsPresenter.clear();
+    this.#newPointPresenter.destroy();
 
     if (this.#noRoutePointComponent) {
       remove(this.#noRoutePointComponent);
@@ -136,18 +137,18 @@ export default class PointsPresenter {
   };
 
   #buttonClickHandler = () => {
-    //this.#isCreating = true;
+    this.#isCreating = true;
     this.#newPointButtonComponent.setDisabled();
     this.#currentSortType = SortTypes.DAY;
     this.#filtersModel.setFilter(UpdateType.MAJOR, FiltersTypes.EVERYTHING);
     this.#newPointPresenter.init();
   };
 
-  #newPointDestroyHandler = () => {
+  #newPointDestroyHandler = ({isCanceled}) => {
     this.#newPointButtonComponent.setEnabled();
-    //this.#isCreating = false;
+    this.#isCreating = false;
 
-    if(this.#pointsPresenter.length === 0) {
+    if(!this.#pointsPresenter.length && isCanceled) {
       this.#clearPointsList();
       this.#renderTripList();
     }
@@ -231,7 +232,9 @@ export default class PointsPresenter {
   }
 
   #handleSortTypeChange = (sortType) => {
-    this.#sortPointsList(sortType);
+    this.#currentSortType = sortType;
+    this.#clearPointsList();
+    this.#renderPoints();
   };
 
   #onModeChange = () => {
@@ -256,7 +259,11 @@ export default class PointsPresenter {
       this.#renderEmptyList();
       return;
     }
-    this.#newPointButtonComponent.setEnabled();
+
+    if (!this.#isCreating) {
+      this.#newPointButtonComponent.setEnabled();
+    }
+
     this.#renderPoints(points);
   }
 
