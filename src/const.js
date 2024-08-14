@@ -106,6 +106,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT'
 };
 
 const EMPTY_LIST_MESSAGE = {
@@ -114,6 +115,29 @@ const EMPTY_LIST_MESSAGE = {
   PRESENT: 'There are no present events now',
   PAST: 'There are no past events now'
 };
+
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
+};
+
+const SourceUrl = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations',
+};
+
+const TimeLimit = {
+  LOWER_LIMIT: 300,
+  UPPER_LIMIT: 1000,
+};
+
+const AUTHORIZATION = 'Basic eo0w590ik28552552419a';
+
+const END_POINT = 'https://20.objects.htmlacademy.pro/big-trip';
+
 
 export {
   DESTINATIONS_COUNT,
@@ -130,5 +154,10 @@ export {
   EnabledSortTypes,
   UserAction,
   UpdateType,
-  EMPTY_LIST_MESSAGE
+  EMPTY_LIST_MESSAGE,
+  Method,
+  SourceUrl,
+  TimeLimit,
+  AUTHORIZATION,
+  END_POINT
 };

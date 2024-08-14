@@ -1,5 +1,4 @@
 import RadioListView from './radio-list.js';
-import {capitalizeFirstLetter} from '../utils/utils.js';
 
 function createFilterItemTemplate(filter, isChecked) {
   const {type, count} = filter;
@@ -13,7 +12,7 @@ function createFilterItemTemplate(filter, isChecked) {
           value="${type}
           ${isChecked ? 'checked' : ''}
           ${count === 0 ? 'disabled' : ''}">
-        <label class="trip-filters__filter-label" for="filter-${type}">${capitalizeFirstLetter(type)}</label>
+        <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
     </div>
   `);
 }

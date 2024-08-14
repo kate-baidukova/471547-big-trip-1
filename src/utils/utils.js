@@ -52,7 +52,7 @@ const updateItem = (items, update) => items.map((item) => item.id === update.id 
 
 //сортируем поинты по цене
 
-const sortPointsByPrice = (currentPoint, nextPoint) => nextPoint.price - currentPoint.price;
+const sortPointsByPrice = (currentPoint, nextPoint) => nextPoint.basePrice - currentPoint.basePrice;
 
 //сортируем поинты по дате
 
@@ -81,9 +81,43 @@ const sorting = {
 
 function isBigDifference(pointA, pointB) {
   return pointA.dateFrom !== pointB.dateFrom
-  || pointA.price !== pointB.price
+  || pointA.basePrice !== pointB.basePice
   || calcPointDuration(pointA.dateFrom, pointA.dateTo) !== calcPointDuration(pointB.dateFrom, pointB.dateTo);
 }
+
+const adaptToClient = (point) => {
+  const adaptedPoint = {
+    ...point,
+    dateFrom: point['date_from'],
+    dateTo: point['date_to'],
+    basePrice: point['base_price'],
+    isFavourite: point['is_favourite'],
+  };
+
+  delete adaptedPoint['date_from'];
+  delete adaptedPoint['date_to'];
+  delete adaptedPoint['base_price'];
+  delete adaptedPoint['is_favourite'];
+
+  return adaptedPoint;
+};
+
+const adaptToServer = (point) => {
+  const adaptedPoint = {
+    ...point,
+    ['date_from']: new Date(point.dateFrom).toISOString(),
+    ['date_to']: new Date(point.dateTo).toISOString(),
+    ['base_price']: parseInt(point.basePrice, 10),
+    ['is_favourite']: point.isFavourite,
+  };
+
+  delete adaptedPoint.dateFrom;
+  delete adaptedPoint.dateTo;
+  delete adaptedPoint.basePrice;
+  delete adaptedPoint.isFavourite;
+
+  return adaptedPoint;
+};
 
 export {
   humanizeDate,
@@ -97,5 +131,7 @@ export {
   isBigDifference,
   sortPointsByDate,
   sortPointsByTime,
-  sortPointsByPrice
+  sortPointsByPrice,
+  adaptToServer,
+  adaptToClient
 };
