@@ -6,7 +6,6 @@ export default class NewPointPresenter {
   #container = null;
   #destinationsModel = [];
   #offersModel = [];
-  #point = null;
   #addPointComponent = null;
   #onDataChange = null;
   #handleDestroy = null;
@@ -42,17 +41,23 @@ export default class NewPointPresenter {
     document.addEventListener('keydown', this.#escKeyEventEdit);
   }
 
-  destroy() {
+  destroy({isCanceled = true} = {}) {
+
     if (!this.#addPointComponent) {
       return;
+
     }
+
+    this.#handleDestroy({isCanceled});
     remove(this.#addPointComponent);
     this.#addPointComponent = null;
-    this.#handleDestroy();
     document.removeEventListener('keydown', this.#escKeyEventEdit);
   }
 
   setSaving = () => {
+    if(!this.#addPointComponent) {
+      return;
+    }
     this.#addPointComponent.updateElement({
       isDisabled: true,
       isSaving: true
@@ -71,7 +76,7 @@ export default class NewPointPresenter {
   };
 
   #handleCloseEditFormButton = () => {
-    this.destroy();
+    this.destroy({isCanceled: true});
   };
 
   #handleFormSubmit = (point) => {
@@ -80,13 +85,13 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point
     );
-    this.destroy();
+    document.addEventListener('keydown', this.#escKeyEventEdit);
   };
 
   #escKeyEventEdit = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      this.destroy();
+      this.destroy({isCanceled: true});
     }
   };
 }

@@ -144,6 +144,7 @@ export default class PointPresenter {
   setAborting = () => {
     if (this.#mode === Mode.DEFAULT) {
       this.#editPointComponent.shake();
+      return;
     }
 
     if (this.#mode === Mode.EDITING) {
@@ -160,10 +161,12 @@ export default class PointPresenter {
   };
 
   setRemove = () => {
-    this.#editPointComponent.updateElement({
-      isDisabled: true,
-      isDeleting: true,
-    });
+    if (this.#mode === Mode.EDITING) {
+      this.#editPointComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
   };
 }
 
