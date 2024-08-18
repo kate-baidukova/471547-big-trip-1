@@ -20,7 +20,6 @@ import {filter} from '../utils/filter.js';
 import LoaderView from '../view/loading-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
-//import PointsView from '../view/points-view.js';
 import PointsListView from '../view/points-list-view.js';
 import NewPointButtonView from '../view/new-point-button-view.js';
 import MessageView from '../view/message-view.js';
@@ -33,7 +32,6 @@ export default class PointsPresenter {
   #eventsContainerElement = null;
   #headerContainerElement = null;
 
-  //#tripComponent = new PointsView();
   #tripListComponent = new PointsListView();
   #pointsPresenter = new Map();
   #noRoutePointComponent = null;
