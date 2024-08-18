@@ -54,7 +54,7 @@ export default class PointsPresenter {
   #currentSortType = null;
   #defaultSortType = SortTypes.DAY;
 
-  #filterType = FiltersTypes.EVERYTHING;
+  #filtersType = FiltersTypes.EVERYTHING;
 
   #isCreating = false;
   #uiBlocker = new UiBlocker({lowerLimit: TimeLimit.LOWER_LIMIT, upperLimit: TimeLimit.UPPER_LIMIT});
@@ -81,11 +81,11 @@ export default class PointsPresenter {
   }
 
   get routePoints() {
-    this.#filterType = this.#filtersModel.filter;
+    this.#filtersType = this.#filtersModel.filter;
 
     const currentPoints = this.#tripModel.points;
 
-    const filteredPoints = filter[this.#filterType](currentPoints);
+    const filteredPoints = filter[this.#filtersType](currentPoints);
 
     //return sorting[this.#currentSortType](filteredPoints);
 
@@ -279,7 +279,7 @@ export default class PointsPresenter {
 
   #renderEmptyList() {
     this.#emptyListComponent = new MessageView({
-      filterType: this.#filtersModel.filter,
+      filtersType: this.#filtersModel.filter,
     });
     render(this.#emptyListComponent, this.#eventsContainerElement);
   }

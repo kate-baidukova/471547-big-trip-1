@@ -1,7 +1,7 @@
-import {render, replace, remove} from '../framework/render.js';
+import {render, replace} from '../framework/render.js';
 import FiltersListView from '../view/filters-list-view.js';
-import {generateFilter} from '../mock/mock-filter.js';
 import {UpdateType} from '../const.js';
+import {filter} from '../utils/filter.js';
 
 export default class HeaderFilterPresenter {
   #tripModel = null;
@@ -14,25 +14,24 @@ export default class HeaderFilterPresenter {
     this.#tripModel = tripModel;
     this.#filterContainer = filterContainer;
     this.#filtersModel = filtersModel;
+
     this.#tripModel.addObserver(this.#handleModeChange);
     this.#filtersModel.addObserver(this.#handleModeChange);
   }
 
   get filters() {
-    const points = this.#tripModel.get();
+    const points = this.#tripModel.points;
 
-    return Object.entries(generateFilter).map(([filterType, filterPoints]) =>
+    return Object.entries(filter).map(([type, filterFn]) =>
       ({
-        type: filterType,
-        isChecked: filterType === this.#currentFilter,
-        isDisabled: !filterPoints(points).length,
-      })
-    );
+        type,
+        count: filterFn(points).length
+      }));
   }
 
   init() {
-    this.#currentFilter = this.#filtersModel.get();
-    const preventFilterComponent = this.#filterComponent;
+    this.#currentFilter = this.#filtersModel.filter;
+    const prevFilterComponent = this.#filterComponent;
     const items = this.filters;
 
     this.#filterComponent = new FiltersListView({
@@ -40,16 +39,20 @@ export default class HeaderFilterPresenter {
       onItemChange: this.#filterTypeChangeHandler,
     });
 
-    if (preventFilterComponent) {
-      replace(this.#filterComponent, preventFilterComponent);
-      remove(preventFilterComponent);
+    if (prevFilterComponent) {
+      replace(this.#filterComponent, prevFilterComponent);
+
     } else {
       render(this.#filterComponent, this.#filterContainer);
     }
   }
 
-  #filterTypeChangeHandler = (filterType) => {
-    this.#filtersModel.set(UpdateType.MAJOR, filterType);
+  #filterTypeChangeHandler = (filtersType) => {
+    if (this.#filtersModel.filter === filtersType) {
+      return;
+    }
+
+    this.#filtersModel.setFilter(UpdateType.MAJOR, filtersType);
   };
 
   #handleModeChange = () => {

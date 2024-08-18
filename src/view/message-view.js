@@ -15,7 +15,7 @@ export default class MessageView extends AbstractView {
 
   get template() {
     return createNoEventsMessage({
-      message: EMPTY_LIST_MESSAGE[this.#filterType.toUpperCase()],
+      message: EMPTY_LIST_MESSAGE[this.#filterType],
     });
   }
 }
