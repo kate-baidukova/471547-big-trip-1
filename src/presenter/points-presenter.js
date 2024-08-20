@@ -34,7 +34,6 @@ export default class PointsPresenter {
 
   #tripListComponent = new PointsListView();
   #pointsPresenter = new Map();
-  #noRoutePointComponent = null;
   #loadingComponent = new LoaderView();
   #isLoading = true;
 
@@ -52,7 +51,7 @@ export default class PointsPresenter {
   #currentSortType = null;
   #defaultSortType = SortTypes.DAY;
 
-  #filtersType = FiltersTypes.EVERYTHING;
+  #filtersTypes = FiltersTypes.EVERYTHING;
 
   #isCreating = false;
   #uiBlocker = new UiBlocker({lowerLimit: TimeLimit.LOWER_LIMIT, upperLimit: TimeLimit.UPPER_LIMIT});
@@ -79,11 +78,11 @@ export default class PointsPresenter {
   }
 
   get routePoints() {
-    this.#filtersType = this.#filtersModel.filter;
+    this.#filtersTypes = this.#filtersModel.filter;
 
     const currentPoints = this.#tripModel.points;
 
-    const filteredPoints = filter[this.#filtersType](currentPoints);
+    const filteredPoints = filter[this.#filtersTypes](currentPoints);
 
     //return sorting[this.#currentSortType](filteredPoints);
 
@@ -113,8 +112,12 @@ export default class PointsPresenter {
     this.#pointsPresenter.clear();
     this.#newPointPresenter.destroy();
 
-    if (this.#noRoutePointComponent) {
-      remove(this.#noRoutePointComponent);
+    if (this.#emptyListComponent) {
+      remove(this.#emptyListComponent);
+    }
+
+    if (this.#sortComponent) {
+      remove(this.#sortComponent);
     }
 
     if (resetSortType) {
@@ -276,9 +279,11 @@ export default class PointsPresenter {
   }
 
   #renderEmptyList() {
+    const filterType = this.#filtersModel.filter;
     this.#emptyListComponent = new MessageView({
-      filtersType: this.#filtersModel.filter,
+      filtersTypes: filterType,
     });
+    remove(this.#sortComponent);
     render(this.#emptyListComponent, this.#eventsContainerElement);
   }
 
