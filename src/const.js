@@ -1,4 +1,4 @@
-const DESTINATIONS_COUNT = 15;
+const DESTINATIONS_COUNT = 5;
 
 const DESTINATIONS = [
   'Krasnodar',

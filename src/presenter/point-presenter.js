@@ -54,6 +54,7 @@ export default class PointPresenter {
       allDestinations: this.#destinationsModel.get(),
       onFormSubmit: this.#pointEditSubmitHandler,
       onCloseEditFormButton: this.#pointCloseEditHandler,
+      onDeletePointSubmit: this.#pointDeleteEditHandler,
       formType: FORM_TYPE.EDITING,
     });
 
@@ -125,6 +126,14 @@ export default class PointPresenter {
       this.#offers);
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+  };
+
+  #pointDeleteEditHandler = (point) => {
+    this.#onDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 
   #pointFavouriteHandler = () => {

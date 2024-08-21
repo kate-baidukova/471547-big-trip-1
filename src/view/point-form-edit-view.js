@@ -230,6 +230,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   #allDestinations = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
+  #handleDeletePointSubmit = null;
   #datePickerFrom = null;
   #datePickerTo = null;
   #currentformType = FORM_TYPE.EDITING;
@@ -241,6 +242,7 @@ export default class PointFormEditView extends AbstractStatefulView {
       allDestinations,
       onFormSubmit,
       onCloseEditFormButton,
+      onDeletePointSubmit,
       formType
     }
   ) {
@@ -250,6 +252,7 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.#allDestinations = allDestinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
+    this.#handleDeletePointSubmit = onDeletePointSubmit;
     this._restoreHandlers();
     this.#currentformType = formType;
   }
@@ -261,11 +264,11 @@ export default class PointFormEditView extends AbstractStatefulView {
   _restoreHandlers() {
     if(this.#currentformType === FORM_TYPE.EDITING) {
       this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
-      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onDeletePointSubmit);
     }
 
     if(this.#currentformType === FORM_TYPE.CREATING) {
-      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onDeletePointSubmit);
     }
 
     this.element.addEventListener('submit', this.#formSubmitHandler);
@@ -391,16 +394,26 @@ export default class PointFormEditView extends AbstractStatefulView {
     }
   }
 
-  #formDeleteHandler = (evt) => {
+  #onDeletePointSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleCloseEditFormButton();
+    this.#handleDeletePointSubmit(PointFormEditView.parseStateToPoint(this._state));
   };
 
   static parsePointToState(point) {
-    return {...point};
+    return {...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    };
   }
 
   static parseStateToPoint(state) {
-    return {...state};
+    const point = {...state};
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
   }
 }
