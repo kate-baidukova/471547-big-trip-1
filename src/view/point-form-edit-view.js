@@ -233,7 +233,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   #handleDeletePointSubmit = null;
   #datePickerFrom = null;
   #datePickerTo = null;
-  #currentformType = null;
+  #currentformType = FORM_TYPE.EDITING;
 
   constructor (
     {
@@ -243,7 +243,7 @@ export default class PointFormEditView extends AbstractStatefulView {
       onFormSubmit,
       onCloseEditFormButton,
       onDeletePointSubmit,
-      formType = FORM_TYPE.EDITING
+      formType
     }
   ) {
     super();
@@ -268,7 +268,7 @@ export default class PointFormEditView extends AbstractStatefulView {
     }
 
     if(this.#currentformType === FORM_TYPE.CREATING) {
-      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+      this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onDeletePointSubmit);
     }
 
     this.element.addEventListener('submit', this.#formSubmitHandler);
@@ -396,7 +396,7 @@ export default class PointFormEditView extends AbstractStatefulView {
 
   #onDeletePointSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleDeletePointSubmit(PointFormEditView.parseStateToPoint(this._state));
+    this.#handleDeletePointSubmit(this._state);
   };
 
   static parsePointToState(point) {

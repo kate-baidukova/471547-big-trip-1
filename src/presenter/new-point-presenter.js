@@ -33,7 +33,7 @@ export default class NewPointPresenter {
       allOffers: this.#offersModel.get(),
       allDestinations: this.#destinationsModel.get(),
       onFormSubmit: this.#handleFormSubmit,
-      onCloseEditFormButton: this.#handleCloseEditFormButton,
+      onDeletePointSubmit: this.#handleDeletePointSubmit,
       formType: FORM_TYPE.CREATING,
     });
 
@@ -75,7 +75,7 @@ export default class NewPointPresenter {
     this.#addPointComponent.shake(resetFormState);
   };
 
-  #handleCloseEditFormButton = () => {
+  #handleDeletePointSubmit = () => {
     this.destroy({isCanceled: true});
   };
 

@@ -130,8 +130,8 @@ const SourceUrl = {
 };
 
 const TimeLimit = {
-  LOWER_LIMIT: 300,
-  UPPER_LIMIT: 1000,
+  LOWER_LIMIT: 30000,
+  UPPER_LIMIT: 100000,
 };
 
 const AUTHORIZATION = 'Basic eo0w590ik28552552419a';
