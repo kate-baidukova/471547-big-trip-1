@@ -11,7 +11,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(isBetween);
 
 dayjs.max(dayjs(), dayjs('2024-08-01'), dayjs('2024-10-01'));
-//dayjs.min([dayjs(), dayjs('2024-08-01'), dayjs('2024-08-01')]);
+dayjs.min([dayjs(), dayjs('2024-08-01'), dayjs('2024-08-01')]);
 
 //задаем формат даты
 
