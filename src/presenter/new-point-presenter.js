@@ -83,7 +83,7 @@ export default class NewPointPresenter {
     this.#onDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      point
+      {...point, isFavorite: false},
     );
     document.addEventListener('keydown', this.#escKeyEventEdit);
   };
@@ -94,4 +94,5 @@ export default class NewPointPresenter {
       this.destroy({isCanceled: true});
     }
   };
+
 }

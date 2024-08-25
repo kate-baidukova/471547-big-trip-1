@@ -1,12 +1,17 @@
 import {SortTypes, DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../const.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import minMax from 'dayjs/plugin/minMax';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import isBetween from 'dayjs/plugin/isBetween';
 
 dayjs.extend(duration);
+dayjs.extend(minMax);
 dayjs.extend(relativeTime);
 dayjs.extend(isBetween);
+
+dayjs.max(dayjs(), dayjs('2024-08-01'), dayjs('2024-10-01'));
+//dayjs.min([dayjs(), dayjs('2024-08-01'), dayjs('2024-08-01')]);
 
 //задаем формат даты
 

@@ -41,13 +41,13 @@ const FiltersTypes = {
 };
 
 const NEW_POINT_FORM = {
-  id: 1,
-  type: 'bus',
-  offers: [],
-  destination: '',
+  basePrice: 0,
   dateFrom: '',
   dateTo: '',
-  price: 0
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: 'bus',
 };
 
 const DateFormat = {
