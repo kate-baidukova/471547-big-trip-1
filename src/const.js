@@ -45,7 +45,7 @@ const NEW_POINT_FORM = {
   dateFrom: '',
   dateTo: '',
   destination: '',
-  isFavorite: false,
+  'is_favorite': false,
   offers: [],
   type: 'bus',
 };

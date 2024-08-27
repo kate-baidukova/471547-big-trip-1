@@ -41,14 +41,14 @@ export default class NewPointPresenter {
     document.addEventListener('keydown', this.#escKeyEventEdit);
   }
 
-  destroy({isCanceled = true} = {}) {
+  destroy() {
 
     if (!this.#addPointComponent) {
       return;
 
     }
 
-    this.#handleDestroy({isCanceled});
+    this.#handleDestroy();
     remove(this.#addPointComponent);
     this.#addPointComponent = null;
     document.removeEventListener('keydown', this.#escKeyEventEdit);
@@ -76,14 +76,14 @@ export default class NewPointPresenter {
   };
 
   #handleDeletePointSubmit = () => {
-    this.destroy({isCanceled: true});
+    this.destroy();
   };
 
   #handleFormSubmit = (point) => {
     this.#onDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      {...point, isFavorite: false},
+      {...point},
     );
     document.addEventListener('keydown', this.#escKeyEventEdit);
   };
@@ -91,7 +91,7 @@ export default class NewPointPresenter {
   #escKeyEventEdit = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      this.destroy({isCanceled: true});
+      this.destroy();
     }
   };
 

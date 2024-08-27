@@ -96,18 +96,18 @@ function createDescriptionTemplate(pointDestination) {
 
 function createButtonTemplate(isCreating, isDisabled, isDeleting) {
   if (isCreating) {
-    return `
+    return (`
     <button class="event__reset-btn" type="reset">Cancel</button>
-  `;
+  `);
   }
-  return `
+  return (`
     <button class="event__reset-btn" ${isDisabled ? 'disabled' : ''} type="reset">
         ${isDeleting ? 'Deleting...' : 'Delete'}
     </button>
     <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
     </button>
-  `;
+  `);
 }
 
 //создаем шаблон поинта
@@ -233,7 +233,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   #handleDeletePointSubmit = null;
   #datePickerFrom = null;
   #datePickerTo = null;
-  #currentformType = FORM_TYPE.EDITING;
+  #currentformType = null;
 
   constructor (
     {
@@ -253,8 +253,8 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
     this.#handleDeletePointSubmit = onDeletePointSubmit;
-    this._restoreHandlers();
     this.#currentformType = formType;
+    this._restoreHandlers();
   }
 
   get template() {

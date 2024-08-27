@@ -138,7 +138,7 @@ export default class PointPresenter {
 
   #pointFavouriteHandler = () => {
     this.#onDataChange(UserAction.UPDATE_POINT,
-      UpdateType.PATCH, {...this.#point, isFavorite: !this.#point.isFavorite});
+      UpdateType.PATCH, {...this.#point, 'is_favorite': !this.#point.is_favorite});
   };
 
   setAborting = () => {
