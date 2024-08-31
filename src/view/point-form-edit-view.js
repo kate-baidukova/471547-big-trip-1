@@ -350,6 +350,7 @@ export default class PointFormEditView extends AbstractStatefulView {
       ...flatpickerConfig,
       defaultDate: this._state.dateFrom,
       onClose: this.#closeFromDateHandler,
+      minDate: this._state.dateFrom,
       maxDate: this._state.dateTo
     });
 

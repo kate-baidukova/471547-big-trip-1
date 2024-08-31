@@ -93,8 +93,8 @@ function isBigDifference(pointA, pointB) {
 const adaptToClient = (point) => {
   const adaptedPoint = {
     ...point,
-    dateFrom: point['date_from'],
-    dateTo: point['date_to'],
+    dateFrom: new Date(point['date_from']),
+    dateTo: new Date(point['date_to']),
     basePrice: point['base_price'],
     isFavourite: point['is_favourite'],
   };
