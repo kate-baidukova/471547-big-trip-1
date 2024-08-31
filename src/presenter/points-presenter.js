@@ -241,7 +241,7 @@ export default class PointsPresenter {
       return;
     }
 
-    if (points.length === 0 && !this.#newPointPresenter.isCreating()) {
+    if (points.length < 1) {
       this.#renderEmptyList();
       return;
     }
