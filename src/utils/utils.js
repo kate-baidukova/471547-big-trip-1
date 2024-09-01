@@ -1,4 +1,4 @@
-import {SortTypes, DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../const.js';
+import {DateFormat, MSEC_IN_DAY, MSEC_IN_HOUR} from '../const.js';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import minMax from 'dayjs/plugin/minMax';
@@ -72,18 +72,6 @@ const sortPointsByTime = (currentPoint, nextPoint) => {
   return nextPointDuration - currentPointDuration;
 };
 
-const sorting = {
-  [SortTypes.DAY]: (points) => [...points].sort(sortPointsByDate),
-  [SortTypes.EVENT]: () => {
-    throw new Error(`Sort by ${SortTypes.EVENT} is disabled`);
-  },
-  [SortTypes.TIME]: (points) => [...points].sort(sortPointsByTime),
-  [SortTypes.PRICE]: (points) => [...points].sort(sortPointsByPrice),
-  [SortTypes.OFFER]: () => {
-    throw new Error(`Sort by ${SortTypes.OFFER} is disabled`);
-  }
-};
-
 function isBigDifference(pointA, pointB) {
   return pointA.dateFrom !== pointB.dateFrom
   || pointA.basePrice !== pointB.basePice
@@ -132,7 +120,6 @@ export {
   isFutureDate,
   capitalizeFirstLetter,
   updateItem,
-  sorting,
   isBigDifference,
   sortPointsByDate,
   sortPointsByTime,
