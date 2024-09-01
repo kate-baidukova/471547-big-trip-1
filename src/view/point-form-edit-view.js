@@ -333,12 +333,19 @@ export default class PointFormEditView extends AbstractStatefulView {
     });
   };
 
-  #selectDestination(name) {
-    return this.#allDestinations.find((destination) => destination.name === name);
+  #selectDestination(destination) {
+    return this.#allDestinations.find((dest) => dest.id === destination.id);
   }
 
   #destinationChangeHandler = (evt) => {
+
+    evt.preventDefault();
+
     const newCity = this.#selectDestination(evt.target.value);
+
+    if (!newCity) {
+      return;
+    }
 
     this.updateElement({
       destination: newCity.id
@@ -362,7 +369,14 @@ export default class PointFormEditView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
+
+    if (this._state.basePrice < 1) {
+      this.shake();
+      return;
+    }
+
     this.#handleFormSubmit(PointFormEditView.parseStateToPoint(this._state));
+
   };
 
   //для кнопки открытия/закрытия формы редактирования
