@@ -176,19 +176,19 @@ function createEditPointTemplate(point, allOffers, allDestinations, formType) {
         </div>
 
         <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-${id}">From</label>
+          <label class="visually-hidden" for="event-start-time-1">From</label>
           <input
             class="event__input  event__input--time"
-            id="event-start-time-${id}"
+            id="event-start-time-1"
             type="text"
             name="event-start-time"
             value="${startDateFormat}"
           >
           &mdash;
-          <label class="visually-hidden" for="event-end-time-${id}">To</label>
+          <label class="visually-hidden" for="event-end-time-1">To</label>
           <input
             class="event__input  event__input--time"
-            id="event-end-time-${id}"
+            id="event-end-time-1"
             type="text"
             name="event-end-time"
             value="${endDateFormat}"
@@ -231,8 +231,7 @@ export default class PointFormEditView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
   #handleDeletePointSubmit = null;
-  #datePickerFrom = null;
-  #datePickerTo = null;
+  #datePicker = null;
   #currentformType = null;
 
   constructor (
@@ -260,6 +259,48 @@ export default class PointFormEditView extends AbstractStatefulView {
   get template() {
     return createEditPointTemplate(this._state, this.#allOffers, this.#allDestinations, this.#currentformType);
   }
+
+  //работа с библиотекой flatpickr
+
+  #setDatepicker = () => {
+
+    this.#datePicker = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        minDate: this._state.dateFrom,
+        maxDate: this._state.dateTo,
+        defaultDate: this._state.dateFrom,
+        onClose: this.#closeFromDateHandler,
+        'time_24hr': true,
+      }
+    );
+
+    this.#datePicker = flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        minDate: this._state.dateFrom,
+        defaultDate: this._state.dateTo,
+        onClose: this.#closeToDateHandler,
+        'time_24hr': true,
+      },
+    );
+  };
+
+  #closeFromDateHandler = ([selectedDate]) => {
+    this.updateElement({
+      dateFrom: selectedDate,
+    });
+  };
+
+  #closeToDateHandler = ([selectedDate]) => {
+    this.updateElement({
+      dateTo: selectedDate,
+    });
+  };
 
   _restoreHandlers() {
     if(this.#currentformType === FORM_TYPE.EDITING) {
@@ -331,67 +372,12 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.#handleCloseEditFormButton();
   };
 
-  //работа с библиотекой flatpickr
-
-  #setDatepicker = () => {
-    const startDatePickr = this.element.querySelector('.event__input--time[name="event-start-time"]');
-    const endDatePickr = this.element.querySelector('.event__input--time[name="event-end-time"]');
-
-    const flatpickerConfig = {
-      dateFormat: 'd/m/y H:i',
-      enableTime: true,
-      locale: {
-        firstDayOfWeek: 1,
-      },
-      'time_24hr': true,
-    };
-
-    this.#datePickerFrom = flatpickr(startDatePickr, {
-      ...flatpickerConfig,
-      defaultDate: this._state.dateFrom,
-      onClose: this.#closeFromDateHandler,
-      minDate: this._state.dateFrom,
-      maxDate: this._state.dateTo
-    });
-
-    this.#datePickerTo = flatpickr(endDatePickr, {
-      ...flatpickerConfig,
-      defaultDate: this._state.dateTo,
-      onClose: this.#closeToDateHandler,
-      minDate: this._state.dateFrom,
-    });
-
-  };
-
-  #closeFromDateHandler = ([selectedDate]) => {
-    this._setState({
-      ...this._state,
-      dateFrom: selectedDate
-    });
-
-    this.#datePickerTo.set('minDate'. selectedDate);
-  };
-
-  #closeToDateHandler = ([selectedDate]) => {
-    this._setState({
-      ...this._state,
-      dateTo: selectedDate
-    });
-
-    this.#datePickerFrom.set('maxDate'. selectedDate);
-  };
-
   removeElement() {
     super.removeElement();
 
-    if (this.#datePickerFrom) {
-      this.#datePickerFrom.destroy();
-      this.#datePickerFrom = null;
-    }
-
-    if (this.#datePickerTo) {
-      this.#datePickerTo.destroy();
-      this.#datePickerTo = null;
+    if (this.#datePicker) {
+      this.#datePicker.destroy();
+      this.#datePicker = null;
     }
   }
 
