@@ -302,6 +302,10 @@ export default class PointFormEditView extends AbstractStatefulView {
     });
   };
 
+  reset(point) {
+    this.updateElement(PointFormEditView.parsePointToState(point));
+  }
+
   _restoreHandlers() {
     if(this.#currentformType === FORM_TYPE.EDITING) {
       this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
@@ -318,10 +322,6 @@ export default class PointFormEditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.#setDatepicker();
-  }
-
-  reset(point) {
-    this._setState(PointFormEditView.parsePointToState(point));
   }
 
   #typeChangeHandler = (evt) => {
@@ -350,7 +350,7 @@ export default class PointFormEditView extends AbstractStatefulView {
       ? this._state.offers.concat(evt.target.value)
       : this._state.offers.filter((offer) => offer !== evt.target.value);
 
-    this._setState({...this._state.point, offers: newOffers});
+    this._setState({offers: newOffers});
   };
 
   #priceChangeHandler = (evt) => {
