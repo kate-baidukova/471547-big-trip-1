@@ -333,8 +333,8 @@ export default class PointFormEditView extends AbstractStatefulView {
     });
   };
 
-  #selectDestination(destination) {
-    return this.#allDestinations.find((dest) => dest.id === destination.id);
+  #selectDestination(name) {
+    return this.#allDestinations.find((dest) => dest.name === name);
   }
 
   #destinationChangeHandler = (evt) => {
